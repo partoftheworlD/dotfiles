@@ -1,0 +1,103 @@
+{
+    "editor.columnSelection": false,
+    "editor.detectIndentation": true,
+    "editor.fontFamily": "JetBrains Mono Medium",
+    "editor.fontLigatures": true,
+    "editor.formatOnPaste": true,
+    "editor.insertSpaces": false,
+    "editor.rulers": [
+        {
+            "column": 100,
+            "color": "#424042"
+        }
+    ],
+    "editor.largeFileOptimizations": false,
+    "editor.multiCursorModifier": "ctrlCmd",
+    "editor.renderControlCharacters": true,
+    "editor.snippetSuggestions": "top",
+    "editor.wordWrap": "on",
+    "explorer.confirmDelete": false,
+    "extensions.ignoreRecommendations": true,
+    "files.autoSave": "afterDelay",
+    "git.autofetch": true,
+    "todo-tree.highlights.enabled": true,
+    "workbench.iconTheme": "material-icon-theme",
+    "workbench.startupEditor": "newUntitledFile",
+    "files.associations": {
+        "*.asl": "csharp"
+    },
+    "workbench.colorCustomizations": {
+        "statusBar.background": "#8FBCBB",
+        "statusBar.noFolderBackground": "#8FBCBB",
+        "statusBar.debuggingBackground": "#8FBCBB",
+        "statusBar.foreground": "#434C5E",
+        "statusBar.debuggingForeground": "#434C5E"
+    },
+    "jupyter.textOutputLimit": 0,
+    "jupyter.alwaysTrustNotebooks": true,
+    "jupyter.askForKernelRestart": false,
+    "workbench.editorAssociations": {
+        "*.ipynb": "jupyter-notebook",
+        "*.bin": "default"
+    },
+    "editor.wordSeparators": "/\\()\"':,.;<>~!@#$%^&*|+=[]{}`?-",
+    "notebook.cellToolbarLocation": {
+        "default": "right",
+        "jupyter-notebook": "left"
+    },
+    "editor.guides.bracketPairs": true,
+    "git.enableSmartCommit": true,
+    "git.confirmSync": false,
+    "editor.cursorBlinking": "smooth",
+    "notebook.lineNumbers": "on",
+    "security.workspace.trust.enabled": false,
+    "errorLens.removeLinebreaks": false,
+    "[rust]": {
+        "editor.defaultFormatter": "rust-lang.rust-analyzer",
+        "editor.formatOnSave": true,
+        "rust.full_docs": true,
+        "rust-client.engine": "rust-analyzer",
+        "rust-analyzer.cargo.allFeatures": true,
+        "rust-analyzer.rustfmt.rangeFormatting.enable": true,
+        "rust-client.updateOnStartup": true,
+        "rust.all_features": true,
+        "rust-analyzer.cargo.buildScripts.enable": true,
+        "rust-analyzer.cargo.features": [
+            "exercises"
+        ],
+    },
+    "[python]": {
+        "python.formatting.provider": "autopep8",
+        "python.pythonPath": "C:\\Users\\part\\AppData\\Local\\Programs\\Python\\Python39\\python.exe",
+        "python.showStartPage": false,
+        "python.languageServer": "Pylance",
+        "python.defaultInterpreterPath": "C:\\Users\\p\\AppData\\Local\\Programs\\Python\\Python311\\python.exe",
+    },
+    "tabnine.experimentalAutoImports": true,
+    "diffEditor.ignoreTrimWhitespace": false,
+    "debug.allowBreakpointsEverywhere": true,
+    "vscode-neovim.neovimExecutablePaths.win32": "C:\\Program Files\\Neovim\\bin\\nvim.exe",
+    "extensions.experimental.affinity": {
+        "asvetliakov.vscode-neovim": 1
+    },
+    "vscode-neovim.neovimInitVimPaths.win32": "C:\\Users\\p\\AppData\\Local\\nvim\\init_vs.lua",
+    "explorer.confirmDragAndDrop": false,
+    "workbench.editor.empty.hint": "hidden",
+    "indentRainbow.ignoreLinePatterns": [
+        "/[ \t]* [*]/g",
+        "/[ \t]+[/]{2}/g"
+    ],
+    "editor.cursorStyle": "line",
+    "git.openRepositoryInParentFolders": "never",
+    "rust-analyzer.inlayHints.closureReturnTypeHints.enable": "always",
+    "rust-analyzer.inlayHints.genericParameterHints.lifetime.enable": true,
+    "rust-analyzer.inlayHints.implicitDrops.enable": true,
+    "rust-analyzer.inlayHints.implicitSizedBoundHints.enable": true,
+    "errorLens.codeLensLength": {
+        "max": 120,
+        "min": 0
+    },
+    "errorLens.gutterIconSet": "emoji",
+    "errorLens.gutterIconsEnabled": true,
+    "chat.commandCenter.enabled": false,
+}
