@@ -141,7 +141,7 @@ dnf swap mesa-vdpau-drivers mesa-vdpau-drivers-freeworld -y > /dev/null 2>&1
 # Install essential applications
 color_echo "yellow" "Installing essential applications..."
 dnf install -y btop git wget curl jetbrains-mono-fonts rsms-inter-fonts duperemove btrfs-assistant neovim gamescope lutris steam distrobox > /dev/null 2>&1
-flatpak install -y spotify
+flatpak install -y spotify > /dev/null 2>&1
 color_echo "green" "Essential applications installed successfully."
 
 # Install Internet & Communication applications
@@ -191,7 +191,7 @@ color_echo "green" "Adobe Fonts installed successfully."
 
 # Remove Firefox
 color_echo "yellow" "Removing Firefox..."
-dnf rm firefox -y
+dnf rm firefox -y > /dev/null 2>&1
 color_echo "green" "Firefox deleted successfully."
 
 # Custom user-defined commands
