@@ -141,6 +141,7 @@ dnf swap mesa-vdpau-drivers mesa-vdpau-drivers-freeworld -y > /dev/null 2>&1
 # Install essential applications
 color_echo "yellow" "Installing essential applications..."
 dnf install -y btop git wget curl jetbrains-mono-fonts rsms-inter-fonts duperemove btrfs-assistant neovim gamescope lutris steam distrobox > /dev/null 2>&1
+flatpak install -y spotify
 color_echo "green" "Essential applications installed successfully."
 
 # Install Internet & Communication applications
