@@ -189,7 +189,9 @@ fc-cache -f > /dev/null 2>&1
 color_echo "green" "Adobe Fonts installed successfully."
 
 # Remove Firefox
-dnf rm firefox
+color_echo "yellow" "Removing Firefox..."
+dnf rm firefox -y
+color_echo "green" "Firefox deleted successfully."
 
 # Custom user-defined commands
 # Custom user-defined commands
