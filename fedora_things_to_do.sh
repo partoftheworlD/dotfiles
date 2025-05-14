@@ -1,5 +1,5 @@
 #!/bin/bash
-# "Things To Do!" script for a fresh Fedora Workstation installation
+# "Things To Do!" script for a fresh Fedora installation
 
 
 
@@ -82,7 +82,7 @@ echo "║   ░░░░░░░░░░░░░▀░░▀░▀░▀▀�
 echo "║                                                                             ║";
 echo "╚═════════════════════════════════════════════════════════════════════════════╝";
 echo "";
-echo "This script automates \"Things To Do!\" steps after a fresh Fedora Workstation installation"
+echo "This script automates \"Things To Do!\" steps after a fresh Fedora installation"
 echo "ver. 25.03"
 echo ""
 echo "Don't run this script if you didn't build it yourself or don't know what it does."
