@@ -191,11 +191,12 @@ fc-cache -fv
 color_echo "green" "Adobe Fonts installed successfully."
 
 color_echo "yellow" "Installing Ubuntu Fonts..."
-mkdir -p $ACTUAL_HOME/.local/share/fonts/ubuntu
+mkdir -p /home/p/.local/share/fonts/ubuntu
 cd /tmp/
 curl --output ubuntu.zip https://assets.ubuntu.com/v1/0cef8205-ubuntu-font-family-0.83.zip
 unzip ubuntu.zip
-mv ubuntu-font-family-0.83 $ACTUAL_HOME/.local/share/fonts/ubuntu
+chmod 755 ubuntu-font-family-0.83/*.ttf
+cp ubuntu-font-family-0.83/*.ttf /home/p/.local/share/fonts/ubuntu
 fc-cache -fv
 color_echo "green" "Ubuntu Fonts installed successfully."
 
