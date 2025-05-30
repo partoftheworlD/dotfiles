@@ -212,6 +212,11 @@ color_echo "yellow" "Removing Firefox..."
 dnf rm firefox -y
 color_echo "green" "Firefox removed successfully."
 
+# Install SpotX
+color_echo "yellow" "Installing SpotX..."
+bash <(curl -sSL https://spotx-official.github.io/run.sh)
+color_echo "green" "SpotX installed successfully."
+
 # Custom user-defined commands
 # Custom user-defined commands
 echo "Created with ❤️ for Open Source"
