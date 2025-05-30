@@ -141,7 +141,7 @@ dnf swap mesa-vdpau-drivers mesa-vdpau-drivers-freeworld -y
 # App Installation
 # Install essential applications
 color_echo "yellow" "Installing essential applications..."
-dnf install -y btop git wget curl jetbrains-mono-fonts rsms-inter-fonts duperemove btrfs-assistant neovim gamescope lutris steam distrobox gamemode
+dnf install -y tmux btop git wget curl jetbrains-mono-fonts rsms-inter-fonts duperemove btrfs-assistant neovim gamescope lutris steam distrobox gamemode
 flatpak install -y spotify
 color_echo "green" "Essential applications installed successfully."
 
@@ -190,6 +190,7 @@ git clone --depth 1 https://github.com/adobe-fonts/source-code-pro.git $ACTUAL_H
 fc-cache -fv
 color_echo "green" "Adobe Fonts installed successfully."
 
+# Install Ubuntu fonts collection
 color_echo "yellow" "Installing Ubuntu Fonts..."
 mkdir -p $ACTUAL_HOME/.local/share/fonts/ubuntu
 cd /tmp/
@@ -199,6 +200,12 @@ chmod 755 ubuntu-font-family-0.83/*.ttf
 cp ubuntu-font-family-0.83/*.ttf $ACTUAL_HOME/.local/share/fonts/ubuntu
 fc-cache -fv
 color_echo "green" "Ubuntu Fonts installed successfully."
+
+# Copy tmux config
+color_echo "yellow" "Installing tmux config..."
+cd ~/
+curl --output .tmux.conf https://raw.githubusercontent.com/partoftheworlD/dotfiles/refs/heads/master/.tmux.conf
+color_echo "green" "Tmux config installed successfully."
 
 # Remove Firefox
 color_echo "yellow" "Removing Firefox..."
