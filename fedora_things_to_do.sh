@@ -93,8 +93,7 @@ read -p "Press Enter to continue or CTRL+C to cancel..."
 # Optimize DNF package manager for faster downloads and efficient updates
 color_echo "yellow" "Configuring DNF Package Manager..."
 backup_file "/etc/dnf/dnf.conf"
-echo "max_parallel_downloads=10" | tee -a /etc/dnf/dnf.conf
-echo "fastestmirror=True" | tee -a /etc/dnf/dnf.conf
+echo -e "max_parallel_downloads=10\nfastestmirror=True\ntimeout=3\nminrate=5000\n" | tee -a /etc/dnf/dnf.conf
 dnf -y install dnf-plugins-core
 
 # System Upgrade
