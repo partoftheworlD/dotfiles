@@ -217,6 +217,8 @@ bash <(curl -sSL https://spotx-official.github.io/run.sh)
 color_echo "green" "SpotX installed successfully."
 
 # Custom user-defined commands
+
+sed -i 's/font.italic: model.isLink/\/\/ \0/' /usr/share/plasma/plasmoids/org.kde.desktopcontainment/contents/ui/FolderItemDelegate.qml
 # Custom user-defined commands
 echo "Created with ❤️ for Open Source"
 
