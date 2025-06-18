@@ -125,6 +125,9 @@ dnf install -y https://download1.rpmfusion.org/free/fedora/rpmfusion-free-releas
 dnf install -y https://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm
 dnf group update core -y
 
+color_echo "yellow" "Enabling CachyOS kernel copr..."
+dnf copr enable bieszczaders/kernel-cachyos
+
 # Install multimedia codecs to enhance multimedia capabilities
 color_echo "yellow" "Installing multimedia codecs..."
 dnf swap ffmpeg-free ffmpeg --allowerasing -y
