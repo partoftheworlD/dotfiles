@@ -144,7 +144,7 @@ dnf swap mesa-vdpau-drivers mesa-vdpau-drivers-freeworld -y
 # Install essential applications
 color_echo "yellow" "Installing essential applications..."
 dnf install -y tmux btop git wget curl jetbrains-mono-fonts rsms-inter-fonts duperemove btrfs-assistant neovim gamescope lutris steam distrobox gamemode kernel-cachyos kernel-cachyos-devel-matched cachyos-settings
-flatpak install -y spotify heroic
+flatpak install -y spotify heroic protonplus
 color_echo "green" "Essential applications installed successfully."
 
 # Install Internet & Communication applications
