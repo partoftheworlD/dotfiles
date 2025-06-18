@@ -222,6 +222,10 @@ color_echo "green" "SpotX installed successfully."
 # Custom user-defined commands
 
 sed -i 's/font.italic: model.isLink/\/\/ \0/' /usr/share/plasma/plasmoids/org.kde.desktopcontainment/contents/ui/FolderItemDelegate.qml
+
+dracut -f --regenerate-all
+grub2-mkconfig -o /boot/grub2/grub.cfg
+
 # Custom user-defined commands
 echo "Created with ❤️ for Open Source"
 
