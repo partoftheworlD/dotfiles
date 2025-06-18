@@ -125,10 +125,6 @@ dnf install -y https://download1.rpmfusion.org/free/fedora/rpmfusion-free-releas
 dnf install -y https://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm
 dnf group update core -y
 
-color_echo "yellow" "Enabling CachyOS kernel copr..."
-dnf copr enable bieszczaders/kernel-cachyos
-dnf copr enable bieszczaders/kernel-cachyos-addons
-
 # Install multimedia codecs to enhance multimedia capabilities
 color_echo "yellow" "Installing multimedia codecs..."
 dnf swap ffmpeg-free ffmpeg --allowerasing -y
@@ -143,7 +139,7 @@ dnf swap mesa-vdpau-drivers mesa-vdpau-drivers-freeworld -y
 # App Installation
 # Install essential applications
 color_echo "yellow" "Installing essential applications..."
-dnf install -y tmux btop git wget curl jetbrains-mono-fonts rsms-inter-fonts duperemove btrfs-assistant neovim gamescope lutris steam distrobox gamemode kernel-cachyos kernel-cachyos-devel-matched cachyos-settings
+dnf install -y tmux btop git wget curl jetbrains-mono-fonts rsms-inter-fonts duperemove btrfs-assistant neovim gamescope lutris steam distrobox gamemode
 flatpak install -y spotify heroic protonplus
 color_echo "green" "Essential applications installed successfully."
 
@@ -222,9 +218,6 @@ color_echo "green" "SpotX installed successfully."
 # Custom user-defined commands
 
 sed -i 's/font.italic: model.isLink/\/\/ \0/' /usr/share/plasma/plasmoids/org.kde.desktopcontainment/contents/ui/FolderItemDelegate.qml
-
-dracut -f --regenerate-all
-grub2-mkconfig -o /boot/grub2/grub.cfg
 
 # Custom user-defined commands
 echo "Created with ❤️ for Open Source"
