@@ -127,6 +127,7 @@ dnf group update core -y
 
 color_echo "yellow" "Enabling CachyOS kernel copr..."
 dnf copr enable bieszczaders/kernel-cachyos
+dnf copr enable bieszczaders/kernel-cachyos-addons
 
 # Install multimedia codecs to enhance multimedia capabilities
 color_echo "yellow" "Installing multimedia codecs..."
@@ -139,11 +140,10 @@ color_echo "yellow" "Installing AMD Hardware Accelerated Codecs..."
 dnf swap mesa-va-drivers mesa-va-drivers-freeworld -y
 dnf swap mesa-vdpau-drivers mesa-vdpau-drivers-freeworld -y
 
-
 # App Installation
 # Install essential applications
 color_echo "yellow" "Installing essential applications..."
-dnf install -y tmux btop git wget curl jetbrains-mono-fonts rsms-inter-fonts duperemove btrfs-assistant neovim gamescope lutris steam distrobox gamemode
+dnf install -y tmux btop git wget curl jetbrains-mono-fonts rsms-inter-fonts duperemove btrfs-assistant neovim gamescope lutris steam distrobox gamemode kernel-cachyos kernel-cachyos-devel-matched cachyos-settings
 flatpak install -y spotify heroic
 color_echo "green" "Essential applications installed successfully."
 
