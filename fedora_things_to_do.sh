@@ -138,9 +138,10 @@ dnf swap mesa-vdpau-drivers mesa-vdpau-drivers-freeworld -y
 
 # App Installation
 # Install essential applications
+# Gnome gnome-shell-extension-appindicator gnome-shell-extension-dash-to-panel clipboard-indicator ding4
 color_echo "yellow" "Installing essential applications..."
-dnf install -y tmux btop git wget curl jetbrains-mono-fonts rsms-inter-fonts duperemove btrfs-assistant neovim gamescope lutris steam distrobox gamemode
-flatpak install -y spotify heroic protonplus
+dnf install -y gnome-shell-extension-appindicator gnome-shell-extension-dash-to-panel tmux btop git wget curl jetbrains-mono-fonts rsms-inter-fonts duperemove btrfs-assistant neovim gamescope lutris steam distrobox gamemode gnome-tweaks
+flatpak install -y spotify heroic protonplus extensionmanager 
 color_echo "green" "Essential applications installed successfully."
 
 # Install Internet & Communication applications
@@ -217,6 +218,7 @@ color_echo "green" "SpotX installed successfully."
 
 # Custom user-defined commands
 
+#KDE fix italic font for desktop icons
 sed -i 's/font.italic: model.isLink/\/\/ \0/' /usr/share/plasma/plasmoids/org.kde.desktopcontainment/contents/ui/FolderItemDelegate.qml
 
 # Custom user-defined commands
