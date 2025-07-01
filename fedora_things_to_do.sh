@@ -222,7 +222,7 @@ sed -i 's/font.italic: model.isLink/\/\/ \0/' /usr/share/plasma/plasmoids/org.kd
 
 # Install konsave and restore desktop
 dnf in python3-pip
-python -m pip install konsave
+python -m pip install konsave -y
 cd /tmp
 wget https://github.com/partoftheworlD/dotfiles/raw/refs/heads/master/konsave/kde_desktop.knsv
 konsave -i kde_desktop
