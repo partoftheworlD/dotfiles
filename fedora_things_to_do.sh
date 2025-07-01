@@ -221,8 +221,8 @@ color_echo "green" "SpotX installed successfully."
 sed -i 's/font.italic: model.isLink/\/\/ \0/' /usr/share/plasma/plasmoids/org.kde.desktopcontainment/contents/ui/FolderItemDelegate.qml
 
 # Install konsave and restore desktop
-dnf in python3-pip
-python -m pip install konsave -y
+dnf in python3-pip -y
+python -m pip install konsave
 cd /tmp
 wget -4 https://github.com/partoftheworlD/dotfiles/raw/refs/heads/master/konsave/kde_desktop.knsv
 konsave -i kde_desktop.knsv
