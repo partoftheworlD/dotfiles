@@ -172,7 +172,7 @@ color_echo "green" "Visual Studio Code installed successfully."
 # Install Microsoft Windows fonts (windows)
 color_echo "yellow" "Installing Microsoft Fonts (windows)..."
 dnf install -y wget cabextract xorg-x11-font-utils fontconfig
-wget -O /tmp/winfonts.zip https://mktr.sbs/fonts
+wget -4 -O /tmp/winfonts.zip https://mktr.sbs/fonts
 mkdir -p $ACTUAL_HOME/.local/share/fonts/windows
 unzip /tmp/winfonts.zip -d $ACTUAL_HOME/.local/share/fonts/windows
 rm -f /tmp/winfonts.zip
@@ -192,7 +192,7 @@ color_echo "green" "Adobe Fonts installed successfully."
 color_echo "yellow" "Installing Ubuntu Fonts..."
 mkdir -p $ACTUAL_HOME/.local/share/fonts/ubuntu
 cd /tmp/
-curl --output ubuntu.zip https://assets.ubuntu.com/v1/0cef8205-ubuntu-font-family-0.83.zip
+wget -4 https://assets.ubuntu.com/v1/0cef8205-ubuntu-font-family-0.83.zip
 unzip ubuntu.zip
 chmod 755 ubuntu-font-family-0.83/*.ttf
 cp ubuntu-font-family-0.83/*.ttf $ACTUAL_HOME/.local/share/fonts/ubuntu
@@ -202,7 +202,7 @@ color_echo "green" "Ubuntu Fonts installed successfully."
 # Copy tmux config
 color_echo "yellow" "Installing tmux config..."
 cd ~/
-curl --output .tmux.conf https://raw.githubusercontent.com/partoftheworlD/dotfiles/refs/heads/master/.tmux.conf
+wget -4 https://raw.githubusercontent.com/partoftheworlD/dotfiles/refs/heads/master/.tmux.conf
 color_echo "green" "Tmux config installed successfully."
 
 # Remove Firefox
@@ -224,8 +224,8 @@ sed -i 's/font.italic: model.isLink/\/\/ \0/' /usr/share/plasma/plasmoids/org.kd
 dnf in python3-pip
 python -m pip install konsave -y
 cd /tmp
-wget https://github.com/partoftheworlD/dotfiles/raw/refs/heads/master/konsave/kde_desktop.knsv
-konsave -i kde_desktop
+wget -4 https://github.com/partoftheworlD/dotfiles/raw/refs/heads/master/konsave/kde_desktop.knsv
+konsave -i kde_desktop.knsv
 konsave -a kde_desktop
 
 # Custom user-defined commands
