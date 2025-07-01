@@ -89,16 +89,14 @@ echo "Don't run this script if you didn't build it yourself or don't know what i
 echo ""
 read -p "Press Enter to continue or CTRL+C to cancel..."
 
-
 # Optimize DNF package manager for faster downloads and efficient updates
 color_echo "yellow" "Configuring DNF Package Manager..."
 backup_file "/etc/dnf/dnf.conf"
-echo -e "max_parallel_downloads=10\nfastestmirror=True\ntimeout=3\nminrate=5000\n" | tee -a /etc/dnf/dnf.conf
-dnf -y install dnf-plugins-core
-
-# System Upgrade
+echo -e "max_parallel_downloads=5\nfastestmirror=True\n" | tee -a /etc/dnf/dnf.conf
+dnf config-manager setopt fedora-cisco-openh264.enabled=0
 color_echo "blue" "Performing system upgrade... This may take a while..."
-dnf upgrade -y
+
+dnf update -y --refresh
 
 # System Configuration
 # Set the system hostname to uniquely identify the machine on the network
@@ -110,7 +108,8 @@ color_echo "yellow" "Replacing Fedora Flatpak Repo with Flathub..."
 dnf install -y flatpak
 flatpak remote-delete fedora --force || true
 flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
-sudo flatpak repair
+flatpak mask org.freedesktop.Platform.openh264
+flatpak repair
 flatpak update
 
 # Check and apply firmware updates to improve hardware compatibility and performance
@@ -119,19 +118,26 @@ fwupdmgr refresh --force
 fwupdmgr get-updates -y
 fwupdmgr update -y
 
-# Enable RPM Fusion repositories to access additional software packages and codecs
+# Install and enable SSH server for secure remote access and file transfers
+color_echo "yellow" "Installing and enabling SSH..."
+dnf install -y openssh-server
+systemctl enable --now sshd
+
+# Enable RPM Fusion and Terra repositories to access additional software packages and codecs
 color_echo "yellow" "Enabling RPM Fusion repositories..."
 dnf install -y https://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm
 dnf install -y https://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm
-dnf group upgrade core -y
+dnf update @core -y --refresh
 
 # Install multimedia codecs to enhance multimedia capabilities
 color_echo "yellow" "Installing multimedia codecs..."
+dnf swap '*openh264*' noopenh264 -y
 dnf swap ffmpeg-free ffmpeg --allowerasing -y
 dnf update @multimedia --setopt="install_weak_deps=False" --exclude=PackageKit-gstreamer-plugin -y
 dnf update @sound-and-video -y
 
-# Install Hardware Accelerated Codecs for AMD GPUs. This improves video playback and encoding performance on systems with AMD graphics.
+# Install Hardware Accelerated Codecs for AMD GPUs. 
+# This improves video playback and encoding performance on systems with AMD graphics.
 color_echo "yellow" "Installing AMD Hardware Accelerated Codecs..."
 dnf swap mesa-va-drivers mesa-va-drivers-freeworld -y
 dnf swap mesa-vdpau-drivers mesa-vdpau-drivers-freeworld -y
@@ -139,9 +145,15 @@ dnf swap mesa-vdpau-drivers mesa-vdpau-drivers-freeworld -y
 # App Installation
 # Install essential applications
 color_echo "yellow" "Installing essential applications..."
-dnf install -y tmux btop git wget curl jetbrains-mono-fonts rsms-inter-fonts duperemove btrfs-assistant neovim gamescope lutris steam distrobox gamemode
-flatpak install -y spotify heroic protonplus
+dnf install -y tmux btop git wget curl jetbrains-mono-fonts rsms-inter-fonts duperemove btrfs-assistant neovim gamescope lutris steam distrobox gamemode gnome-tweaks splix
+sudo -u $ACTUAL_USER flatpak install -y heroic protonplus bazaar com.mattjakeman.ExtensionManager spotify
 color_echo "green" "Essential applications installed successfully."
+
+# Download dotfiles
+color_echo "yellow" "Download configs..."
+cd /tmp/
+git clone https://github.com/partoftheworlD/dotfiles/
+color_echo "green" "Configs downloaded successfully."
 
 # Install Internet & Communication applications
 color_echo "yellow" "Installing Brave..."
@@ -170,29 +182,25 @@ color_echo "green" "Visual Studio Code installed successfully."
 
 # Customization
 # Install Microsoft Windows fonts (windows)
-color_echo "yellow" "Installing Microsoft Fonts (windows)..."
-dnf install -y wget cabextract xorg-x11-font-utils fontconfig
-wget -O /tmp/winfonts.zip https://mktr.sbs/fonts
-mkdir -p $ACTUAL_HOME/.local/share/fonts/windows
-unzip /tmp/winfonts.zip -d $ACTUAL_HOME/.local/share/fonts/windows
-rm -f /tmp/winfonts.zip
-fc-cache -fv
-color_echo "green" "Microsoft Fonts (windows) installed successfully."
+# color_echo "yellow" "Installing Microsoft Fonts (windows)..."
+# dnf install -y wget cabextract xorg-x11-font-utils fontconfig
+# wget -4 -O /tmp/winfonts.zip https://mktr.sbs/fonts
+# mkdir -p $ACTUAL_HOME/.local/share/fonts/windows
+# unzip /tmp/winfonts.zip -d $ACTUAL_HOME/.local/share/fonts/windows
+# rm -f /tmp/winfonts.zip
+# fc-cache -fv
+# color_echo "green" "Microsoft Fonts (windows) installed successfully."
 
 # Install Adobe fonts collection
 color_echo "yellow" "Installing Adobe Fonts..."
-mkdir -p $ACTUAL_HOME/.local/share/fonts/adobe-fonts
-git clone --depth 1 https://github.com/adobe-fonts/source-sans.git $ACTUAL_HOME/.local/share/fonts/adobe-fonts/source-sans
-git clone --depth 1 https://github.com/adobe-fonts/source-serif.git $ACTUAL_HOME/.local/share/fonts/adobe-fonts/source-serif
-git clone --depth 1 https://github.com/adobe-fonts/source-code-pro.git $ACTUAL_HOME/.local/share/fonts/adobe-fonts/source-code-pro
-fc-cache -fv
+dnf in adobe-source-sans-pro-fonts adobe-source-code-pro-fonts adobe-source-serif-pro-fonts -y
 color_echo "green" "Adobe Fonts installed successfully."
 
 # Install Ubuntu fonts collection
 color_echo "yellow" "Installing Ubuntu Fonts..."
 mkdir -p $ACTUAL_HOME/.local/share/fonts/ubuntu
 cd /tmp/
-curl --output ubuntu.zip https://assets.ubuntu.com/v1/0cef8205-ubuntu-font-family-0.83.zip
+wget -4 -O ubuntu.zip https://assets.ubuntu.com/v1/0cef8205-ubuntu-font-family-0.83.zip
 unzip ubuntu.zip
 chmod 755 ubuntu-font-family-0.83/*.ttf
 cp ubuntu-font-family-0.83/*.ttf $ACTUAL_HOME/.local/share/fonts/ubuntu
@@ -201,13 +209,12 @@ color_echo "green" "Ubuntu Fonts installed successfully."
 
 # Copy tmux config
 color_echo "yellow" "Installing tmux config..."
-cd ~/
-curl --output .tmux.conf https://raw.githubusercontent.com/partoftheworlD/dotfiles/refs/heads/master/.tmux.conf
+cp /tmp/dotfiles/.tmux.conf $ACTUAL_HOME
 color_echo "green" "Tmux config installed successfully."
 
 # Remove Firefox
 color_echo "yellow" "Removing Firefox..."
-dnf rm firefox -y
+dnf rm firefox libreoffice*  -y
 color_echo "green" "Firefox removed successfully."
 
 # Install SpotX
@@ -217,16 +224,19 @@ color_echo "green" "SpotX installed successfully."
 
 # Custom user-defined commands
 
+dnf autoremove -y
+dnf clean all
+
 #KDE fix italic font for desktop icons
-sed -i 's/font.italic: model.isLink/\/\/ \0/' /usr/share/plasma/plasmoids/org.kde.desktopcontainment/contents/ui/FolderItemDelegate.qml
+#sed -i 's/font.italic: model.isLink/\/\/ \0/' /usr/share/plasma/plasmoids/org.kde.desktopcontainment/contents/ui/FolderItemDelegate.qml
 
 # Install konsave and restore desktop
-dnf in python3-pip
-python -m pip install konsave
-cd /tmp
-wget https://github.com/partoftheworlD/dotfiles/raw/refs/heads/master/konsave/kde_desktop.knsv
-konsave -i kde_desktop
-konsave -a kde_desktop
+#dnf in python3-pip -y
+#python -m pip install konsave
+
+#cp -r /tmp/dotfiles/konsave/ $ACTUAL_HOME
+#konsave -i $ACTUAL_HOME/konsave/kde_desktop.knsv
+#konsave -a kde_desktop
 
 # Custom user-defined commands
 echo "Created with ❤️ for Open Source"
