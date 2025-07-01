@@ -220,6 +220,14 @@ color_echo "green" "SpotX installed successfully."
 #KDE fix italic font for desktop icons
 sed -i 's/font.italic: model.isLink/\/\/ \0/' /usr/share/plasma/plasmoids/org.kde.desktopcontainment/contents/ui/FolderItemDelegate.qml
 
+# Install konsave and restore desktop
+dnf in python3-pip
+python -m pip install konsave
+cd /tmp
+wget https://github.com/partoftheworlD/dotfiles/raw/refs/heads/master/konsave/kde_desktop.knsv
+konsave -i kde_desktop
+konsave -a kde_desktop
+
 # Custom user-defined commands
 echo "Created with ❤️ for Open Source"
 
