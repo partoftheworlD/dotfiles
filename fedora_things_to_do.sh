@@ -110,7 +110,7 @@ color_echo "yellow" "Replacing Fedora Flatpak Repo with Flathub..."
 dnf install -y flatpak
 flatpak remote-delete fedora --force || true
 flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
-sudo flatpak repair
+flatpak repair
 flatpak update
 
 # Check and apply firmware updates to improve hardware compatibility and performance
