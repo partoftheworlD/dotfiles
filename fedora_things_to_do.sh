@@ -223,9 +223,9 @@ sed -i 's/font.italic: model.isLink/\/\/ \0/' /usr/share/plasma/plasmoids/org.kd
 # Install konsave and restore desktop
 dnf in python3-pip -y
 python -m pip install konsave
-cd ~/
+cd /tmp
 wget -4 https://github.com/partoftheworlD/dotfiles/raw/refs/heads/master/konsave/kde_desktop.knsv
-konsave -i kde_desktop.knsv && konsave -a kde_desktop
+konsave -i kde_desktop.knsv -a kde_desktop
 
 # Custom user-defined commands
 echo "Created with ❤️ for Open Source"
