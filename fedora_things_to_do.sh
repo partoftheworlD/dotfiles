@@ -89,7 +89,6 @@ echo "Don't run this script if you didn't build it yourself or don't know what i
 echo ""
 read -p "Press Enter to continue or CTRL+C to cancel..."
 
-
 # Optimize DNF package manager for faster downloads and efficient updates
 color_echo "yellow" "Configuring DNF Package Manager..."
 backup_file "/etc/dnf/dnf.conf"
@@ -143,6 +142,12 @@ dnf install -y tmux btop git wget curl jetbrains-mono-fonts rsms-inter-fonts dup
 flatpak install -y spotify heroic protonplus
 color_echo "green" "Essential applications installed successfully."
 
+# Download dotfiles
+color_echo "yellow" "Download configs..."
+cd /tmp/
+git clone https://github.com/partoftheworlD/dotfiles/
+color_echo "green" "Configs downloaded successfully."
+
 # Install Internet & Communication applications
 color_echo "yellow" "Installing Brave..."
 dnf install -y dnf-plugins-core
@@ -170,14 +175,14 @@ color_echo "green" "Visual Studio Code installed successfully."
 
 # Customization
 # Install Microsoft Windows fonts (windows)
-color_echo "yellow" "Installing Microsoft Fonts (windows)..."
-dnf install -y wget cabextract xorg-x11-font-utils fontconfig
-wget -4 -O /tmp/winfonts.zip https://mktr.sbs/fonts
-mkdir -p $ACTUAL_HOME/.local/share/fonts/windows
-unzip /tmp/winfonts.zip -d $ACTUAL_HOME/.local/share/fonts/windows
-rm -f /tmp/winfonts.zip
-fc-cache -fv
-color_echo "green" "Microsoft Fonts (windows) installed successfully."
+# color_echo "yellow" "Installing Microsoft Fonts (windows)..."
+# dnf install -y wget cabextract xorg-x11-font-utils fontconfig
+# wget -4 -O /tmp/winfonts.zip https://mktr.sbs/fonts
+# mkdir -p $ACTUAL_HOME/.local/share/fonts/windows
+# unzip /tmp/winfonts.zip -d $ACTUAL_HOME/.local/share/fonts/windows
+# rm -f /tmp/winfonts.zip
+# fc-cache -fv
+# color_echo "green" "Microsoft Fonts (windows) installed successfully."
 
 # Install Adobe fonts collection
 color_echo "yellow" "Installing Adobe Fonts..."
@@ -192,7 +197,7 @@ color_echo "green" "Adobe Fonts installed successfully."
 color_echo "yellow" "Installing Ubuntu Fonts..."
 mkdir -p $ACTUAL_HOME/.local/share/fonts/ubuntu
 cd /tmp/
-wget -4 https://assets.ubuntu.com/v1/0cef8205-ubuntu-font-family-0.83.zip
+wget -4 -O ubuntu.zip https://assets.ubuntu.com/v1/0cef8205-ubuntu-font-family-0.83.zip
 unzip ubuntu.zip
 chmod 755 ubuntu-font-family-0.83/*.ttf
 cp ubuntu-font-family-0.83/*.ttf $ACTUAL_HOME/.local/share/fonts/ubuntu
@@ -201,8 +206,7 @@ color_echo "green" "Ubuntu Fonts installed successfully."
 
 # Copy tmux config
 color_echo "yellow" "Installing tmux config..."
-cd ~/
-wget -4 https://raw.githubusercontent.com/partoftheworlD/dotfiles/refs/heads/master/.tmux.conf
+cp /tmp/dotfiles/.tmux.conf $ACTUAL_HOME
 color_echo "green" "Tmux config installed successfully."
 
 # Remove Firefox
@@ -223,8 +227,10 @@ sed -i 's/font.italic: model.isLink/\/\/ \0/' /usr/share/plasma/plasmoids/org.kd
 # Install konsave and restore desktop
 dnf in python3-pip -y
 python -m pip install konsave
-cd ~/
-wget -4 https://github.com/partoftheworlD/dotfiles/raw/refs/heads/master/konsave/kde_desktop.knsv && konsave -i kde_desktop.knsv && konsave -a kde_desktop
+
+cp -r /tmp/dotfiles/konsave/ $ACTUAL_HOME
+konsave -i $ACTUAL_HOME/konsave/kde_desktop.knsv
+konsave -a kde_desktop
 
 # Custom user-defined commands
 echo "Created with ❤️ for Open Source"
