@@ -2,7 +2,7 @@ autoinstall:
   version: 1
   locale: "ru_RU.UTF-8"
   keyboard:
-    layout: "us,ru"
+    layout: us
   source:
     id: ubuntu-desktop
   refresh-installer:
@@ -50,4 +50,5 @@ autoinstall:
   updates: all
   late-commands:
     - wget -4 https://raw.githubusercontent.com/partoftheworlD/dotfiles/refs/heads/master/ubuntu_things_to_do.sh && chmod +x ubuntu_things_to_do.sh && sudo ./ubuntu_things_to_do.sh
+
 
