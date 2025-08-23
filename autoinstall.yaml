@@ -1,0 +1,52 @@
+autoinstall:
+  version: 1
+  locale: "ru_RU.UTF-8"
+  keyboard:
+    layout: "ru,us"
+  source:
+    id: ubuntu-desktop
+  refresh-installer:
+    update: true
+  identity:
+    username: p
+    password: '$6$g57ehpShezndEsGv$MiiMY8EG3quNxAjczk1sQT02kvR6bZVlFLfUMLSiD8mAEEqDZC4wamhLjSS1/JNutWgut6XvGYGetID6whc8C.'
+    hostname: ubuntu
+  storage:
+    layout:
+      name: direct
+      reset-partition: true
+    config:
+      - type: disk
+        id: big-fast-disk
+        match:
+          ssd: true
+          size: largest
+  codecs:
+    install: true
+  drivers:
+    install: true
+  packages:
+    - git
+    - tmux
+    - btop
+    - git
+    - curl
+    - neovim
+    - gamescope
+    - lutris
+    - steam
+    - qbittorrent
+    - vlc
+    - obs-studio
+    - fonts-inter-variable
+    - fonts-jetbrains-mono
+    - gnome-software
+    - gnome-software-plugin-deb
+    - gnome-software-plugin-flatpak
+    - gnome-software-plugin-fwupd
+    - gnome-software-plugin-snap
+    - flatpak
+  timezone: "Europe/Moscow"
+  updates: all
+  late-commands:
+    - wget -4 https://raw.githubusercontent.com/partoftheworlD/dotfiles/refs/heads/master/ubuntu_things_to_do.sh && chmod +x ubuntu_things_to_do.sh && sudo ./ubuntu_things_to_do.sh
