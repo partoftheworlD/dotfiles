@@ -149,7 +149,7 @@ color_echo "green" "Tmux config installed successfully."
 
 # Remove Firefox
 color_echo "yellow" "Removing Useless apps..."
-snap remore firefox snap-store -y > /dev/null 2>&1
+snap remove firefox snap-store -y > /dev/null 2>&1
 color_echo "green" "Useless apps removed successfully."
 
 # Install spotify
