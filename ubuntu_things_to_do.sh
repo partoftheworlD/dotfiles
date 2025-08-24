@@ -162,7 +162,7 @@ color_echo "green" "Spotify installed successfully."
 
 # Install SpotX
 color_echo "yellow" "Installing SpotX..."
-bash <(curl -sSL https://spotx-official.github.io/run.sh) > /dev/null 2>&1
+bash <(curl -sSL https://spotx-official.github.io/run.sh) --installdeb > /dev/null 2>&1
 color_echo "green" "SpotX installed successfully."
 
 # Custom user-defined commands
