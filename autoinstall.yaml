@@ -4,7 +4,7 @@ autoinstall:
   keyboard:
     layout: us
   source:
-    id: ubuntu-desktop
+    id: ubuntu-desktop-minimal
   refresh-installer:
     update: true
   identity:
@@ -49,6 +49,7 @@ autoinstall:
   timezone: "Europe/Moscow"
   updates: all
   late-commands:
-    - wget -4 https://raw.githubusercontent.com/partoftheworlD/dotfiles/refs/heads/master/ubuntu_things_to_do.sh && chmod +x ubuntu_things_to_do.sh && sudo ./ubuntu_things_to_do.sh
+    - curtin in-target -- wget -4 https://raw.githubusercontent.com/partoftheworlD/dotfiles/refs/heads/master/ubuntu_things_to_do.sh && chmod +x ubuntu_things_to_do.sh && sudo ./ubuntu_things_to_do.sh
+
 
 
