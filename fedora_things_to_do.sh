@@ -109,6 +109,7 @@ color_echo "yellow" "Replacing Fedora Flatpak Repo with Flathub..."
 dnf install -y flatpak
 flatpak remote-delete fedora --force || true
 flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
+flatpak mask org.freedesktop.Platform.openh264
 flatpak repair
 flatpak update
 
@@ -139,7 +140,7 @@ dnf swap mesa-vdpau-drivers mesa-vdpau-drivers-freeworld -y
 # Install essential applications
 color_echo "yellow" "Installing essential applications..."
 dnf install -y tmux btop git wget curl jetbrains-mono-fonts rsms-inter-fonts duperemove btrfs-assistant neovim gamescope lutris steam distrobox gamemode
-flatpak install -y spotify heroic protonplus
+flatpak install -y spotify heroic protonplus org.freedesktop.Platform.ffmpeg-full/x86_64/24.08 
 color_echo "green" "Essential applications installed successfully."
 
 # Download dotfiles
