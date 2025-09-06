@@ -102,7 +102,7 @@ fwupdmgr update -y > /dev/null 2>&1
 # Install essential applications
 color_echo "yellow" "Installing essential applications..."
 apt install tmux btop git curl neovim gamescope lutris steam qbittorrent vlc obs-studio fonts-inter-variable fonts-jetbrains-mono gnome-software gnome-software-plugin-deb gnome-software-plugin-fwupd -y > /dev/null 2>&1
-flatpak install heroic protonplus org.freedesktop.Platform.ffmpeg-full/x86_64/24.08 bazaar -y > /dev/null 2>&1
+flatpak install heroic protonplus bazaar -y > /dev/null 2>&1
 color_echo "green" "Essential applications installed successfully."
 
 # Download dotfiles
