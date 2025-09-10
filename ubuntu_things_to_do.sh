@@ -101,7 +101,7 @@ fwupdmgr update -y
 # App Installation
 # Install essential applications
 color_echo "yellow" "Installing essential applications..."
-apt install tmux btop git curl neovim gamescope lutris steam qbittorrent vlc obs-studio fonts-inter-variable fonts-jetbrains-mono gnome-software gnome-software-plugin-deb gnome-software-plugin-fwupd gnome-software-plugin-flatpak ubuntu-restricted-extras tuned tuned-ppd -y
+apt install tmux btop git curl neovim gamescope lutris steam qbittorrent vlc obs-studio fonts-inter-variable fonts-jetbrains-mono gnome-software gnome-software-plugin-deb gnome-software-plugin-fwupd gnome-software-plugin-flatpak ubuntu-restricted-extras -y
 flatpak install heroic protonplus bazaar -y
 color_echo "green" "Essential applications installed successfully."
 
