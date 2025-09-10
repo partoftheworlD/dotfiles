@@ -227,6 +227,9 @@ color_echo "green" "SpotX installed successfully."
 dnf autoremove -y
 dnf clean all
 
+# Disable NetworkManager wait-online
+sudo systemctl disable NetworkManager-wait-online.service
+
 #KDE fix italic font for desktop icons
 #sed -i 's/font.italic: model.isLink/\/\/ \0/' /usr/share/plasma/plasmoids/org.kde.desktopcontainment/contents/ui/FolderItemDelegate.qml
 
