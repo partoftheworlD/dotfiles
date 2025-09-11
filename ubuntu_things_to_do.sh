@@ -165,6 +165,11 @@ color_echo "yellow" "Installing SpotX..."
 bash <(curl -sSL https://spotx-official.github.io/run.sh) --installdeb
 color_echo "green" "SpotX installed successfully."
 
+color_echo "yellow" "Installing Obsidian..."
+wget -4 https://github.com/obsidianmd/obsidian-releases/releases/download/v1.9.12/obsidian_1.9.12_amd64.deb
+apt install ./obsidian_1.9.12_amd64.deb -y
+color_echo "green" "Obsidian installed successfully."
+
 # Custom user-defined commands
 apt autoremove -y
 
