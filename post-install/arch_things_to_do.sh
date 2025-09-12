@@ -112,7 +112,7 @@ sudo -u $ACTUAL_USER makepkg -si --noconfirm > /dev/null 2>&1
 
 # Install multimedia codecs to enhance multimedia capabilities
 color_echo "yellow" "Installing multimedia codecs..."
-pacman -S flac faac svt-av1 aom dav1d rav1e x265 x264 libvpx lib32-libvpx gstreamer gst-libav gst-plugins-base gst-plugin-va --noconfirm > /dev/null 2>&1
+pacman -S flac faac svt-av1 aom dav1d rav1e x265 x264 libvpx lib32-libvpx --noconfirm > /dev/null 2>&1
 
 # App Installation
 # Install essential applications
