@@ -209,12 +209,12 @@ color_echo "green" "Ubuntu Fonts installed successfully."
 
 # Copy tmux config
 color_echo "yellow" "Installing tmux config..."
-cp /tmp/dotfiles/.tmux.conf $ACTUAL_HOME
+cp /tmp/dotfiles/tmux/.tmux.conf $ACTUAL_HOME
 color_echo "green" "Tmux config installed successfully."
 
 # Remove Firefox
 color_echo "yellow" "Removing Firefox..."
-dnf rm firefox libreoffice*  -y
+dnf rm firefox libreoffice* -y
 color_echo "green" "Firefox removed successfully."
 
 # Install SpotX

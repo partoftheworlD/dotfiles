@@ -144,7 +144,7 @@ color_echo "green" "Adobe Fonts installed successfully."
 
 # Copy tmux config
 color_echo "yellow" "Installing tmux config..."
-cp /tmp/dotfiles/.tmux.conf $ACTUAL_HOME
+cp /tmp/dotfiles/tmux/.tmux.conf $ACTUAL_HOME
 color_echo "green" "Tmux config installed successfully."
 
 # Remove Firefox
