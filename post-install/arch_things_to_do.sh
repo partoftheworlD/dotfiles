@@ -158,7 +158,7 @@ color_echo "green" "Tmux config installed successfully."
 
 # Remove Firefox
 color_echo "yellow" "Removing Firefox..."
-pacman -Rsn firefox htop --noconfirm > /dev/null 2>&1
+pacman -Rsn firefox htop gnome-software --noconfirm > /dev/null 2>&1
 color_echo "green" "Firefox removed successfully."
 
 # Install SpotX
@@ -167,6 +167,10 @@ sudo -u $ACTUAL_USER paru -S spotx-git --noconfirm > /dev/null 2>&1
 color_echo "green" "SpotX installed successfully."
 
 # Custom user-defined commands
+color_echo "yellow" "Turn on Tuned.."
+systemctl enable --now tuned
+systemctl enable --now tuned-ppd
+
 color_echo "yellow" "Cleanup.."
 pacman -Rsn $(pacman -Qtdq) --noconfirm  > /dev/null 2>&1
 
