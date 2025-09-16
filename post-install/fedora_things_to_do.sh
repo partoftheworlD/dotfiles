@@ -92,7 +92,7 @@ read -p "Press Enter to continue or CTRL+C to cancel..."
 # Optimize DNF package manager for faster downloads and efficient updates
 color_echo "yellow" "Configuring DNF Package Manager..."
 backup_file "/etc/dnf/dnf.conf"
-echo -e "max_parallel_downloads=5\nfastestmirror=True\n" | tee -a /etc/dnf/dnf.conf
+echo -e "max_parallel_downloads=5\nfastestmirror=True\nskip_unavailable=True\n" | tee -a /etc/dnf/dnf.conf
 dnf config-manager setopt fedora-cisco-openh264.enabled=0
 color_echo "blue" "Performing system upgrade... This may take a while..."
 
