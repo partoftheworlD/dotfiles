@@ -108,7 +108,7 @@ color_echo "yellow" "Replacing Fedora Flatpak Repo with Flathub..."
 dnf install -y flatpak
 flatpak remote-delete fedora --force || true
 flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
-flatpak mask org.freedesktop.Platform.openh264
+# flatpak mask org.freedesktop.Platform.openh264
 flatpak repair
 flatpak update
 
@@ -131,7 +131,7 @@ dnf update @core -y --refresh
 
 # Install multimedia codecs to enhance multimedia capabilities
 color_echo "yellow" "Installing multimedia codecs..."
-dnf swap '*openh264*' noopenh264 -y
+# dnf swap '*openh264*' noopenh264 -y
 dnf swap ffmpeg-free ffmpeg --allowerasing -y
 dnf update @multimedia --setopt="install_weak_deps=False" --exclude=PackageKit-gstreamer-plugin -y
 dnf install sound-and-video -y

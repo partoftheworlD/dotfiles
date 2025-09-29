@@ -92,7 +92,7 @@ pacman -Syyu --noconfirm > /dev/null 2>&1
 # Install Flatpak
 color_echo "yellow" "Installing Flathub"
 pacman -S flatpak --noconfirm > /dev/null 2>&1
-flatpak mask org.freedesktop.Platform.openh264
+# flatpak mask org.freedesktop.Platform.openh264
 flatpak repair > /dev/null 2>&1
 flatpak update > /dev/null 2>&1
 

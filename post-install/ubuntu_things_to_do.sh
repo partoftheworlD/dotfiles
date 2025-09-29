@@ -89,7 +89,7 @@ color_echo "yellow" "Setup Flathub..."
 apt install flatpak -y
 flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
 flatpak repair
-flatpak mask org.freedesktop.Platform.openh264
+# flatpak mask org.freedesktop.Platform.openh264
 flatpak update -y
 
 # Check and apply firmware updates to improve hardware compatibility and performance
