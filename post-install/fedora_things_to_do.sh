@@ -134,7 +134,7 @@ color_echo "yellow" "Installing multimedia codecs..."
 dnf swap '*openh264*' noopenh264 -y
 dnf swap ffmpeg-free ffmpeg --allowerasing -y
 dnf update @multimedia --setopt="install_weak_deps=False" --exclude=PackageKit-gstreamer-plugin -y
-dnf install sound-and-video -y
+dnf install @sound-and-video -y
 
 # Install Hardware Accelerated Codecs for AMD GPUs. 
 # This improves video playback and encoding performance on systems with AMD graphics.
