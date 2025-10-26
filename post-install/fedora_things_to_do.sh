@@ -213,7 +213,7 @@ color_echo "green" "Tmux config installed successfully."
 
 # Remove Firefox
 color_echo "yellow" "Removing Firefox..."
-dnf rm firefox libreoffice* -y
+dnf rm firefox libreoffice* totem-video-thumbnailer gnome-tour snapshot gnome-maps rhythmbox yelp -y
 color_echo "green" "Firefox removed successfully."
 
 # Install SpotX
