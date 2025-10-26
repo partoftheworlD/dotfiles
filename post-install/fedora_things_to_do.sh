@@ -132,7 +132,7 @@ dnf update @core -y --refresh
 # Install multimedia codecs to enhance multimedia capabilities
 color_echo "yellow" "Installing multimedia codecs..."
 dnf swap ffmpeg-free ffmpeg --allowerasing -y
-dnf update @multimedia --setopt="install_weak_deps=False" -y
+dnf update @multimedia --setopt="install_weak_deps=False" --exclude=PackageKit-gstreamer-plugin -y
 dnf install @sound-and-video -y
 
 # Install Hardware Accelerated Codecs for AMD GPUs. 
