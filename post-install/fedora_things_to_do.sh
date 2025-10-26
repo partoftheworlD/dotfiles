@@ -106,7 +106,7 @@ hostnamectl set-hostname fedora
 # Replace Fedora Flatpak Repo with Flathub for better package management and apps stability
 color_echo "yellow" "Replacing Fedora Flatpak Repo with Flathub..."
 flatpak remote-delete fedora --force || true
-flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
+flatpak remote-add flathub https://flathub.org/repo/flathub.flatpakrepo
 flatpak mask org.freedesktop.Platform.openh264
 flatpak repair
 flatpak update
