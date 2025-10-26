@@ -145,7 +145,7 @@ dnf swap mesa-vdpau-drivers mesa-vdpau-drivers-freeworld -y
 # Install essential applications
 color_echo "yellow" "Installing essential applications..."
 dnf install -y tmux btop git wget curl jetbrains-mono-fonts rsms-inter-fonts duperemove btrfs-assistant neovim gamescope lutris steam distrobox gamemode gnome-tweaks splix tldr
-flatpak install -y heroic protonplus bazaar com.mattjakeman.ExtensionManager org.freedesktop.Platform.ffmpeg-full spotify
+flatpak install -y heroic protonplus bazaar com.mattjakeman.ExtensionManager org.freedesktop.Platform.ffmpeg-full com.github.tchx84.Flatseal md.obsidian.Obsidian spotify
 color_echo "green" "Essential applications installed successfully."
 
 # Download dotfiles
