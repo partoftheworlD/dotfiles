@@ -131,9 +131,8 @@ dnf update @core -y --refresh
 
 # Install multimedia codecs to enhance multimedia capabilities
 color_echo "yellow" "Installing multimedia codecs..."
-dnf swap '*openh264*' noopenh264 -y
 dnf swap ffmpeg-free ffmpeg --allowerasing -y
-dnf update @multimedia --setopt="install_weak_deps=False" --exclude=PackageKit-gstreamer-plugin -y
+dnf update @multimedia --setopt="install_weak_deps=False" -y
 dnf install @sound-and-video -y
 
 # Install Hardware Accelerated Codecs for AMD GPUs. 
@@ -146,7 +145,7 @@ dnf swap mesa-vdpau-drivers mesa-vdpau-drivers-freeworld -y
 # Install essential applications
 color_echo "yellow" "Installing essential applications..."
 dnf install -y tmux btop git wget curl jetbrains-mono-fonts rsms-inter-fonts duperemove btrfs-assistant neovim gamescope lutris steam distrobox gamemode gnome-tweaks splix tldr
-flatpak install -y heroic protonplus bazaar com.mattjakeman.ExtensionManager spotify
+flatpak install -y heroic protonplus bazaar com.mattjakeman.ExtensionManager org.freedesktop.Platform.ffmpeg-full spotify
 color_echo "green" "Essential applications installed successfully."
 
 # Download dotfiles
