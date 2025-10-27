@@ -84,6 +84,21 @@ apt upgrade -y
 color_echo "yellow" "Setting hostname..."
 hostnamectl set-hostname ubuntu
 
+# Remove snaps
+color_echo "blue" "Remove snap"
+snap remove --purge firefox snap-store
+snap list | awk 'NR>1 {print $1}' | xargs -r snap remove --purge
+apt remove --purge snapd -y
+
+apt-mark hold snapd
+
+systemctl stop snapd.service snapd.socket
+systemctl disable snapd.service snapd.socket
+systemctl mask snapd.service snapd.socket
+
+echo 'Package: snapd\nPin: release a=*\nPin-Priority: -10' | tee /etc/apt/preferences.d/nosnap.pref
+rm -rf /var/cache/snapd/ ~/snap/
+
 # Flatpak
 color_echo "yellow" "Setup Flathub..."
 apt install flatpak -y
@@ -101,8 +116,8 @@ fwupdmgr update -y
 # App Installation
 # Install essential applications
 color_echo "yellow" "Installing essential applications..."
-apt install tmux btop git curl neovim gamescope lutris steam qbittorrent vlc obs-studio fonts-inter-variable fonts-jetbrains-mono gnome-software gnome-software-plugin-deb gnome-software-plugin-fwupd gnome-software-plugin-flatpak ubuntu-restricted-extras gnome-tweaks tldr-py -y
-flatpak install heroic protonplus bazaar -y
+apt install tmux btop git curl neovim gamescope lutris steam qbittorrent vlc obs-studio fonts-inter-variable fonts-jetbrains-mono gnome-software gnome-software-plugin-deb gnome-software-plugin-fwupd gnome-software-plugin-flatpak ubuntu-restricted-extras gnome-tweaks tldr-py  -y
+flatpak install heroic protonplus bazaar com.github.tchx84.Flatseal -y
 color_echo "green" "Essential applications installed successfully."
 
 # Download dotfiles
