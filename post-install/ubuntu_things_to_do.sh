@@ -117,7 +117,7 @@ fwupdmgr update -y
 # Install essential applications
 color_echo "yellow" "Installing essential applications..."
 apt install tmux btop git curl neovim gamescope lutris steam qbittorrent vlc obs-studio fonts-inter-variable fonts-jetbrains-mono gnome-software gnome-software-plugin-deb gnome-software-plugin-fwupd gnome-software-plugin-flatpak ubuntu-restricted-extras gnome-tweaks tldr-py  -y
-flatpak install heroic protonplus bazaar com.github.tchx84.Flatseal -y
+flatpak install heroic protonplus bazaar com.github.tchx84.Flatseal md.obsidian.Obsidian -y
 color_echo "green" "Essential applications installed successfully."
 
 # Download dotfiles
@@ -180,10 +180,10 @@ color_echo "yellow" "Installing SpotX..."
 bash <(curl -sSL https://spotx-official.github.io/run.sh) --installdeb
 color_echo "green" "SpotX installed successfully."
 
-color_echo "yellow" "Installing Obsidian..."
-wget -4 https://github.com/obsidianmd/obsidian-releases/releases/download/v1.9.12/obsidian_1.9.12_amd64.deb
-apt install ./obsidian_1.9.12_amd64.deb -y
-color_echo "green" "Obsidian installed successfully."
+# color_echo "yellow" "Installing Obsidian..."
+# wget -4 https://github.com/obsidianmd/obsidian-releases/releases/download/v1.9.12/obsidian_1.9.12_amd64.deb
+# apt install ./obsidian_1.9.12_amd64.deb -y
+# color_echo "green" "Obsidian installed successfully."
 
 # Custom user-defined commands
 apt autoremove -y
