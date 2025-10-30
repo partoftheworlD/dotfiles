@@ -117,9 +117,9 @@ pacman -S flac faac svt-av1 aom dav1d rav1e x265 x264 libvpx lib32-libvpx --noco
 # App Installation
 # Install essential applications
 color_echo "yellow" "Installing essential applications..."
-pacman -S tmux btop git vlc wget curl ttf-jetbrains-mono inter-font duperemove neovim gamescope lutris steam gamemode less spotify-launcher code gufw tuned tuned-ppd cups splix obs-studio obsidian pacman-contrib tldr gnome-firmware noto-fonts-emoji adobe-source-sans-fonts adobe-source-serif-fonts adobe-source-code-pro-fonts ttf-ubuntu-font-family bash-completion seahorse --noconfirm > /dev/null 2>&1
+pacman -S tmux btop git vlc wget curl ttf-jetbrains-mono inter-font duperemove neovim gamescope lutris steam gamemode less spotify-launcher code gufw tuned tuned-ppd cups splix obs-studio obsidian pacman-contrib tldr gnome-firmware noto-fonts-emoji adobe-source-sans-fonts adobe-source-serif-fonts adobe-source-code-pro-fonts ttf-ubuntu-font-family bash-completion seahorse snapper --noconfirm > /dev/null 2>&1
 sudo -u $ACTUAL_USER paru -S btrfs-assistant brave-bin --noconfirm > /dev/null 2>&1
-sudo -u $ACTUAL_USER flatpak install heroic protonplus bazaar -y > /dev/null 2>&1
+sudo -u $ACTUAL_USER flatpak install heroic protonplus bazaar podmandesktop -y > /dev/null 2>&1
 color_echo "green" "Essential applications installed successfully."
 
 # Download dotfiles
