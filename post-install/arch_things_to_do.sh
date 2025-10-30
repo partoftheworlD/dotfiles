@@ -150,7 +150,7 @@ color_echo "green" "Tmux config installed successfully."
 
 # Remove Firefox
 color_echo "yellow" "Removing Firefox..."
-pacman -Rsn firefox htop gnome-software --noconfirm > /dev/null 2>&1
+pacman -Rsn firefox htop showtime rhythmbox snapshot decibets maps epiphany --noconfirm > /dev/null 2>&1
 color_echo "green" "Firefox removed successfully."
 
 # Install SpotX
