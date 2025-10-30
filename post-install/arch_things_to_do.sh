@@ -117,7 +117,7 @@ pacman -S flac faac svt-av1 aom dav1d rav1e x265 x264 libvpx lib32-libvpx --noco
 # App Installation
 # Install essential applications
 color_echo "yellow" "Installing essential applications..."
-pacman -S tmux btop git vlc wget curl ttf-jetbrains-mono inter-font duperemove neovim gamescope lutris steam gamemode less spotify-launcher code gufw tuned tuned-ppd cups splix obs-studio obsidian pacman-contrib tldr gnome-firmware fwupd noto-fonts-emoji --noconfirm > /dev/null 2>&1
+pacman -S tmux btop git vlc wget curl ttf-jetbrains-mono inter-font duperemove neovim gamescope lutris steam gamemode less spotify-launcher code gufw tuned tuned-ppd cups splix obs-studio obsidian pacman-contrib tldr gnome-firmware noto-fonts-emoji adobe-source-sans-fonts adobe-source-serif-fonts adobe-source-code-pro-fonts ttf-ubuntu-font-family --noconfirm > /dev/null 2>&1
 sudo -u $ACTUAL_USER paru -S btrfs-assistant brave-bin --noconfirm > /dev/null 2>&1
 sudo -u $ACTUAL_USER flatpak install heroic protonplus bazaar -y > /dev/null 2>&1
 color_echo "green" "Essential applications installed successfully."
@@ -140,16 +140,8 @@ color_echo "green" "Configs downloaded successfully."
 # color_echo "green" "Microsoft Fonts (windows) installed successfully."
 
 # Install Adobe fonts collection
-color_echo "yellow" "Installing Adobe Fonts..."
-pacman -S adobe-source-sans-fonts adobe-source-serif-fonts adobe-source-code-pro-fonts --noconfirm > /dev/null 2>&1
+color_echo "yellow" "Update Fonts cache..."
 fc-cache -fv > /dev/null 2>&1
-color_echo "green" "Adobe Fonts installed successfully."
-
-# Install Ubuntu fonts collection
-color_echo "yellow" "Installing Ubuntu Fonts..."
-pacman -S ttf-ubuntu-font-family --noconfirm > /dev/null 2>&1
-fc-cache -fv > /dev/null 2>&1
-color_echo "green" "Ubuntu Fonts installed successfully."
 
 # Copy tmux config
 color_echo "yellow" "Installing tmux config..."
