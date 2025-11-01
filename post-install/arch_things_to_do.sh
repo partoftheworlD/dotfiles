@@ -163,6 +163,8 @@ color_echo "yellow" "Turn on Tuned.."
 systemctl enable --now tuned
 systemctl enable --now tuned-ppd
 
+systemctl enable --now paccache.timer
+
 color_echo "yellow" "Cleanup.."
 pacman -Rsn $(pacman -Qtdq) --noconfirm  > /dev/null 2>&1
 
