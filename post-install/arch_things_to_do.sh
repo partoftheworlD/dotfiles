@@ -81,7 +81,7 @@ locale-gen > /dev/null 2>&1
 # Optimize pacman package manager for faster downloads and efficient updates
 color_echo "yellow" "Configuring pacman Package Manager..."
 backup_file "/etc/pacman.conf"
-sed -i 's/#Color/Color/' /etc/pacman.conf
+sed -i 's/ParallelDownloads = 5/ParallelDownloads = 10\nColor\nVerbosePkgLists/' /etc/pacman.conf
 pacman -S reflector --noconfirm > /dev/null 2>&1
 reflector --verbose --latest 10 --sort rate > /dev/null 2>&1
 
