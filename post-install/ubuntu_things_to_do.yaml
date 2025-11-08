@@ -1,0 +1,45 @@
+---
+- name: Post Install
+  become: true
+  hosts: localhost
+
+  tasks:
+    - name: Update system
+      block:
+        - name: Add i386 architecture
+          ansible.builtin.command: dpkg --add-architecture i386
+
+        - name: Update & Upgrade system
+          ansible.builtin.apt:
+            update_cache: yes
+            upgrade: "yes"
+
+    - name: Remove snapd
+      block:
+        - name: Remove snap apps
+          block:
+            - name: Remove snaps
+              ansible.builtin.shell: snap list | awk 'NR>1 {print $1}' | xargs -r snap remove --purge
+              ignore_errors: true
+
+            - name: Hold snapd
+              ansible.builtin.shell: apt-mark hold snapd
+              ignore_errors: true
+
+            - name: Disable daemons
+              ansible.builtin.systemd:
+                name: "{{ item }}"
+                state: stopped
+                enabled: false
+                masked: yes
+              loop:
+                - snapd.service
+                - snapd.socket
+
+            - name: Remove snapd
+              ansible.builtin.apt:
+                name: snapd
+                state: absent
+                purge: yes
+                autoremove: yes
+              ignore_errors: true
