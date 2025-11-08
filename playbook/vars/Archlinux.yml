@@ -1,0 +1,209 @@
+---
+# Пакеты для установки через pacman
+pacman_packages:
+  - 7zip
+  - adobe-source-code-pro-fonts
+  - adobe-source-serif-fonts
+  - anki
+  - base-devel
+  - blanket
+  - bluez
+  - btop
+  - cups
+  - dnscrypt-proxy
+  - duperemove
+  - ffmpeg
+  - fish
+  - fwupd
+  - gamescope
+  - git
+  - gnome-backgrounds
+  - grub-btrfs
+  - gst-plugin-pipewire
+  - inotify-tools
+  - inter-font
+  - jq
+  - less
+  - lib32-gnutls
+  - lutris
+  - mtr
+  - neovim
+  - noto-fonts-cjk
+  - noto-fonts-emoji
+  - obsidian
+  - openssh
+  - pacman-contrib
+  - pipewire-pulse
+  - plasma-workspace-wallpapers
+  - qbittorrent
+  - ripgrep
+  - snapper
+  - spotify-launcher
+  - steam
+  - tldr
+  - tmux
+  - ttf-jetbrains-mono-nerd
+  - ttf-ubuntu-font-family
+  - tuned
+  - tuned-ppd
+  - umu-launcher
+  - vlc
+  - vlc-plugins-all
+  - whois
+  - wireplumber
+  - wl-clipboard
+  - ufw
+  - ttf-liberation
+  - man
+  - bind
+
+# Пакеты для установки через AUR
+aur_packages:
+  - google-chrome
+  - btrfs-assistant
+  - heroic-games-launcher-bin
+  - splix
+  - spotx-git
+  - protonplus
+
+# Пакеты, которые нужно удалить
+remove_packages:
+  - decibels
+  - epiphany
+  - evolution
+  - firefox
+  - gnome-boxes
+  - gnome-console
+  - gnome-contacts
+  - gnome-maps
+  - gnome-music
+  - gnome-software
+  - gnome-tour
+  - gnome-user-share
+  - htop
+  - kdf
+  - rhythmbox
+  - showtime
+  - snapshot
+  - totem
+
+# Системные сервисы для включения и запуска
+enable_services:
+  - bluetooth
+  - cups
+  - ufw
+  - grub-btrfsd
+  - paccache.timer
+  - sshd
+  - tuned
+  - tuned-ppd
+  - dnscrypt-proxy.service
+  - dnscrypt-proxy.socket
+
+enable_user_services:
+  - pipewire
+  - pipewire-pulse
+  - wireplumber
+  - tuned 
+  - tuned-ppd
+  - paccache.timer
+  - ufw
+  - grub-btrfsd
+  - sshd
+  - bluetooth
+  - cups 
+  - dnscrypt-proxy.socket
+  - dnscrypt-proxy.service
+
+gnome_packages:
+  - ptyxis
+  - extension-manager
+  - gnome-firmware
+  - gnome-tweaks
+  - seahorse
+  - fragments
+
+gnome_aur_packages:
+  - nautilus-open-in-ptyxis
+  - gnome-shell-extension-appindicator 
+  - gnome-shell-extension-dash-to-dock 
+  - gnome-shell-extension-desktop-icons-ng
+  - gnome-shell-extension-blur-my-shell
+
+kde_packages:
+  - ark
+  - bluedevil
+  - breeze
+  - breeze-cursors
+  - breeze-gtk
+  - breeze-icons
+  - dolphin
+  - dolphin-plugins
+  - ffmpegthumbs
+  - filelight
+  - gwenview
+  - kdegraphics-thumbnailers
+  - kdeplasma-addons
+  - kdf
+  - kio-admin
+  - kwalletmanager
+  - plasma-activities
+  - plasma-nm
+  - plasma-pa
+  - plasma-vault
+  - print-manager
+
+kde_aur_packages:
+  - konsave
+
+kde_settings:
+  - { file: kcminputrc, group: Keyboard, key: NumLock, value: 0}
+  - { file: kdeglobals, group: General, key: activeFont, value: 'Ubuntu,10,-1,5,50,0,0,0,0,0' }
+  - { file: kdeglobals, group: General, key: desktopFont, value: 'Ubuntu,10,-1,5,50,0,0,0,0,0' }
+  - { file: kdeglobals, group: General, key: fixed, value: 'JetBrainsMono Nerd Font,10,-1,5,50,0,0,0,0,0' }
+  - { file: kdeglobals, group: General, key: font, value: 'Ubuntu,10,-1,5,50,0,0,0,0,0' }
+  - { file: kdeglobals, group: General, key: menuFont, value: 'Ubuntu,10,-1,5,50,0,0,0,0,0' }
+  - { file: kdeglobals, group: General, key: smallFont, value: 'Ubuntu,8,-1,5,50,0,0,0,0,0' }
+  - { file: kdeglobals, group: General, key: taskbarFont, value: 'Ubuntu,10,-1,5,50,0,0,0,0,0' }
+  - { file: kdeglobals, group: General, key: toolbarFont, value: 'Ubuntu,10,-1,5,50,0,0,0,0,0' }
+  - { file: kdeglobals, group: General, key: XftAntialias, value: 'true' }
+  - { file: kdeglobals, group: General, key: XftHinting, value: 'true' }
+  - { file: kdeglobals, group: General, key: XftHintStyle, value: 'hintfull' }
+  - { file: kdeglobals, group: General, key: XftSubPixel, value: 'rgb' }
+  - { file: klaunchrc, group: BusyCursorSettings, key: Bouncing, value: false }
+  - { file: klaunchrc, group: FeedbackStyle, key: BusyCursor, value: false }
+  - { file: kscreenlockerrc, group: Daemon, key: Autolock, value: false}
+  - { file: kwalletrc, group: Wallet, key: Enabled, value: false }
+  - { file: kwinrc, group: Plugins, key: shakecursorEnabled, value: false }
+  - { file: kxkbrc, group: Layout, key: LayoutList, value: 'us,ru' }
+  - { file: kxkbrc, group: Layout, key: Options, value: 'kpdl:dotoss,grp:alt_shift_toggle,grp:win_space_toggle' }
+  - { file: kxkbrc, group: Layout, key: ResetOldOptions, value: true }
+  - { file: kxkbrc, group: Layout, key: ShowLayoutIndicator, type: bool, value: false }
+  - { file: kxkbrc, group: Layout, key: Use, value: true }
+  - { file: kxkbrc, group: Layout, key: VariantList, value: ','}
+  - { file: plasma-localerc, group: Formats, key: LANG, value: 'ru_RU.UTF-8'}
+  - { file: plasma-localerc, group: Language, key: Language, value: 'ru:en' }
+  - { file: plasmarc, group: OSD, key: kbdLayoutChangedEnabled, value: false }
+  - { file: powermanagementprofilesrc, group: AC, key: TurnOffDisplayIdleTimeoutSec, value: 0}
+  - { file: powermanagementprofilesrc, group: Display, key: TurnOffDisplayIdleTimeoutSec, value: 0}
+  - { file: sddm.conf, group: General, key: Numlock, value: 'on'}
+
+gnome_settings:
+  - { group: "org.gnome.desktop.input-sources", key: "mru-sources", value: "[('xkb', 'ru'), ('xkb', 'us')]" }
+  - { group: "org.gnome.desktop.input-sources", key: "sources", value: "[('xkb', 'ru'), ('xkb', 'us')]" }
+  - { group: "org.gnome.desktop.input-sources", key: "xkb-options", value: "['kpdl:dotoss', 'grp:alt_shift_toggle']" }
+  - { group: "org.gnome.desktop.interface", key: "document-font-name", value: "'Ubuntu 11'" }
+  - { group: "org.gnome.desktop.interface", key: "font-antialiasing", value: "'rgba'" }
+  - { group: "org.gnome.desktop.interface", key: "font-hinting", value: "'full'" }
+  - { group: "org.gnome.desktop.interface", key: "font-name", value: "'Ubuntu 11'" }
+  - { group: "org.gnome.desktop.interface", key: "monospace-font-name", value: "'JetBrains Mono 11'" }
+  - { group: "org.gnome.desktop.interface", key: "toolkit-accessibility", value: "false" }
+  - { group: "org.gnome.desktop.peripherals.keyboard", key: "numlock-state", value: "true" }
+  - { group: "org.gnome.desktop.peripherals.keyboard", key: "remember-numlock-state", value: "true" }
+  - { group: "org.gnome.desktop.peripherals.mouse", key: "accel-profile", value: "'flat'" }
+  - { group: "org.gnome.desktop.screensaver", key: "lock-enabled", value: "false" }
+  - { group: "org.gnome.desktop.wm.preferences", key: "button-layout", value: "'appmenu:minimize,maximize,close'" }
+  - { group: "org.gnome.settings-daemon.plugins.housekeeping", key: "donation-reminder-enabled", value: "false" }
+  - { group: "org.gnome.shell", key: "enabled-extensions", value: "['background-logo@fedorahosted.org', 'dash-to-dock@micxgx.gmail.com', 'clipboard-indicator@tudmotu.com', 'ding@rastersoft.com']" }
+  - { group: "org.gnome.shell", key: "favorite-apps", value: "['obsidian.desktop', 'md.obsidian.Obsidian.desktop', 'spotify-launcher.desktop', 'com.spotify.Client.desktop', 'steam.desktop', 'code.desktop', 'com.obsproject.Studio.desktop', 'org.gnome.Nautilus.desktop', 'org.gnome.Software.desktop', 'org.gnome.TextEditor.desktop', 'org.gnome.Calculator.desktop']" }
+  - { group: "org.gnome.system.locale", key: "region", value: "'ru_RU.UTF-8'" }
