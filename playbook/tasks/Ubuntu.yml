@@ -1,0 +1,204 @@
+---
+# Для Ubuntu надо переключить sudo-rs на sudo
+# sudo update-alternatives --set sudo /usr/bin/sudo.ws
+
+- name: Получить список процессов и определить GNOME
+  command: ps -e
+  register: running_processes
+  changed_when: false
+  become: no
+
+- name: Определить, используется ли GNOME
+  set_fact:
+    desktop_is_gnome: "{{ 'gnome-shell' in running_processes.stdout }}"
+
+- name: "GNOME: Настроить интерфейс"
+  become_user: "{{ regular_user }}"
+  become: yes
+  shell: gsettings set {{ item.group }} {{ item.key }} {{ item.value | quote }}
+  loop: "{{ gnome_settings }}"
+  when: desktop_is_gnome
+
+- name: Добавить архитектуру i386
+  command: dpkg --add-architecture i386
+  become: yes
+  changed_when: false
+
+- name: Полное обновление системы
+  apt:
+    update_cache: yes
+    upgrade: full
+  become: yes
+  register: system_upgraded
+
+- name: Установить hostname
+  hostname:
+    name: ubuntu
+  become: yes
+
+- name: Удалить snapd и его компоненты
+  block:
+    - name: Остановить и отключить сервисы snapd
+      systemd:
+        name: "{{ item }}"
+        state: stopped
+        enabled: no
+        masked: yes
+      loop: "{{ stop_services }}"
+      ignore_errors: yes
+      
+    - name: Удалить snapd
+      apt:
+        name: snapd
+        state: absent
+        purge: yes
+      register: snap_removed
+
+    - name: Заблокировать snapd
+      command: apt-mark hold snapd
+      when: snap_removed.changed
+      changed_when: false
+
+    - name: Удалить остатки snapd
+      file:
+        path: "{{ item }}"
+        state: absent
+      loop: "{{ snap_paths }}"
+      ignore_errors: yes
+
+    - name: Запретить установку snapd через apt preferences
+      copy:
+        content: |
+          Package: snapd
+          Pin: release a=*
+          Pin-Priority: -10
+        dest: /etc/apt/preferences.d/nosnap.pref
+        mode: '0644'
+  become: yes
+
+- name: Установить пакеты из APT
+  apt:
+    name: "{{ apt_packages }}"
+    state: present
+  become: yes
+
+- name: Настроить Flatpak
+  block:
+    - name: Добавить Flathub репозиторий
+      flatpak_remote:
+        name: flathub
+        state: present
+        flatpakrepo_url: https://dl.flathub.org/repo/flathub.flatpakrepo
+        method: user
+      when: flatpak_packages | length > 0
+
+    - name: Замаскировать openh264
+      command: flatpak mask org.freedesktop.Platform.openh264
+      changed_when: false
+
+    - name: Восстановить Flatpak
+      command: flatpak repair
+      changed_when: false
+
+    - name: Обновить Flatpak
+      command: flatpak update -y
+      changed_when: false
+
+    - name: Установить Flatpak-приложения
+      flatpak:
+        name: "{{ flatpak_packages }}"
+        state: present
+        method: user
+      when: flatpak_packages | length > 0
+
+- name: Установка сторонних приложений
+  block:
+    - name: Установка Brave
+      shell: curl -fsS https://dl.brave.com/install.sh | sh
+      args:
+        executable: /bin/bash
+
+    - name: Скачать deb-пакет VSCode
+      get_url:
+        url: https://update.code.visualstudio.com/latest/linux-deb-x64/stable
+        dest: /tmp/code.deb
+        timeout: 30
+      become: no
+
+    - name: Установить VSCode из deb
+      apt:
+        deb: /tmp/code.deb
+
+    - name: Установить SpotX
+      shell: bash <(curl -sSL https://spotx-official.github.io/run.sh) -f --installdeb
+      args:
+        executable: /bin/bash
+      register: spotx_install
+      changed_when: "'already been installed' not in spotx_install.stderr"
+      failed_when:
+        - spotx_install.rc != 0
+        - "'already been installed' not in spotx_install.stderr"
+  become: yes
+
+- name: Обновить кэш шрифтов
+  command: fc-cache -f
+  become: yes
+  changed_when: false
+
+- name: Создать конфигурационные директории
+  file:
+    path: "{{ item }}"
+    state: directory
+    mode: '0755'
+  loop:
+    - "{{ ansible_facts['env']['HOME'] }}/.config/fish"
+    - "{{ ansible_facts['env']['HOME'] }}/.config/nvim"
+  become: no
+
+- name: Скопировать конфигурационные файлы
+  copy:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    backup: yes
+    mode: '0644'
+  loop:
+    - { src: files/tmux/.tmux.conf, dest: "{{ ansible_facts['env']['HOME'] }}/.tmux.conf" }
+    - { src: files/fish/config.fish, dest: "{{ ansible_facts['env']['HOME'] }}/.config/fish/config.fish" }
+    - { src: ./files/neovim/init.lua, dest: "{{ ansible_facts['env']['HOME'] }}/.config/nvim/init.lua" }
+  become: no
+
+- name: Сменить shell на fish
+  user:
+    name: "{{ regular_user }}"
+    shell: /usr/bin/fish
+  become: yes
+
+- name: Удалить ненужные пакеты и очистить систему
+  block:
+    - name: Удалить пакеты из списка
+      apt:
+        name: "{{ remove_packages }}"
+        state: absent
+        purge: yes
+      ignore_errors: yes
+
+    - name: Автоудаление ненужных зависимостей
+      apt:
+        autoremove: yes
+        purge: yes
+      changed_when: false
+
+    - name: Очистить кэш apt
+      command: apt clean all
+      changed_when: false
+  become: yes
+
+- name: Генерация ssh ключа
+  shell: ssh-keygen -N "" -a 32 -f "{{ ansible_facts['env']['HOME'] }}/.ssh/id_ed25519"
+  become: no
+  args:
+    creates: "{{ ansible_facts['env']['HOME'] }}/.ssh/id_ed25519"
+
+- name: Перезагрузка
+  shell: sleep 2 && reboot
+  become: yes

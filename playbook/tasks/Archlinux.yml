@@ -1,0 +1,321 @@
+---
+- name: Задать русскую локаль
+  lineinfile:
+    path: /etc/locale.gen
+    regexp: "^{{ item }}"
+    line: "{{ item }}"
+    state: present
+  loop:
+    - "ru_RU.UTF-8 UTF-8"
+    - "en_US.UTF-8 UTF-8"
+  register: locale_gen
+  become: yes
+
+- name: Сгенерировать локали
+  command: locale-gen
+  when: locale_gen.changed is not defined
+  become: yes
+
+- name: Получить список процессов и определить DE
+  command: ps -e
+  register: running_processes
+  changed_when: false
+  become: no
+
+- name: Определить используемое окружение
+  set_fact:
+    desktop_is_gnome: "{{ 'gnome-shell' in running_processes.stdout }}"
+    desktop_is_kde: "{{ 'plasmashell' in running_processes.stdout }}"
+
+- name: "KDE: Настроить интерфейс"
+  become_user: "{{ regular_user }}"
+  become: yes
+  shell: kwriteconfig6 --file {{ item.file }} --group {{ item.group }} --key {{ item.key }} {{ item.value }}
+  loop: "{{ kde_settings }}"
+  when: desktop_is_kde
+
+- name: "KDE: Настроить язык для новых пользователей"
+  lineinfile:
+    path: /etc/skel/.config/plasma-localerc
+    line: "[Language]\nLanguage=ru:en"
+    create: yes
+    mode: '0644'
+  become: yes
+  when: desktop_is_kde
+
+- name: "GNOME: Настроить интерфейс"
+  become_user: "{{ regular_user }}"
+  become: yes
+  shell: gsettings set {{ item.group }} {{ item.key }} {{ item.value | quote }}
+  loop: "{{ gnome_settings }}"
+  when: desktop_is_gnome
+
+- name: Установить язык интерфейса
+  command: localectl set-locale LANG=ru_RU.UTF-8
+  become: yes
+
+- name: Настроить pacman
+  lineinfile:
+    path: /etc/pacman.conf
+    regexp: "^{{ item.param }}"
+    line: "{{ item.line }}"
+  loop:
+    - { param: "ParallelDownloads", line: "ParallelDownloads = 10" }
+    - { param: "#Color", line: "Color" }
+    - { param: "#VerbosePkgLists", line: "VerbosePkgLists" }
+  become: yes
+
+- name: Установить и настроить reflector
+  block:
+    - name: Установить reflector
+      package:
+        name: reflector
+        state: present
+
+    - name: Сгенерировать список зеркал
+      command: >
+        reflector --protocol https,http --latest 50 -n 5 --sort rate --save /etc/pacman.d/mirrorlist
+
+    - name: Настроить reflector
+      lineinfile:
+        path: /etc/xdg/reflector/reflector.conf
+        regexp: "{{ item.regexp }}"
+        line: "{{ item.line }}"
+      loop:
+        - { regexp: '^--protocol', line: '--protocol https,http' }
+        - { regexp: '^--sort', line: '--sort rate' }
+  become: yes
+
+- name: Установить базовые пакеты
+  shell: pacman -Syu base-devel git less --needed --noconfirm
+  register: system_upgraded
+  become: yes
+
+- name: Установить yay-bin из AUR
+  block:
+    - name: Клонировать репозиторий
+      git:
+        repo: https://aur.archlinux.org/yay-bin.git
+        dest: /tmp/yay-bin
+        version: HEAD
+        update: yes
+        force: yes
+      become: no
+
+    - name: Временно разрешить pacman без пароля
+      lineinfile:
+        path: /etc/sudoers.d/10-ansible-pacman
+        line: "{{ regular_user }} ALL=(ALL) NOPASSWD: /usr/bin/pacman"
+        create: yes
+        mode: '0440'
+        validate: 'visudo -cf %s'
+      become: yes
+
+    - name: Собрать и установить yay-bin
+      shell: makepkg -si --noconfirm
+      args:
+        chdir: /tmp/yay-bin
+      become: no
+      environment:
+        PATH: "{{ ansible_facts['env']['PATH'] }}"
+
+- name: Установить основные пакеты из репозиториев
+  community.general.pacman:
+    name: "{{ pacman_packages }}"
+    extra_args: --needed --noconfirm
+  become: yes
+
+- name: Установить пакеты для Gnome
+  community.general.pacman:
+    name: "{{ gnome_packages }}"
+    extra_args: --needed --noconfirm
+  become: yes
+  when: desktop_is_gnome
+
+- name: Установить пакеты для KDE
+  community.general.pacman:
+    name: "{{ kde_packages }}"
+    extra_args: --needed --noconfirm
+  become: yes
+  when: desktop_is_kde
+
+- name: Установить пакеты из AUR (основные)
+  shell: yay -Syu --noconfirm {{ aur_packages | join(' ') }}
+  become_user: "{{ regular_user }}"
+  become: no
+  when: (aur_packages | default([], true)) | length > 0
+  async: 600
+  poll: 0
+  register: aur_install
+
+- name: Установить пакеты из AUR для Gnome
+  shell: yay -Syu {{ gnome_aur_packages | join(' ') }} --noconfirm
+  become_user: "{{ regular_user }}"
+  become: no
+  when:
+    - desktop_is_gnome
+    - (gnome_aur_packages | default([], true)) | length > 0
+  async: 600
+  poll: 0
+  register: gnome_aur_install
+
+- name: Установить пакеты из AUR для KDE
+  shell: yay -Syu {{ kde_aur_packages | join(' ') }} --noconfirm
+  become_user: "{{ regular_user }}"
+  become: no
+  when:
+    - desktop_is_kde
+    - (kde_aur_packages | default([], true)) | length > 0
+  async: 600
+  poll: 0
+  register: kde_aur_install
+
+- name: Создать конфигурационные директории
+  file:
+    path: "{{ item }}"
+    state: directory
+    mode: '0755'
+  loop:
+    - "{{ ansible_facts['env']['HOME'] }}/.config/fish"
+    - "{{ ansible_facts['env']['HOME'] }}/.config/fontconfig"
+    - "{{ ansible_facts['env']['HOME'] }}/.config/nvim"
+  become: no
+
+- name: Скопировать конфигурационные файлы
+  copy:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    mode: '0644'
+  loop:
+    - { src: ./files/tmux/.tmux.conf, dest: "{{ ansible_facts['env']['HOME'] }}/.tmux.conf" }
+    - { src: ./files/neovim/init.lua, dest: "{{ ansible_facts['env']['HOME'] }}/.config/nvim/init.lua" }
+    - { src: files/fish/config.fish, dest: "{{ ansible_facts['env']['HOME'] }}/.config/fish/config.fish" }
+    - { src: files/fontconfig/fonts.conf, dest: "{{ ansible_facts['env']['HOME'] }}/.config/fontconfig/fonts.conf" }
+  become: no
+
+- name: Сменить shell на fish для пользователя
+  user:
+    name: "{{ regular_user }}"
+    shell: /usr/bin/fish
+  become: yes
+
+- name: Ждем завершения фоновых задач
+  async_status:
+    jid: "{{ item.ansible_job_id }}"
+  register: job_results
+  until: job_results.finished
+  retries: 120
+  delay: 5
+  loop:
+    - "{{ aur_install | default({}) }}"
+    - "{{ kde_pacman_install | default({}) }}"
+    - "{{ kde_aur_install | default({}) }}"
+    - "{{ gnome_pacman_install | default({}) }}"
+    - "{{ gnome_aur_install | default({}) }}"
+  when: item.ansible_job_id is defined
+  become: no
+
+- name: Перезагрузить конфигурацию systemd
+  systemd:
+    daemon_reload: yes
+  become: yes
+  changed_when: false
+
+- name: Включить и запустить системные службы
+  shell: systemctl enable --now {{ item }}
+  loop: "{{ enable_services }}"
+  become: yes
+  register: service_result
+  failed_when:
+    - service_result.rc != 0
+    - "'Access denied' not in service_result.stderr"
+    - "'Failed to enable unit: Access denied' not in service_result.stderr"
+  ignore_errors: yes
+
+- name: Включить и запустить пользовательские службы
+  shell: systemctl --user enable --now {{ item }}
+  loop: "{{ enable_user_services }}"
+  become: no
+  register: service_user_result
+  failed_when:
+    - service_user_result.rc != 0
+    - "'Access denied' not in service_user_result.stderr"
+    - "'Failed to enable unit: Access denied' not in service_user_result.stderr"
+  ignore_errors: yes
+
+- name: Предупреждение о службах, не запущенных из-за прав
+  debug:
+    msg: "Служба {{ item.item }} не была запущена: {{ item.stderr }}"
+  loop: "{{ service_result.results }}"
+  loop_control:
+    label: "{{ item.item }}"
+  when:
+    - item is failed
+    - "'Access denied' in item.stderr"
+
+- name: Настройка KDE desktop (импорт konsave)
+  shell: |
+    7z x files/konsave/konsave.7z.001 -y
+    konsave -i konsave.knsv
+    konsave -a konsave
+  become: no
+  when: desktop_is_kde
+
+- name: Удалить ненужеые пакеты
+  shell: |
+    for pkg in {{ remove_packages | join(' ') }}; do
+      if pacman -Qi "$pkg" &>/dev/null; then
+        pacman -Rsn "$pkg" --noconfirm
+      fi
+    done
+  changed_when: false
+  become: yes
+
+- name: Удалить debug пакеты
+  shell: pacman -Rsn $(pacman -Qq | rg "\-debug") --noconfirm
+  changed_when: false
+  become: yes
+
+- name: Очистить осиротевшие пакеты
+  shell: |
+    orphans=$(pacman -Qtdq)
+    if [ -n "$orphans" ]; then
+      pacman -Rsn $orphans --noconfirm
+    fi
+  changed_when: false
+  become: yes
+
+- name: Удалить иконки ненужных приложений
+  shell: |
+    files=$(grep -rE "Name=(Avahi|Electron|Qt)" /usr/share/applications/ | awk -F":" '{print $1}')
+    if [ -n "$files" ]; then
+      rm $files
+    fi
+  changed_when: false
+  become: yes
+
+- name: Очистить кэш yay
+  command: yay -Sc --noconfirm
+  become_user: "{{ regular_user }}"
+  become: no
+  changed_when: false
+
+- name: Обновить кэш шрифтов
+  command: fc-cache -f
+  changed_when: false
+  become_user: "{{ regular_user }}"
+  become: yes 
+
+- name: Удалить временное расширение прав для Ansible
+  file:
+    path: /etc/sudoers.d/10-ansible-pacman
+    state: absent
+  become: yes
+
+- name: Генерация ssh ключа
+  shell: ssh-keygen -N "" -a 32 -f "{{ ansible_facts['env']['HOME'] }}/.ssh/id_ed25519"
+  become: no
+
+- name: Перезагрузка
+  shell: sleep 2 && reboot
+  become: yes
