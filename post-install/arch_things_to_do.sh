@@ -167,12 +167,9 @@ rm $(grep -rE "Name=(Avahi|Electron|Qt)" /usr/share/applications/ | awk -F":" '{
 
 gsettings set org.gnome.desktop.interface font-antialiasing 'rgba'
 gsettings set org.gnome.desktop.interface font-hinting 'full'
-gsettings set org.gnome.desktop.interface icon-theme 'Yaru'
 gsettings set org.gnome.desktop.interface monospace-font-name 'JetBrains Mono 11'
 gsettings set org.gnome.desktop.interface document-font-name 'Ubuntu 11'
-gsettings set org.gnome.desktop.interface cursor-theme 'Yaru'
 gsettings set org.gnome.settings-daemon.plugins.housekeeping donation-reminder-enabled false
-gsettings set org.gnome.shell favorite-apps ['brave-browser.desktop', 'obsidian.desktop', 'spotify-launcher.desktop', 'steam.desktop', 'com.obsproject.Studio.desktop', 'org.gnome.Nautilus.desktop', 'org.gnome.Software.desktop', 'org.gnome.TextEditor.desktop', 'org.gnome.Calculator.desktop']
 gsettings set org.gnome.desktop.wm.preferences button-layout 'appmenu:minimize,maximize,close'
 gsettings set org.gnome.desktop.screensaver lock-enabled false
 
