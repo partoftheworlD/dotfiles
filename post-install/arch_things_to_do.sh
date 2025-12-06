@@ -122,7 +122,7 @@ pacman -S gst-plugins-base gst-plugins-good gst-plugins-bad gst-plugins-ugly ffm
 # Install essential applications
 color_echo "yellow" "Installing essential applications..."
 pacman -S tmux btop git vlc wget curl ttf-jetbrains-mono inter-font duperemove neovim gamescope lutris steam gamemode less spotify-launcher code gufw tuned tuned-ppd cups splix obs-studio obsidian pacman-contrib tldr gnome-firmware noto-fonts-emoji ttf-ubuntu-font-family bash-completion seahorse snapper blanket ptyxis extension-manager apparmor grub-btrfs inotify-tools snap-pac --noconfirm
-sudo -u $ACTUAL_USER paru -S btrfs-assistant brave-bin --noconfirm
+sudo -u $ACTUAL_USER paru -S btrfs-assistant brave-bin gopreload-git --noconfirm
 sudo -u $ACTUAL_USER flatpak install heroic protonplus bazaar -y
 color_echo "green" "Essential applications installed successfully."
 
