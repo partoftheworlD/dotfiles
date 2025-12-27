@@ -110,8 +110,9 @@ fwupdmgr update -y
 color_echo "yellow" "Enabling AUR repositories..."
 
 pacman -S --needed git base-devel --noconfirm
-sudo -u $ACTUAL_USER git clone https://aur.archlinux.org/paru-bin.git
-cd paru-bin
+sudo pacman -S --needed git base-devel
+sudo -u $ACTUAL_USER git clone https://aur.archlinux.org/yay-bin.git
+cd yay-bin
 sudo -u $ACTUAL_USER makepkg -si --noconfirm
 
 # Install multimedia codecs to enhance multimedia capabilities
@@ -122,7 +123,7 @@ pacman -S gst-plugins-base gst-plugins-good gst-plugins-bad gst-plugins-ugly ffm
 # Install essential applications
 color_echo "yellow" "Installing essential applications..."
 pacman -S tmux btop git vlc wget curl ttf-jetbrains-mono inter-font duperemove neovim gamescope lutris steam gamemode less spotify-launcher code gufw tuned tuned-ppd cups splix obs-studio obsidian pacman-contrib tldr gnome-firmware noto-fonts-emoji ttf-ubuntu-font-family bash-completion seahorse snapper blanket ptyxis extension-manager apparmor grub-btrfs inotify-tools snap-pac --noconfirm
-sudo -u $ACTUAL_USER paru -S btrfs-assistant brave-bin --noconfirm
+sudo -u $ACTUAL_USER yay -S btrfs-assistant brave-bin --noconfirm
 sudo -u $ACTUAL_USER flatpak install heroic protonplus bazaar -y
 color_echo "green" "Essential applications installed successfully."
 
@@ -143,7 +144,7 @@ color_echo "green" "Unwanted applications removed"
 
 # Install SpotX
 color_echo "yellow" "Installing SpotX..."
-sudo -u $ACTUAL_USER paru -S spotx-git --noconfirm
+sudo -u $ACTUAL_USER yay -S spotx-git --noconfirm
 color_echo "green" "SpotX installed successfully."
 
 # Custom user-defined commands
