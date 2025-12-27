@@ -161,7 +161,8 @@ systemctl enable --now apparmor
 systemctl enable --now grub-btrfsd
 
 color_echo "yellow" "Cleanup.."
-pacman -Rsn $(pacman -Qtdq) --noconfirm 
+pacman -Rsn $(pacman -Qtdq) --noconfirm
+sudo -u $ACTUAL_USER yay -Sc --noconfirm
 
 #Remove icons
 rm $(grep -rE "Name=(Avahi|Electron|Qt)" /usr/share/applications/ | awk -F":" '{print $1}')
