@@ -174,11 +174,6 @@ color_echo "yellow" "Removing unwanted applications..."
 apt remove firefox* libreoffice* totem-video-thumbnailer gnome-tour gnome-maps rhythmbox gnome-music showtime gnome-contacts gnome-boxes gnome-snapshot gnome-terminal evolution gnome-sound-recorder shotwell -y
 color_echo "green" "Unwanted applications removed successfully."
 
-# Custom user-defined commands
-gsettings set org.gnome.desktop.peripherals.keyboard remember-numlock-state true
-gsettings set org.gnome.desktop.peripherals.keyboard numlock-state true
-gsettings set org.gnome.shell favorite-apps ['brave-browser.desktop', 'obsidian.desktop', 'spotify-launcher.desktop', 'steam.desktop', 'com.obsproject.Studio.desktop', 'org.gnome.Nautilus.desktop', 'org.gnome.Software.desktop', 'org.gnome.TextEditor.desktop', 'org.gnome.Calculator.desktop']
-
 apt autoremove -y
 apt clean all
 

@@ -203,10 +203,6 @@ color_echo "yellow" "Installing SpotX..."
 bash <(curl -sSL https://spotx-official.github.io/run.sh)
 color_echo "green" "SpotX installed successfully."
 
-# Custom user-defined commands
-sudo -u $ACTUAL_USER gsettings set org.gnome.desktop.peripherals.keyboard remember-numlock-state true
-sudo -u $ACTUAL_USER gsettings set org.gnome.desktop.peripherals.keyboard numlock-state true
-
 dnf autoremove -y
 dnf clean all
 
