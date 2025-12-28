@@ -195,7 +195,7 @@ color_echo "green" "Tmux config installed successfully."
 
 # Remove Unwanted applications
 color_echo "yellow" "Removing unwanted applications..."
-dnf rm firefox* libreoffice* totem-video-thumbnailer gnome-tour gnome-maps rhythmbox gnome-music yelp showtime gnome-contacts gnome-boxes snapshot evolution gnome-sound-recorder shotwell -y
+dnf rm firefox* libreoffice* totem-video-thumbnailer gnome-tour gnome-maps rhythmbox gnome-music yelp showtime gnome-contacts gnome-boxes snapshot evolution gnome-sound-recorder shotwell decibels -y
 color_echo "green" "Unwanted applications removed successfully."
 
 # Install SpotX
