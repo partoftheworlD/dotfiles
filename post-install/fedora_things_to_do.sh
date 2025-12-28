@@ -91,7 +91,7 @@ read -p "Press Enter to continue or CTRL+C to cancel..."
 # Optimize DNF package manager for faster downloads and efficient updates
 color_echo "yellow" "Configuring DNF Package Manager..."
 backup_file "/etc/dnf/dnf.conf"
-echo -e "max_parallel_downloads=5\nfastestmirror=True\n" | tee -a /etc/dnf/dnf.conf
+echo -e "max_parallel_downloads=5\nfastestmirror=True\ntimeout=5\nminrate=1M" | tee -a /etc/dnf/dnf.conf
 dnf config-manager setopt fedora-cisco-openh264.enabled=0
 dnf config-manager setopt copr:copr.fedorainfracloud.org:phracek:PyCharm.enabled=0
 dnf config-manager setopt rpmfusion-nonfree-nvidia-driver.enabled=0
