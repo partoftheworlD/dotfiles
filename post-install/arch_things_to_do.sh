@@ -117,7 +117,7 @@ sudo -u $ACTUAL_USER makepkg -si --noconfirm
 
 # Install multimedia codecs to enhance multimedia capabilities
 color_echo "yellow" "Installing multimedia codecs..."
-pacman -S ffmpeg gst-plugins-good gst-plugins-bad gst-plugins-ugly gst-libav aom dav1d libwebp lame opencore-amr libfdk-aac flac opus faac libavif libheif x264 x265 --noconfirm
+pacman -S ffmpeg gst-plugins-good gst-plugins-bad gst-plugins-ugly gst-libav aom dav1d libwebp lame opencore-amr libfdk-aac flac opus faac libavif libheif libvpx --noconfirm
 
 # App Installation
 # Install essential applications
