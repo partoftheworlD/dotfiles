@@ -168,7 +168,7 @@ sudo -u $ACTUAL_USER yay -Sc --noconfirm
 rm $(grep -rE "Name=(Avahi|Electron|Qt)" /usr/share/applications/ | awk -F":" '{print $1}')
 
 # Change bash to fish
-chsh -s /usr/bin/fish $ACTUAL_USER
+sudo -u $ACTUAL_USER chsh -s /usr/bin/fish
 
 #KDE fix italic font for desktop icons
 # sed -i 's/font.italic: model.isLink/\/\/ \0/' /usr/share/plasma/plasmoids/org.kde.desktopcontainment/contents/ui/FolderItemDelegate.qml
