@@ -122,7 +122,7 @@ pacman -S ffmpeg gst-plugins-good gst-plugins-bad gst-plugins-ugly gst-libav aom
 # App Installation
 # Install essential applications
 color_echo "yellow" "Installing essential applications..."
-pacman -S tmux btop git vlc wget curl duperemove neovim gamescope lutris steam gamemode less spotify-launcher code gufw tuned tuned-ppd cups splix obs-studio obsidian pacman-contrib tldr gnome-firmware bash-completion seahorse snapper blanket ptyxis extension-manager apparmor grub-btrfs inotify-tools libva-mesa-driver lib32-libva-mesa-driver mesa-vdpau fish --noconfirm
+pacman -S tmux btop git vlc wget curl duperemove neovim gamescope lutris steam gamemode less spotify-launcher code gufw tuned tuned-ppd cups splix obs-studio obsidian pacman-contrib tldr gnome-firmware bash-completion seahorse snapper blanket ptyxis extension-manager apparmor grub-btrfs inotify-tools libva-mesa-driver lib32-libva-mesa-driver fish --noconfirm
 sudo -u $ACTUAL_USER yay -S btrfs-assistant brave-bin --noconfirm
 sudo -u $ACTUAL_USER flatpak install heroic protonplus -y
 color_echo "green" "Essential applications installed successfully."
