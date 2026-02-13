@@ -117,19 +117,19 @@ sudo -u $ACTUAL_USER makepkg -si --noconfirm
 
 # Install multimedia codecs to enhance multimedia capabilities
 color_echo "yellow" "Installing multimedia codecs..."
-pacman -S gst-plugins-base gst-plugins-good gst-plugins-bad gst-plugins-ugly ffmpeg --noconfirm
+pacman -S ffmpeg gst-plugins-good gst-plugins-bad gst-plugins-ugly gst-libav aom dav1d libwebp lame opencore-amr libfdk-aac flac opus faac libavif libheif x264 x265 --noconfirm
 
 # App Installation
 # Install essential applications
 color_echo "yellow" "Installing essential applications..."
-pacman -S tmux btop git vlc wget curl ttf-jetbrains-mono inter-font duperemove neovim gamescope lutris steam gamemode less spotify-launcher code gufw tuned tuned-ppd cups splix obs-studio obsidian pacman-contrib tldr gnome-firmware noto-fonts-emoji ttf-ubuntu-font-family bash-completion seahorse snapper blanket ptyxis extension-manager apparmor grub-btrfs inotify-tools snap-pac --noconfirm
+pacman -S tmux btop git vlc wget curl duperemove neovim gamescope lutris steam gamemode less spotify-launcher code gufw tuned tuned-ppd cups splix obs-studio obsidian pacman-contrib tldr gnome-firmware bash-completion seahorse snapper blanket ptyxis extension-manager apparmor grub-btrfs inotify-tools libva-mesa-driver lib32-libva-mesa-driver mesa-vdpau fish --noconfirm
 sudo -u $ACTUAL_USER yay -S btrfs-assistant brave-bin --noconfirm
-sudo -u $ACTUAL_USER flatpak install heroic protonplus bazaar -y
+sudo -u $ACTUAL_USER flatpak install heroic protonplus -y
 color_echo "green" "Essential applications installed successfully."
 
 # Install Adobe fonts collection
 color_echo "yellow" "Update Fonts cache..."
-pacman -S adobe-source-sans-fonts adobe-source-serif-fonts adobe-source-code-pro-fonts --noconfirm
+pacman -S adobe-source-sans-fonts adobe-source-serif-fonts adobe-source-code-pro-fonts noto-fonts-emoji ttf-ubuntu-font-family ttf-jetbrains-mono inter-font ttf-liberation ttf-dejavu --noconfirm
 fc-cache -fv
 
 # Copy tmux config
@@ -166,6 +166,9 @@ sudo -u $ACTUAL_USER yay -Sc --noconfirm
 
 #Remove icons
 rm $(grep -rE "Name=(Avahi|Electron|Qt)" /usr/share/applications/ | awk -F":" '{print $1}')
+
+# Change bash to fish
+chsh -s /usr/bin/fish $ACTUAL_USER
 
 #KDE fix italic font for desktop icons
 # sed -i 's/font.italic: model.isLink/\/\/ \0/' /usr/share/plasma/plasmoids/org.kde.desktopcontainment/contents/ui/FolderItemDelegate.qml
