@@ -139,7 +139,7 @@ color_echo "green" "Tmux config installed successfully."
 
 # Remove Unwanted applications
 color_echo "yellow" "Removing unwanted applications..."
-pacman -Rsn $(pacman -Qs | grep -oP '/\K(firefox|htop|epiphany|totem|gnome-tour|snapshot|gnome-maps|rhytmbox|gnome-music|showtime|gnome-boxes|gnome-console|evolution|vim|vim-runtime|decibels)(?=\s|$)') --noconfirm 
+pacman -Rsn $(pacman -Qq | grep -E '^(firefox|htop|epiphany|totem|gnome-tour|snapshot|gnome-maps|rhytmbox|gnome-music|showtime|gnome-boxes|gnome-console|evolution|vim|vim-runtime|decibels)$') --noconfirm 
 color_echo "green" "Unwanted applications removed"
 
 # Install SpotX
