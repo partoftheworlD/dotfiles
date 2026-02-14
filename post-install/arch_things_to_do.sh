@@ -168,7 +168,9 @@ sudo -u $ACTUAL_USER yay -Sc --noconfirm
 rm $(grep -rE "Name=(Avahi|Electron|Qt)" /usr/share/applications/ | awk -F":" '{print $1}')
 
 # Change bash to fish
+
 sudo -u $ACTUAL_USER chsh -s /usr/bin/fish
+touch $ACTUAL_HOME/.config/fish/config.fish
 echo 'set -g fish_greeting ""' >> $ACTUAL_HOME/.config/fish/config.fish
 
 #KDE fix italic font for desktop icons
