@@ -123,7 +123,7 @@ pacman -S ffmpeg gst-plugins-good gst-plugins-bad gst-plugins-ugly gst-libav aom
 # Install essential applications
 color_echo "yellow" "Installing essential applications..."
 pacman -S tmux btop git vlc wget curl duperemove neovim gamescope lutris steam gamemode less spotify-launcher code gufw tuned tuned-ppd cups splix obs-studio obsidian pacman-contrib tldr gnome-firmware bash-completion seahorse snapper blanket ptyxis extension-manager apparmor grub-btrfs inotify-tools libva-mesa-driver lib32-libva-mesa-driver fish dnsutils iputils whois --noconfirm
-sudo -u $ACTUAL_USER yay -S btrfs-assistant brave-bin --noconfirm
+sudo -u $ACTUAL_USER yay -S btrfs-assistant brave-bin xdg-terminal-exec --noconfirm
 sudo -u $ACTUAL_USER flatpak install heroic protonplus -y
 color_echo "green" "Essential applications installed successfully."
 
@@ -170,9 +170,8 @@ rm $(grep -rE "Name=(Avahi|Electron|Qt)" /usr/share/applications/ | awk -F":" '{
 # Change bash to fish
 
 sudo -u $ACTUAL_USER chsh -s /usr/bin/fish
-mkdir -p $ACTUAL_HOME/.config/fish
-touch $ACTUAL_HOME/.config/fish/config.fish
-echo 'set -g fish_greeting ""' >> $ACTUAL_HOME/.config/fish/config.fish
+sudo -u $ACTUAL_USER mkdir -p $ACTUAL_HOME/.config/fish
+echo 'set -g fish_greeting ""' | sudo -u $ACTUAL_USER tee "$ACTUAL_HOME/.config/fish/config.fish" > /dev/null
 
 #KDE fix italic font for desktop icons
 # sed -i 's/font.italic: model.isLink/\/\/ \0/' /usr/share/plasma/plasmoids/org.kde.desktopcontainment/contents/ui/FolderItemDelegate.qml
