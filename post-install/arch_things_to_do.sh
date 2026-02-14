@@ -170,6 +170,7 @@ rm $(grep -rE "Name=(Avahi|Electron|Qt)" /usr/share/applications/ | awk -F":" '{
 # Change bash to fish
 
 sudo -u $ACTUAL_USER chsh -s /usr/bin/fish
+mkdir -p $ACTUAL_HOME/.config/fish
 touch $ACTUAL_HOME/.config/fish/config.fish
 echo 'set -g fish_greeting ""' >> $ACTUAL_HOME/.config/fish/config.fish
 
