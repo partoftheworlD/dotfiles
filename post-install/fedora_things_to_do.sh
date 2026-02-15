@@ -145,7 +145,7 @@ dnf swap mesa-vdpau-drivers mesa-vdpau-drivers-freeworld -y
 # App Installation
 # Install essential applications
 color_echo "yellow" "Installing essential applications..."
-dnf install -y tmux btop git wget curl jetbrains-mono-fonts rsms-inter-fonts duperemove btrfs-assistant neovim gamescope lutris steam gamemode gnome-tweaks splix tldr vlc libavcodec-freeworld ffmpeg-libs yaru-theme xdg-terminal-exec seahorse
+dnf install -y tmux btop git wget curl jetbrains-mono-fonts rsms-inter-fonts duperemove btrfs-assistant neovim gamescope lutris steam gamemode gnome-tweaks splix tldr vlc libavcodec-freeworld ffmpeg-libs yaru-theme xdg-terminal-exec seahorse fish
 flatpak install -y heroic protonplus com.mattjakeman.ExtensionManager com.github.tchx84.Flatseal md.obsidian.Obsidian spotify blanket
 color_echo "green" "Essential applications installed successfully."
 
@@ -203,6 +203,10 @@ color_echo "green" "Unwanted applications removed successfully."
 color_echo "yellow" "Installing SpotX..."
 bash <(curl -sSL https://spotx-official.github.io/run.sh)
 color_echo "green" "SpotX installed successfully."
+
+chsh -s /usr/bin/fish
+mkdir -p $ACTUAL_HOME/.config/fish
+echo 'set -g fish_greeting ""' | tee "$ACTUAL_HOME/.config/fish/config.fish" > /dev/null
 
 dnf autoremove -y
 dnf clean all
