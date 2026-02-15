@@ -117,19 +117,19 @@ sudo -u $ACTUAL_USER makepkg -si --noconfirm
 
 # Install multimedia codecs to enhance multimedia capabilities
 color_echo "yellow" "Installing multimedia codecs..."
-pacman -S ffmpeg gst-plugins-good gst-plugins-bad gst-plugins-ugly gst-libav aom dav1d libwebp lame opencore-amr libfdk-aac flac opus faac libavif libheif libvpx --noconfirm
+pacman -S --needed ffmpeg gst-plugins-good gst-plugins-bad gst-plugins-ugly gst-libav aom dav1d libwebp lame opencore-amr libfdk-aac flac opus faac libavif libheif libvpx --noconfirm
 
 # App Installation
 # Install essential applications
 color_echo "yellow" "Installing essential applications..."
-pacman -S tmux btop git vlc wget curl duperemove neovim gamescope lutris steam gamemode less spotify-launcher gufw tuned tuned-ppd cups splix obs-studio obsidian pacman-contrib tldr gnome-firmware bash-completion seahorse snapper blanket ptyxis extension-manager apparmor grub-btrfs inotify-tools libva-mesa-driver lib32-libva-mesa-driver fish dnsutils iputils whois --noconfirm
-sudo -u $ACTUAL_USER yay -S btrfs-assistant brave-bin xdg-terminal-exec visual-studio-code-bin --noconfirm
+pacman -S --needed tmux btop git vlc wget curl duperemove neovim gamescope lutris steam gamemode less spotify-launcher gufw tuned tuned-ppd cups splix obs-studio obsidian pacman-contrib tldr gnome-firmware bash-completion seahorse snapper blanket ptyxis extension-manager apparmor grub-btrfs inotify-tools libva-mesa-driver lib32-libva-mesa-driver fish dnsutils iputils whois --noconfirm
+sudo -u $ACTUAL_USER yay -S --needed btrfs-assistant brave-bin xdg-terminal-exec visual-studio-code-bin --noconfirm
 sudo -u $ACTUAL_USER flatpak install heroic protonplus -y
 color_echo "green" "Essential applications installed successfully."
 
 # Install Adobe fonts collection
 color_echo "yellow" "Update Fonts cache..."
-pacman -S adobe-source-sans-fonts adobe-source-serif-fonts adobe-source-code-pro-fonts noto-fonts-emoji ttf-ubuntu-font-family ttf-jetbrains-mono inter-font ttf-liberation ttf-dejavu --noconfirm
+pacman -S --needed adobe-source-sans-fonts adobe-source-serif-fonts adobe-source-code-pro-fonts noto-fonts-emoji ttf-ubuntu-font-family ttf-jetbrains-mono inter-font ttf-liberation ttf-dejavu --noconfirm
 fc-cache -fv
 
 # Copy tmux config
@@ -144,7 +144,7 @@ color_echo "green" "Unwanted applications removed"
 
 # Install SpotX
 color_echo "yellow" "Installing SpotX..."
-sudo -u $ACTUAL_USER yay -S spotx-git --noconfirm
+sudo -u $ACTUAL_USER yay -S --needed spotx-git --noconfirm
 color_echo "green" "SpotX installed successfully."
 
 # Custom user-defined commands
