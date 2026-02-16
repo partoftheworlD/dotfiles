@@ -115,7 +115,7 @@ fwupdmgr update -y
 # App Installation
 # Install essential applications
 color_echo "yellow" "Installing essential applications..."
-apt install tmux btop git curl neovim gamescope lutris steam qbittorrent vlc obs-studio fonts-inter-variable fonts-jetbrains-mono gnome-software gnome-software-plugin-deb gnome-software-plugin-fwupd gnome-software-plugin-flatpak ubuntu-restricted-extras gnome-tweaks tldr-py blanket printer-driver-splix flatseal ffmpeg -y
+apt install tmux btop git curl neovim gamescope lutris steam qbittorrent vlc obs-studio fonts-inter-variable fonts-jetbrains-mono gnome-software gnome-software-plugin-deb gnome-software-plugin-fwupd gnome-software-plugin-flatpak ubuntu-restricted-extras gnome-tweaks tldr-py blanket printer-driver-splix flatseal ffmpeg fish -y
 # apt-btrfs-snapshot
 flatpak install heroic protonplus bazaar md.obsidian.Obsidian -y
 color_echo "green" "Essential applications installed successfully."
@@ -173,6 +173,10 @@ color_echo "green" "SpotX installed successfully."
 color_echo "yellow" "Removing unwanted applications..."
 apt remove firefox* libreoffice* totem-video-thumbnailer gnome-tour gnome-maps rhythmbox gnome-music showtime gnome-contacts gnome-boxes gnome-snapshot gnome-terminal evolution gnome-sound-recorder shotwell -y
 color_echo "green" "Unwanted applications removed successfully."
+
+chsh -s /usr/bin/fish
+mkdir -p $ACTUAL_HOME/.config/fish
+echo 'set -g fish_greeting ""' | tee "$ACTUAL_HOME/.config/fish/config.fish" > /dev/null
 
 apt autoremove -y
 apt clean all
