@@ -1,0 +1,67 @@
+---
+dnf_packages:
+  - tmux
+  - btop
+  - git
+  - wget
+  - curl
+  - jetbrains-mono-fonts
+  - rsms-inter-fonts
+  - duperemove
+  - btrfs-assistant
+  - neovim
+  - gamescope
+  - lutris
+  - steam
+  - gamemode
+  - gnome-tweaks
+  - splix
+  - tldr
+  - vlc
+  - libavcodec-freeworld
+  - ffmpeg-libs
+  - yaru-theme
+  - xdg-terminal-exec
+  - seahorse
+  - fish
+  - dnf-plugins-core
+  - adobe-source-sans-pro-fonts
+  - adobe-source-code-pro-fonts
+  - adobe-source-serif-pro-fonts
+  - openssh-server
+  - fwupd
+  - flatpak
+  - ffmpeg
+  - mesa-va-drivers-freeworld
+  - mesa-vdpau-drivers-freeworld
+  - python3-pip
+
+flatpak_packages:
+  - com.heroicgameslauncher.hgl
+  - com.vysp3r.ProtonPlus
+  - com.mattjakeman.ExtensionManager
+  - com.github.tchx84.Flatseal
+  - md.obsidian.Obsidian
+  - com.spotify.Client
+  - com.rafaelmardojai.Blanket
+
+remove_packages:
+  - firefox*
+  - libreoffice*
+  - totem-video-thumbnailer
+  - gnome-tour
+  - gnome-maps
+  - rhythmbox
+  - gnome-music
+  - yelp
+  - showtime
+  - gnome-contacts
+  - gnome-boxes
+  - snapshot
+  - evolution
+  - gnome-sound-recorder
+  - shotwell
+  - decibels
+
+enable_services:
+  - sshd
