@@ -78,7 +78,7 @@ read -p "Press Enter to continue or CTRL+C to cancel..."
 
 # System Upgrade
 color_echo "blue" "Performing system upgrade... This may take a while..."
-sed -i 's/deb cdrom.*//; s/trixie main/sid main non-free contrib/' /etc/apt/sources.list
+echo "deb http://deb.debian.org/debian $(lsb_release -sc)-backports main contrib non-free non-free-firmware" | sudo tee /etc/apt/sources.list.d/backports.list
 sed -i 's/#DefaultTimeoutStartSec=90s/DefaultTimeoutStartSec=1s/; s/#DefaultTimeoutStopSec=90s/DefaultTimeoutStopSec=1s/' /etc/systemd/system.conf
 
 dpkg --add-architecture i386
