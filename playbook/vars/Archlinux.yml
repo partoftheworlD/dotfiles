@@ -1,0 +1,113 @@
+---
+# Пакеты для установки через pacman
+pacman_packages:
+  - reflector
+  - flatpak
+  - fwupd
+  - git
+  - base-devel
+  - ffmpeg
+  - gst-plugins-good
+  - gst-plugins-bad
+  - gst-plugins-ugly
+  - gst-libav
+  - aom
+  - dav1d
+  - libwebp
+  - lame
+  - opencore-amr
+  - libfdk-aac
+  - flac
+  - opus
+  - faac
+  - libavif
+  - libheif
+  - libvpx
+  - tmux
+  - btop
+  - vlc
+  - wget
+  - curl
+  - duperemove
+  - neovim
+  - gamescope
+  - lutris
+  - steam
+  - gamemode
+  - less
+  - spotify-launcher
+  - gufw
+  - tuned
+  - tuned-ppd
+  - cups
+  - splix
+  - obs-studio
+  - obsidian
+  - pacman-contrib
+  - tldr
+  - gnome-firmware
+  - bash-completion
+  - seahorse
+  - snapper
+  - blanket
+  - ptyxis
+  - extension-manager
+  - apparmor
+  - grub-btrfs
+  - inotify-tools
+  - libva-mesa-driver
+  - lib32-libva-mesa-driver
+  - fish
+  - dnsutils
+  - iputils
+  - whois
+  - adobe-source-sans-fonts
+  - adobe-source-serif-fonts
+  - adobe-source-code-pro-fonts
+  - noto-fonts-emoji
+  - ttf-ubuntu-font-family
+  - ttf-jetbrains-mono
+  - inter-font
+  - ttf-liberation
+  - ttf-dejavu
+
+# Пакеты для установки через AUR (с помощью yay)
+aur_packages:
+  - btrfs-assistant
+  - brave-bin
+  - xdg-terminal-exec
+  - visual-studio-code-bin
+  - spotx-git
+
+# Пакеты для установки через Flatpak
+flatpak_packages:
+  - com.vysp3r.ProtonPlus
+  - com.heroicgameslauncher.hgl
+
+# Пакеты, которые нужно удалить
+remove_packages:
+  - firefox
+  - htop
+  - epiphany
+  - totem
+  - gnome-tour
+  - snapshot
+  - gnome-maps
+  - rhythmbox
+  - gnome-music
+  - showtime
+  - gnome-boxes
+  - gnome-console
+  - evolution
+  - vim
+  - vim-runtime
+  - decibels
+
+# Системные сервисы для включения и запуска
+enable_services:
+  - tuned
+  - tuned-ppd
+  - paccache.timer
+  - ufw
+  - apparmor
+  - grub-btrfsd

@@ -1,0 +1,18 @@
+---
+- name: Post Install for multiple distributions
+  hosts: all,localhost
+  become: no
+  gather_facts: yes
+
+  tasks:
+    - name: Загрузка переменных дистрибутива
+      include_vars: "vars/{{ ansible_facts['distribution'] }}.yml"
+      ignore_errors: yes
+
+    - name: Определить обычного пользователя
+      set_fact:
+        regular_user: "{{ ansible_facts['user_id'] }}"
+      when: regular_user is not defined
+
+    - name: Выполнить задачи, специфичные для дистрибутива
+      include_tasks: "tasks/{{ ansible_facts['distribution'] }}.yml"

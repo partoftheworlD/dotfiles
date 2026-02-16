@@ -1,0 +1,277 @@
+---
+- name: Задать русскую локаль
+  lineinfile:
+    path: /etc/locale.gen
+    regexp: "^{{ item }}"
+    line: "{{ item }}"
+    state: present
+    backup: yes
+  loop:
+    - "ru_RU.UTF-8 UTF-8"
+    - "en_US.UTF-8 UTF-8"
+  register: locale_gen
+
+- name: Сгенерировать локали
+  command: locale-gen
+  when: locale_gen_changed is not defined  # хендлер сработает после изменений
+
+- name: Настроить pacman (ParallelDownloads, Color, VerbosePkgLists)
+  lineinfile:
+    path: /etc/pacman.conf
+    regexp: "^{{ item.param }}"
+    line: "{{ item.line }}"
+    state: present
+    backup: yes
+  loop:
+    - { param: "ParallelDownloads", line: "ParallelDownloads = 10" }
+    - { param: "Color", line: "Color" }
+    - { param: "VerbosePkgLists", line: "VerbosePkgLists" }
+
+- name: Установить reflector
+  package:
+    name: reflector
+    state: present
+
+- name: Сгенерировать список зеркал
+  command: >
+    reflector --verbose --protocol https,http --latest 50 -n 5
+    --sort rate --save /etc/pacman.d/mirrorlist
+  args:
+    creates: /etc/pacman.d/mirrorlist
+
+- name: Настроить reflector (конфиг)
+  lineinfile:
+    path: /etc/xdg/reflector/reflector.conf
+    regexp: "{{ item.regexp }}"
+    line: "{{ item.line }}"
+    backup: yes
+  loop:
+    - { regexp: '^--protocol', line: '--protocol https,http' }
+    - { regexp: '^--sort', line: '--sort rate' }
+
+- name: Полное обновление системы (Arch)
+  command: pacman -Syu --noconfirm
+  register: system_upgraded
+  become: yes
+
+- name: Установить flatpak
+  package:
+    name: flatpak
+    state: present
+
+- name: Добавить репозиторий Flathub
+  command: flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
+  register: flathub_add
+  changed_when: "'already exists' not in flathub_add.stderr"
+  failed_when: flathub_add.rc != 0 and 'already exists' not in flathub_add.stderr
+
+- name: Замаскировать openh264 (Flatpak)
+  command: flatpak mask org.freedesktop.Platform.openh264
+  changed_when: false
+  become: yes
+
+- name: Восстановить Flatpak
+  command: flatpak repair
+  changed_when: false
+
+- name: Обновить Flatpak
+  command: flatpak update -y
+  changed_when: false
+
+- name: Установить fwupd
+  package:
+    name: fwupd
+    state: present
+
+- name: Обновить кеш fwupd
+  command: fwupdmgr refresh --force
+  changed_when: false
+
+- name: Проверить наличие обновлений прошивок
+  command: fwupdmgr get-updates
+  register: fwupd_check
+  changed_when: false
+  failed_when: false
+
+- name: Применить обновления прошивок (если есть)
+  command: fwupdmgr update -y
+  when: fwupd_check.rc == 0
+  changed_when: true
+
+- name: Установить base-devel и git (для AUR)
+  package:
+    name:
+      - base-devel
+      - git
+    state: present
+
+- name: Удалить старый каталог yay-bin (если есть)
+  file:
+    path: /tmp/yay-bin
+    state: absent
+  become: yes
+
+- name: Клонировать репозиторий yay-bin
+  git:
+    repo: https://aur.archlinux.org/yay-bin.git
+    dest: /tmp/yay-bin
+    version: HEAD
+    update: yes
+  become: no
+
+- name: Временно разрешить pacman без пароля для пользователя
+  lineinfile:
+    path: /etc/sudoers.d/10-ansible-pacman
+    line: "{{ regular_user }} ALL=(ALL) NOPASSWD: /usr/bin/pacman"
+    create: yes
+    mode: '0440'
+    validate: 'visudo -cf %s'
+  become: yes
+
+- name: Собрать и установить yay-bin
+  shell: makepkg -si --noconfirm
+  args:
+    chdir: /tmp/yay-bin
+  become: no
+  environment:
+    PATH: "{{ ansible_facts['env']['PATH'] }}"
+
+- name: Установить основные пакеты (pacman)
+  package:
+    name: "{{ pacman_packages }}"
+    state: present
+  become: yes
+
+- name: Установить пакеты из AUR
+  shell: yay -S --noconfirm {{ aur_packages | join(' ') }}
+  become_user: "{{ regular_user }}"
+  become: no
+  when: aur_packages | length > 0
+  register: aur_install
+  changed_when: "'nothing to do' not in aur_install.stdout"
+
+- name: Установить Flatpak-приложения
+  shell: flatpak install -y flathub {{ flatpak_packages | join(' ') }}
+  when: flatpak_packages | length > 0
+  register: flatpak_install
+  changed_when: "'already installed' not in flatpak_install.stdout"
+
+- name: Обновить кеш шрифтов
+  command: fc-cache -fv
+  changed_when: false
+
+- name: Скопировать конфиг tmux (из ./files/tmux)
+  copy:
+    src: ./files/tmux/.tmux.conf
+    dest: "{{ ansible_facts['env']['HOME'] }}/.tmux.conf"
+    mode: '0644'
+    backup: yes
+  become: no
+
+- name: Удалить ненужные пакеты
+  package:
+    name: "{{ remove_packages }}"
+    state: absent
+  ignore_errors: yes
+
+- name: Перезагрузить конфигурацию systemd
+  command: systemctl daemon-reload
+  become: yes
+  changed_when: false
+
+- name: Включить и запустить системные службы
+  command: systemctl enable --now {{ item }}
+  loop: "{{ enable_services }}"
+  become: yes
+  register: service_result
+  changed_when: "'Created symlink' in service_result.stdout or 'enabled' in service_result.stdout"
+  failed_when:
+    - service_result.rc != 0
+    - "'Access denied' not in service_result.stderr"
+    - "'Failed to enable unit: Access denied' not in service_result.stderr"
+
+- name: Предупреждение о службах, не запущенных из-за прав
+  debug:
+    msg: "Служба {{ item.item }} не была запущена: {{ item.stderr }}"
+  loop: "{{ service_result.results }}"
+  loop_control:
+    label: "{{ item.item }}"
+  when:
+    - item is failed
+    - "'Access denied' in item.stderr"
+
+- name: Очистить осиротевшие пакеты (orphans)
+  shell: |
+    orphans=$(pacman -Qtdq)
+    if [ -n "$orphans" ]; then
+      pacman -Rsn $orphans --noconfirm
+    fi
+  changed_when: false
+  become: yes
+
+- name: Очистить кеш yay
+  command: yay -Sc --noconfirm
+  become_user: "{{ regular_user }}"
+  become: no
+  changed_when: false
+
+- name: Удалить иконки нежелательных приложений
+  shell: |
+    files=$(grep -rE "Name=(Avahi|Electron|Qt)" /usr/share/applications/ | awk -F":" '{print $1}')
+    if [ -n "$files" ]; then
+      rm $files
+    fi
+  changed_when: false
+  become: yes
+
+- name: Сменить shell на fish для пользователя
+  user:
+    name: "{{ regular_user }}"
+    shell: /usr/bin/fish
+  become: yes
+
+- name: Создать конфигурационную директорию fish
+  file:
+    path: "{{ ansible_facts['env']['HOME'] }}/.config/fish"
+    state: directory
+    owner: "{{ regular_user }}"
+    group: "{{ regular_user }}"
+    mode: '0755'
+
+- name: Скопировать конфиг fish из локального файла
+  copy:
+    src: files/fish/config.fish
+    dest: "{{ ansible_facts['env']['HOME'] }}/.config/fish/config.fish"
+    mode: '0644'
+    backup: yes
+  become: no
+
+- name: Удалить временный файл sudoers
+  file:
+    path: /etc/sudoers.d/10-ansible-pacman
+    state: absent
+  become: yes
+  when: aur_packages | length > 0
+
+- name: Проверить наличие GNOME
+  stat:
+    path: /usr/bin/gnome-shell
+  register: gnome_check
+
+- name: Проверить наличие KDE Plasma
+  stat:
+    path: /usr/bin/plasmashell
+  register: kde_check
+
+- name: Применить настройки GNOME
+  script:
+    cmd: files/gnome/gnome_settings.sh
+    executable: /bin/bash
+  become_user: "{{ regular_user }}"
+  become: no
+  when: gnome_check.stat.exists
+
+- name: Сообщить о необходимости перезагрузки
+  debug:
+    msg: "Система была обновлена. Рекомендуется перезагрузить компьютер."
+  when: system_upgraded.changed or yay_installed.changed
