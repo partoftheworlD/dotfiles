@@ -5,23 +5,78 @@
     regexp: "^{{ item }}"
     line: "{{ item }}"
     state: present
-    backup: yes
   loop:
     - "ru_RU.UTF-8 UTF-8"
     - "en_US.UTF-8 UTF-8"
   register: locale_gen
+  become: yes
 
 - name: Сгенерировать локали
   command: locale-gen
-  when: locale_gen_changed is not defined  # хендлер сработает после изменений
+  when: locale_gen_changed is not defined
+  become: yes
 
-- name: Настроить pacman (ParallelDownloads, Color, VerbosePkgLists)
+- name: Получить список процессов для определения DE
+  command: ps -e
+  register: running_processes
+  changed_when: false
+  become: no
+
+- name: Определить, используется ли GNOME
+  set_fact:
+    desktop_is_gnome: "{{ 'gnome-shell' in running_processes.stdout }}"
+
+- name: Определить, используется ли KDE Plasma
+  set_fact:
+    desktop_is_kde: "{{ 'plasmashell' in running_processes.stdout }}"
+
+- name: "GNOME: Установить русский язык интерфейса для пользователя"
+  become_user: "{{ regular_user }}"
+  become: no
+  command: >
+    gsettings set org.gnome.system.locale region 'ru_RU.UTF-8'
+  when: desktop_is_gnome
+  register: gnome_lang_set
+
+- name: "KDE: Определить версию KDE и команду для kwriteconfig"
+  command: kreadconfig5 --version
+  register: kde_version_check
+  changed_when: false
+  failed_when: false
+  become: no
+  when: desktop_is_kde
+
+- name: "KDE: Установить переменную с командой KDE Config"
+  set_fact:
+    kde_config_cmd: "{{ 'kwriteconfig6' if kde_version_check.rc == 0 and '6.' in kde_version_check.stdout else 'kwriteconfig5' }}"
+  when: desktop_is_kde
+
+- name: "KDE: Настроить язык интерфейса в ~/.config/plasma-localerc"
+  become_user: "{{ regular_user }}"
+  become: no
+  command: >
+    {{ kde_config_cmd }} --file plasmalocalerc --group Language --key Language 'ru:en'
+  when: desktop_is_kde
+
+- name: "KDE: Настроить язык для новых пользователей"
+  lineinfile:
+    path: /etc/skel/.config/plasma-localerc
+    line: "[Language]\nLanguage=ru:en"
+    create: yes
+    mode: '0644'
+  become: yes
+  when: desktop_is_kde
+
+- name: Установить язык интерфейса
+  command: localectl set-locale LANG=ru_RU.UTF-8
+
+- name: Настроить pacman
   lineinfile:
     path: /etc/pacman.conf
     regexp: "^{{ item.param }}"
     line: "{{ item.line }}"
     state: present
-    backup: yes
+  become: yes
   loop:
     - { param: "ParallelDownloads", line: "ParallelDownloads = 10" }
     - { param: "Color", line: "Color" }
@@ -31,6 +86,7 @@
   package:
     name: reflector
     state: present
+  become: yes
 
 - name: Сгенерировать список зеркал
   command: >
@@ -38,18 +94,19 @@
     --sort rate --save /etc/pacman.d/mirrorlist
   args:
     creates: /etc/pacman.d/mirrorlist
+  become: yes
 
-- name: Настроить reflector (конфиг)
+- name: Настроить reflector
   lineinfile:
     path: /etc/xdg/reflector/reflector.conf
     regexp: "{{ item.regexp }}"
     line: "{{ item.line }}"
-    backup: yes
   loop:
     - { regexp: '^--protocol', line: '--protocol https,http' }
     - { regexp: '^--sort', line: '--sort rate' }
+  become: yes
 
-- name: Полное обновление системы (Arch)
+- name: Полное обновление системы
   command: pacman -Syu --noconfirm
   register: system_upgraded
   become: yes
@@ -65,7 +122,7 @@
   changed_when: "'already exists' not in flathub_add.stderr"
   failed_when: flathub_add.rc != 0 and 'already exists' not in flathub_add.stderr
 
-- name: Замаскировать openh264 (Flatpak)
+- name: Замаскировать openh264
   command: flatpak mask org.freedesktop.Platform.openh264
   changed_when: false
   become: yes
@@ -82,10 +139,12 @@
   package:
     name: fwupd
     state: present
+  become: yes
 
 - name: Обновить кеш fwupd
   command: fwupdmgr refresh --force
   changed_when: false
+  become: yes
 
 - name: Проверить наличие обновлений прошивок
   command: fwupdmgr get-updates
@@ -93,19 +152,21 @@
   changed_when: false
   failed_when: false
 
-- name: Применить обновления прошивок (если есть)
+- name: Применить обновления прошивок
   command: fwupdmgr update -y
   when: fwupd_check.rc == 0
   changed_when: true
+  become: yes
 
-- name: Установить base-devel и git (для AUR)
+- name: Установить base-devel и git
   package:
     name:
       - base-devel
       - git
     state: present
+  become: yes
 
-- name: Удалить старый каталог yay-bin (если есть)
+- name: Удалить старый каталог yay-bin
   file:
     path: /tmp/yay-bin
     state: absent
@@ -136,7 +197,7 @@
   environment:
     PATH: "{{ ansible_facts['env']['PATH'] }}"
 
-- name: Установить основные пакеты (pacman)
+- name: Установить основные пакеты
   package:
     name: "{{ pacman_packages }}"
     state: present
@@ -160,12 +221,11 @@
   command: fc-cache -fv
   changed_when: false
 
-- name: Скопировать конфиг tmux (из ./files/tmux)
+- name: Скопировать конфиг tmux
   copy:
     src: ./files/tmux/.tmux.conf
     dest: "{{ ansible_facts['env']['HOME'] }}/.tmux.conf"
     mode: '0644'
-    backup: yes
   become: no
 
 - name: Удалить ненужные пакеты
@@ -173,6 +233,7 @@
     name: "{{ remove_packages }}"
     state: absent
   ignore_errors: yes
+  become: yes
 
 - name: Перезагрузить конфигурацию systemd
   command: systemctl daemon-reload
@@ -200,7 +261,7 @@
     - item is failed
     - "'Access denied' in item.stderr"
 
-- name: Очистить осиротевшие пакеты (orphans)
+- name: Очистить осиротевшие пакеты
   shell: |
     orphans=$(pacman -Qtdq)
     if [ -n "$orphans" ]; then
@@ -214,6 +275,13 @@
   become_user: "{{ regular_user }}"
   become: no
   changed_when: false
+
+- name: Удалить временный файл sudoers
+  file:
+    path: /etc/sudoers.d/10-ansible-pacman
+    state: absent
+  become: yes
+  when: aur_packages | length > 0
 
 - name: Удалить иконки нежелательных приложений
   shell: |
@@ -243,25 +311,7 @@
     src: files/fish/config.fish
     dest: "{{ ansible_facts['env']['HOME'] }}/.config/fish/config.fish"
     mode: '0644'
-    backup: yes
   become: no
-
-- name: Удалить временный файл sudoers
-  file:
-    path: /etc/sudoers.d/10-ansible-pacman
-    state: absent
-  become: yes
-  when: aur_packages | length > 0
-
-- name: Проверить наличие GNOME
-  stat:
-    path: /usr/bin/gnome-shell
-  register: gnome_check
-
-- name: Проверить наличие KDE Plasma
-  stat:
-    path: /usr/bin/plasmashell
-  register: kde_check
 
 - name: Применить настройки GNOME
   script:
@@ -269,9 +319,8 @@
     executable: /bin/bash
   become_user: "{{ regular_user }}"
   become: no
-  when: gnome_check.stat.exists
+  when: desktop_is_gnome
 
 - name: Сообщить о необходимости перезагрузки
   debug:
     msg: "Система была обновлена. Рекомендуется перезагрузить компьютер."
-  when: system_upgraded.changed or yay_installed.changed

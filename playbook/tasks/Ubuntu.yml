@@ -1,0 +1,278 @@
+# Для Ubuntu надо переключить sudo-rs на sudo
+# sudo update-alternatives --set sudo /usr/bin/sudo.ws
+---
+- name: Получить список процессов для определения DE
+  command: ps -e
+  register: running_processes
+  changed_when: false
+  become: no
+
+- name: Определить, используется ли GNOME
+  set_fact:
+    desktop_is_gnome: "{{ 'gnome-shell' in running_processes.stdout }}"
+
+- name: Определить, используется ли KDE Plasma
+  set_fact:
+    desktop_is_kde: "{{ 'plasmashell' in running_processes.stdout }}"
+
+- name: "KDE: Определить версию KDE и команду для kwriteconfig"
+  command: kreadconfig5 --version
+  register: kde_version_check
+  changed_when: false
+  failed_when: false
+  become: no
+  when: desktop_is_kde
+
+- name: "KDE: Установить переменную с командой KDE Config"
+  set_fact:
+    kde_config_cmd: "{{ 'kwriteconfig6' if kde_version_check.rc == 0 and '6.' in kde_version_check.stdout else 'kwriteconfig5' }}"
+  when: desktop_is_kde
+
+- name: Добавить архитектуру i386
+  command: dpkg --add-architecture i386
+  become: yes
+
+- name: Обновить все пакеты
+  apt:
+    name: "*"
+    state: latest
+    update_cache: yes
+  become: yes
+  register: system_upgraded
+
+- name: Полное обновление системы
+  apt:
+    upgrade: dist
+    update_cache: yes
+  become: yes
+  register: system_upgraded
+
+- name: Установить hostname
+  hostname:
+    name: ubuntu
+  become: yes
+  when: false 
+
+- name: Остановить и отключить snapd сервисы
+  systemd:
+    name: "{{ item }}"
+    state: stopped
+    enabled: no
+    masked: yes
+  loop:
+    - snapd.service
+    - snapd.socket
+  become: yes
+  ignore_errors: yes
+
+- name: Удалить snapd
+  apt:
+    name: snapd
+    state: absent
+    purge: yes
+  become: yes
+  register: snap_removed
+
+- name: Заблокировать snapd
+  command: apt-mark hold snapd
+  become: yes
+  when: snap_removed.changed
+  changed_when: false
+
+- name: Удалить остатки snapd
+  file:
+    path: "{{ item }}"
+    state: absent
+  loop:
+    - /var/cache/snapd/
+    - /root/snap/
+    - "/home/{{ ansible_facts['user_id'] }}/snap/"
+  become: yes
+  ignore_errors: yes
+
+- name: Добавить приоритет запрета snapd в apt preferences
+  copy:
+    content: |
+      Package: snapd
+      Pin: release a=*
+      Pin-Priority: -10
+    dest: /etc/apt/preferences.d/nosnap.pref
+    mode: '0644'
+  become: yes
+
+- name: Установить flatpak
+  apt:
+    name: flatpak
+    state: present
+  become: yes
+
+- name: Добавить репозиторий Flathub
+  command: flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
+  become: yes
+  register: flathub_add
+  changed_when: "'flathub' in flathub_add.stdout"
+
+- name: Замаскировать openh264
+  command: flatpak mask org.freedesktop.Platform.openh264
+  become: yes
+
+- name: Восстановить Flatpak
+  command: flatpak repair
+  become: yes
+  changed_when: false
+
+- name: Обновить Flatpak
+  command: flatpak update -y
+  become: yes
+  changed_when: false
+
+- name: Установить fwupd
+  package:
+    name: fwupd
+    state: present
+  become: yes
+
+- name: Обновить кеш fwupd
+  command: fwupdmgr refresh --force
+  changed_when: false
+
+- name: Проверить наличие обновлений прошивок
+  command: fwupdmgr get-updates
+  register: fwupd_check
+  changed_when: false
+  failed_when: false
+
+- name: Применить обновления прошивок
+  command: fwupdmgr update -y
+  when: fwupd_check.rc == 0
+
+- name: Установить пакеты из списка apt
+  apt:
+    name: "{{ apt_packages }}"
+    state: present
+  become: yes
+
+- name: Установить Flatpak-приложения
+  shell: flatpak install -y flathub {{ item }}
+  loop: "{{ flatpak_packages }}"
+  become: yes
+  register: flatpak_install
+  changed_when: "'already installed' not in flatpak_install.stdout"
+  failed_when: flatpak_install.rc != 0 and 'already installed' not in flatpak_install.stderr
+  when: flatpak_packages | length > 0
+
+- name: Установка Brave через официальный скрипт
+  shell: curl -fsS https://dl.brave.com/install.sh | sh
+  become: yes
+  register: brave_install
+  changed_when: "'already installed' not in brave_install.stdout"
+
+- name: Скачать deb-пакет VSCode
+  get_url:
+    url: https://update.code.visualstudio.com/latest/linux-deb-x64/stable
+    dest: /tmp/code.deb
+    timeout: 30
+  become: no
+
+- name: Установить VSCode из deb
+  apt:
+    deb: /tmp/code.deb
+  become: yes
+
+- name: Создать директорию для шрифтов Adobe
+  file:
+    path: "{{ ansible_facts['env']['HOME'] }}/.local/share/fonts/adobe-fonts"
+    state: directory
+    mode: '0755'
+  become: no
+
+- name: Клонировать source-serif
+  git:
+    repo: https://github.com/adobe-fonts/source-serif.git
+    dest: "{{ ansible_facts['env']['HOME'] }}/.local/share/fonts/adobe-fonts/source-serif"
+    depth: 1
+    update: yes
+  become: no
+
+- name: Клонировать source-code-pro
+  git:
+    repo: https://github.com/adobe-fonts/source-code-pro.git
+    dest: "{{ ansible_facts['env']['HOME'] }}/.local/share/fonts/adobe-fonts/source-code-pro"
+    depth: 1
+    update: yes
+  become: no
+
+- name: Обновить кеш шрифтов
+  command: fc-cache -fv
+  become: no
+  changed_when: false
+
+- name: Скопировать конфиг tmux
+  copy:
+    src: files/tmux/.tmux.conf
+    dest: "{{ ansible_facts['env']['HOME'] }}/.tmux.conf"
+    backup: yes
+    mode: '0644'
+  become: no
+
+- name: Установить SpotX
+  shell: bash <(curl -sSL https://spotx-official.github.io/run.sh) -f --installdeb
+  become: yes
+  args:
+    executable: /bin/bash
+  register: spotx_install
+  changed_when: "'already been installed' not in spotx_install.stderr"
+  failed_when:
+    - spotx_install.rc != 0
+    - "'already been installed' not in spotx_install.stderr"
+
+- name: Удалить ненужные пакеты
+  apt:
+    name: "{{ remove_packages }}"
+    state: absent
+    purge: yes
+  become: yes
+  ignore_errors: yes
+
+- name: Сменить shell на fish
+  user:
+    name: "{{ regular_user }}"
+    shell: /usr/bin/fish
+  become: yes
+
+- name: Создать директорию конфигурации fish
+  file:
+    path: "{{ ansible_facts['env']['HOME'] }}/.config/fish"
+    state: directory
+    mode: '0755'
+  become: no
+
+- name: Скопировать конфиг fish
+  copy:
+    src: files/fish/config.fish
+    dest: "{{ ansible_facts['env']['HOME'] }}/.config/fish/config.fish"
+    mode: '0644'
+    backup: yes
+  become: no
+
+- name: Автоудаление ненужных зависимостей
+  command: apt autoremove -y
+  become: yes
+  changed_when: false
+
+- name: Очистить кеш apt
+  command: apt clean all
+  become: yes
+  changed_when: false
+
+- name: Применить настройки GNOME
+  script:
+    cmd: files/gnome/gnome_settings.sh
+    executable: /bin/bash
+  become_user: "{{ regular_user }}"
+  become: no
+  when: desktop_is_gnome
+
+- name: Сообщить о необходимости перезагрузки
+  debug:
+    msg: "Система была обновлена. Рекомендуется перезагрузить компьютер."

@@ -1,0 +1,66 @@
+---
+apt_packages:
+  - tmux
+  - btop
+  - git
+  - curl
+  - neovim
+  - gamescope
+  - lutris
+  - steam
+  - qbittorrent
+  - vlc
+  - obs-studio
+  - fonts-inter-variable
+  - fonts-jetbrains-mono
+  - gnome-software
+  - gnome-software-plugin-deb
+  - gnome-software-plugin-fwupd
+  - gnome-software-plugin-flatpak
+  - ubuntu-restricted-extras
+  - gnome-tweaks
+  - tldr-py
+  - blanket
+  - printer-driver-splix
+  - flatseal
+  - ffmpeg
+  - fish
+  - flatpak
+  - fwupd
+  - fonts-adobe-sourcesans3
+  - wget
+  - cabextract
+  - fontconfig
+  - python3-pip
+  - apt-transport-https
+  - ca-certificates
+  - software-properties-common
+  - gnupg
+  - gnome-shell-extensions
+  - unzip
+
+flatpak_packages:
+  - com.heroicgameslauncher.hgl
+  - com.vysp3r.ProtonPlus
+  - md.obsidian.Obsidian
+  - com.spotify.Client
+  - com.github.tchx84.Flatseal
+
+remove_packages:
+  - firefox*
+  - libreoffice*
+  - totem-video-thumbnailer
+  - gnome-tour
+  - gnome-maps
+  - rhythmbox
+  - gnome-music
+  - showtime
+  - gnome-contacts
+  - gnome-boxes
+  - gnome-snapshot
+  - gnome-terminal
+  - evolution
+  - gnome-sound-recorder
+  - shotwell
+
+enable_services: []

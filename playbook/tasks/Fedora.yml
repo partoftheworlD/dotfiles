@@ -1,4 +1,26 @@
 ---
+- name: Получить список процессов для определения DE
+  command: ps -e
+  register: running_processes
+  changed_when: false
+  become: no
+
+- name: Определить, используется ли GNOME
+  set_fact:
+    desktop_is_gnome: "{{ 'gnome-shell' in running_processes.stdout }}"
+
+- name: Определить, используется ли KDE Plasma
+  set_fact:
+    desktop_is_kde: "{{ 'plasmashell' in running_processes.stdout }}"
+
+- name: "KDE: Определить версию KDE и команду для kwriteconfig"
+  command: kreadconfig5 --version
+  register: kde_version_check
+  changed_when: false
+  failed_when: false
+  become: no
+  when: desktop_is_kde
+
 - name: Создать резервную копию /etc/dnf/dnf.conf
   copy:
     src: /etc/dnf/dnf.conf
@@ -16,9 +38,8 @@
     create: yes
   loop:
     - "max_parallel_downloads=5"
-    - "fastestmirror=True"
-    - "timeout=5"
     - "minrate=1M"
+    - "fastestmirror=True"
   become: yes
 
 - name: Отключить ненужные репозитории
@@ -32,13 +53,18 @@
   changed_when: "'enabled' in disable_repos.stderr"
   failed_when: disable_repos.rc != 0 and 'No such' not in disable_repos.stderr
 
-- name: Полное обновление системы
-  dnf:
-    name: "*"
-    state: latest
-    update_cache: yes
+- name: Установить основные пакеты из списка dnf_packages
+  command: >
+    dnf install -y --skip-broken --skip-unavailable
+    {{ dnf_packages | join(' ') }}
+  environment:
+    LC_ALL: C
   become: yes
-  register: system_upgraded
+  register: install_result
+  until: install_result is success
+  retries: 3
+  delay: 10
+  changed_when: "'Nothing to do.' not in install_result.stdout"
 
 - name: Установить Flatpak
   dnf:
@@ -73,11 +99,6 @@
 
 - name: Восстановить Flatpak
   command: flatpak repair
-  become: yes
-  changed_when: false
-
-- name: Обновить Flatpak
-  command: flatpak update -y
   become: yes
   changed_when: false
 
@@ -146,10 +167,10 @@
   become: yes
 
 - name: Заменить ffmpeg-free на ffmpeg
-  shell: dnf swap ffmpeg-free ffmpeg --allowerasing -y
+  command: dnf swap ffmpeg-free ffmpeg --allowerasing -y
+  environment:
+    LC_ALL: C
   become: yes
-  register: ffmpeg_swap
-  changed_when: "'Nothing to do' not in ffmpeg_swap.stdout"
 
 - name: Обновить группу multimedia
   dnf:
@@ -176,28 +197,11 @@
   failed_when: false
   become: yes
 
-- name: Заменить mesa-va-drivers
-  shell: dnf swap mesa-va-drivers mesa-va-drivers-freeworld -y
-  become: yes
-  when:
-    - "'normal_va_installed' in hwaccel_check.stdout"
-    - "'freeworld_va_installed' not in hwaccel_check.stdout"
-  register: mesa_va_swap
-  changed_when: "'Nothing to do' not in mesa_va_swap.stdout"
-
-- name: Заменить mesa-vdpau-drivers
-  shell: dnf swap mesa-vdpau-drivers mesa-vdpau-drivers-freeworld -y
-  become: yes
-  when:
-    - "'normal_vdpau_installed' in hwaccel_check.stdout"
-    - "'freeworld_vdpau_installed' not in hwaccel_check.stdout"
-  register: mesa_vdpau_swap
-  changed_when: "'Nothing to do' not in mesa_vdpau_swap.stdout"
-
 - name: Установить основные пакеты из списка dnf_packages
   dnf:
     name: "{{ dnf_packages }}"
     state: present
+    skip_broken: yes
   become: yes
 
 - name: Установить Flatpak-приложения
@@ -217,9 +221,9 @@
 
 - name: Установка Brave через официальный скрипт
   shell: curl -fsS https://dl.brave.com/install.sh | sh
+  environment:
+    LC_ALL: C
   become: yes
-  register: brave_install
-  changed_when: "'already installed' not in brave_install.stdout"
 
 - name: Импортировать ключ Microsoft
   rpm_key:
@@ -244,7 +248,7 @@
     update_cache: yes
   become: yes
 
-- name: Обеспечить существование и правильного владельца директории шрифтов
+- name: Создать директорию шрифтов
   file:
     path: "{{ ansible_facts['env']['HOME'] }}/.local/share/fonts/ubuntu"
     state: directory
@@ -289,13 +293,13 @@
   become: no
 
 - name: Удалить ненужные пакеты
-  dnf:
-    name: "{{ remove_packages }}"
-    state: absent
+  command: >
+    dnf remove -y {{ remove_packages | join(' ') }}
+  environment:
+    LC_ALL: C
   become: yes
-  ignore_errors: yes
 
-- name: Установить SpotX с принудительной переустановкой
+- name: Установить SpotX
   shell: timeout 60 bash <(curl -sSL https://spotx-official.github.io/run.sh) -f
   become: yes
   register: spotx_install
@@ -341,25 +345,14 @@
   become: yes
   changed_when: false
 
-- name: Проверить наличие GNOME
-  stat:
-    path: /usr/bin/gnome-shell
-  register: gnome_check
-
-- name: Проверить наличие KDE Plasma
-  stat:
-    path: /usr/bin/plasmashell
-  register: kde_check
-
 - name: Применить настройки GNOME
   script:
     cmd: files/gnome/gnome_settings.sh
     executable: /bin/bash
   become_user: "{{ regular_user }}"
   become: no
-  when: gnome_check.stat.exists
+  when: desktop_is_gnome
 
 - name: Сообщить о необходимости перезагрузки
   debug:
     msg: "Система была обновлена. Рекомендуется перезагрузить компьютер."
-  when: system_upgraded.changed and system_upgraded.changed
