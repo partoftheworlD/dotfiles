@@ -38,13 +38,15 @@ apt_packages:
   - gnupg
   - gnome-shell-extensions
   - unzip
+  - ripgrep
 
 flatpak_packages:
   - com.heroicgameslauncher.hgl
   - com.vysp3r.ProtonPlus
   - md.obsidian.Obsidian
-  - com.spotify.Client
+#  - com.spotify.Client
   - com.github.tchx84.Flatseal
+  - com.mattjakeman.ExtensionManager
 
 remove_packages:
   - firefox*
@@ -62,5 +64,14 @@ remove_packages:
   - evolution
   - gnome-sound-recorder
   - shotwell
+  - vim-tiny
+  - vim-common
 
-enable_services: []
+stop_services:
+  - snapd.service
+  - snapd.socket
+
+snap_paths:
+  - /var/cache/snapd/
+  - /root/snap/
+  - "/home/{{ ansible_facts['user_id'] }}/snap/"

@@ -31,10 +31,10 @@ dnf_packages:
   - openssh-server
   - fwupd
   - flatpak
-  - ffmpeg
-  - mesa-va-drivers-freeworld
-  - mesa-vdpau-drivers-freeworld
   - python3-pip
+  - ffmpeg-free
+  - mesa-va-drivers
+  - mesa-vdpau-drivers
 
 flatpak_packages:
   - com.heroicgameslauncher.hgl
@@ -65,3 +65,10 @@ remove_packages:
 
 enable_services:
   - sshd
+
+swap_packages:
+  - { from: "mesa-va-drivers", to: "mesa-va-drivers-freeworld" }
+  - { from: "mesa-va-drivers.i686", to: "mesa-va-drivers-freeworld.i686" }
+  - { from: "mesa-vdpau-drivers", to: "mesa-vdpau-drivers-freeworld" }
+  - { from: "mesa-vdpau-drivers.i686", to: "mesa-vdpau-drivers-freeworld.i686" }
+  - { from: "ffmpeg-free", to: "ffmpeg" }

@@ -17,3 +17,4 @@ gsettings set org.gnome.desktop.input-sources mru-sources "[('xkb', 'ru'), ('xkb
 gsettings set org.gnome.desktop.input-sources sources "[('xkb', 'ru'), ('xkb', 'us')]"
 gsettings set org.gnome.desktop.input-sources xkb-options "['kpdl:dotoss']"
 gsettings set org.gnome.shell favorite-apps "['brave-browser.desktop', 'obsidian.desktop', 'md.obsidian.Obsidian.desktop', 'spotify-launcher.desktop', 'com.spotify.Client.desktop', 'steam.desktop', 'code.desktop', 'com.obsproject.Studio.desktop', 'org.gnome.Nautilus.desktop', 'org.gnome.Software.desktop', 'org.gnome.TextEditor.desktop', 'org.gnome.Calculator.desktop']"
+gsettings set org.gnome.system.locale region 'ru_RU.UTF-8'

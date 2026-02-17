@@ -13,7 +13,7 @@
 
 - name: Сгенерировать локали
   command: locale-gen
-  when: locale_gen_changed is not defined
+  when: locale_gen.changed is not defined
   become: yes
 
 - name: Получить список процессов для определения DE
@@ -29,14 +29,6 @@
 - name: Определить, используется ли KDE Plasma
   set_fact:
     desktop_is_kde: "{{ 'plasmashell' in running_processes.stdout }}"
-
-- name: "GNOME: Установить русский язык интерфейса для пользователя"
-  become_user: "{{ regular_user }}"
-  become: no
-  command: >
-    gsettings set org.gnome.system.locale region 'ru_RU.UTF-8'
-  when: desktop_is_gnome
-  register: gnome_lang_set
 
 - name: "KDE: Определить версию KDE и команду для kwriteconfig"
   command: kreadconfig5 --version
@@ -69,6 +61,7 @@
 
 - name: Установить язык интерфейса
   command: localectl set-locale LANG=ru_RU.UTF-8
+  become: yes
 
 - name: Настроить pacman
   lineinfile:
@@ -111,16 +104,13 @@
   register: system_upgraded
   become: yes
 
-- name: Установить flatpak
-  package:
-    name: flatpak
+- name: Добавить Flathub репозиторий для пользователя
+  flatpak_remote:
+    name: flathub
     state: present
-
-- name: Добавить репозиторий Flathub
-  command: flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
-  register: flathub_add
-  changed_when: "'already exists' not in flathub_add.stderr"
-  failed_when: flathub_add.rc != 0 and 'already exists' not in flathub_add.stderr
+    flatpakrepo_url: https://dl.flathub.org/repo/flathub.flatpakrepo
+    method: user
+  when: flatpak_packages | length > 0
 
 - name: Замаскировать openh264
   command: flatpak mask org.freedesktop.Platform.openh264
@@ -135,29 +125,6 @@
   command: flatpak update -y
   changed_when: false
 
-- name: Установить fwupd
-  package:
-    name: fwupd
-    state: present
-  become: yes
-
-- name: Обновить кеш fwupd
-  command: fwupdmgr refresh --force
-  changed_when: false
-  become: yes
-
-- name: Проверить наличие обновлений прошивок
-  command: fwupdmgr get-updates
-  register: fwupd_check
-  changed_when: false
-  failed_when: false
-
-- name: Применить обновления прошивок
-  command: fwupdmgr update -y
-  when: fwupd_check.rc == 0
-  changed_when: true
-  become: yes
-
 - name: Установить base-devel и git
   package:
     name:
@@ -166,18 +133,13 @@
     state: present
   become: yes
 
-- name: Удалить старый каталог yay-bin
-  file:
-    path: /tmp/yay-bin
-    state: absent
-  become: yes
-
 - name: Клонировать репозиторий yay-bin
   git:
     repo: https://aur.archlinux.org/yay-bin.git
     dest: /tmp/yay-bin
     version: HEAD
     update: yes
+    force: yes
   become: no
 
 - name: Временно разрешить pacman без пароля для пользователя
@@ -189,7 +151,7 @@
     validate: 'visudo -cf %s'
   become: yes
 
-- name: Собрать и установить yay-bin
+- name: Установить yay-bin
   shell: makepkg -si --noconfirm
   args:
     chdir: /tmp/yay-bin
@@ -212,14 +174,16 @@
   changed_when: "'nothing to do' not in aur_install.stdout"
 
 - name: Установить Flatpak-приложения
-  shell: flatpak install -y flathub {{ flatpak_packages | join(' ') }}
+  flatpak:
+    name: "{{ flatpak_packages }}"
+    state: present
+    method: user
   when: flatpak_packages | length > 0
-  register: flatpak_install
-  changed_when: "'already installed' not in flatpak_install.stdout"
 
 - name: Обновить кеш шрифтов
-  command: fc-cache -fv
+  command: fc-cache -f
   changed_when: false
+  become: yes
 
 - name: Скопировать конфиг tmux
   copy:

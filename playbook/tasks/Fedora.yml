@@ -21,6 +21,11 @@
   become: no
   when: desktop_is_kde
 
+- name: Определить версию Fedora
+  command: rpm -E %fedora
+  register: fedora_version
+  changed_when: false
+
 - name: Создать резервную копию /etc/dnf/dnf.conf
   copy:
     src: /etc/dnf/dnf.conf
@@ -55,7 +60,7 @@
 
 - name: Установить основные пакеты из списка dnf_packages
   command: >
-    dnf install -y --skip-broken --skip-unavailable
+    dnf install -y --refresh --skip-broken --skip-unavailable
     {{ dnf_packages | join(' ') }}
   environment:
     LC_ALL: C
@@ -66,31 +71,28 @@
   delay: 10
   changed_when: "'Nothing to do.' not in install_result.stdout"
 
-- name: Установить Flatpak
-  dnf:
-    name: flatpak
+- name: Добавить Flathub репозиторий
+  flatpak_remote:
+    name: flathub
     state: present
-  become: yes
-
-- name: Добавить репозиторий Flathub
-  command: flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
-  become: yes
-  register: flathub_add
-  changed_when: "'flathub' in flathub_add.stdout"
+    flatpakrepo_url: https://dl.flathub.org/repo/flathub.flatpakrepo
+    method: user
+  when: flatpak_packages | length > 0
 
 - name: Проверить, существует ли репозиторий fedora
   command: flatpak remotes | grep fedora
-  register: fedora_remote_check
+  register: fedora_remote_exists
   changed_when: false
   failed_when: false
-  become: yes
+  become: no
 
 - name: Удалить Fedora Flatpak репозиторий
-  command: flatpak remote-delete fedora --force
+  flatpak_remote:
+    name: fedora
+    state: absent
+    method: system
   become: yes
-  when: fedora_remote_check.rc == 0
-  register: fedora_remote_delete
-  changed_when: fedora_remote_delete.rc == 0
+  when: fedora_remote_exists.rc == 0
 
 - name: Замаскировать openh264
   command: flatpak mask org.freedesktop.Platform.openh264
@@ -102,49 +104,12 @@
   become: yes
   changed_when: false
 
-- name: Установить fwupd
-  dnf:
-    name: fwupd
-    state: present
-  become: yes
-
-- name: Обновить кеш fwupd
-  command: fwupdmgr refresh --force
-  become: yes
-  changed_when: false
-  ignore_errors: yes
-
-- name: Проверить наличие обновлений прошивок
-  command: fwupdmgr get-updates
-  register: fwupd_check
-  changed_when: false
-  failed_when: false
-  become: yes
-
-- name: Применить обновления прошивок
-  command: fwupdmgr update -y
-  become: yes
-  when: fwupd_check.rc == 0 and 'No updates available' not in fwupd_check.stdout
-  register: fwupd_update
-  changed_when: true
-
-- name: Установить и включить SSH
-  dnf:
-    name: openssh-server
-    state: present
-  become: yes
-
 - name: Включить и запустить sshd
   systemd:
     name: sshd
     enabled: yes
     state: started
   become: yes
-
-- name: Определить версию Fedora
-  command: rpm -E %fedora
-  register: fedora_version
-  changed_when: false
 
 - name: Установить RPM Fusion free репозиторий
   dnf:
@@ -166,12 +131,6 @@
     state: latest
   become: yes
 
-- name: Заменить ffmpeg-free на ffmpeg
-  command: dnf swap ffmpeg-free ffmpeg --allowerasing -y
-  environment:
-    LC_ALL: C
-  become: yes
-
 - name: Обновить группу multimedia
   dnf:
     name: "@multimedia"
@@ -186,31 +145,23 @@
     state: present
   become: yes
 
-- name: Проверить установленные пакеты для аппаратного ускорения
-  shell: |
-    rpm -q mesa-va-drivers >/dev/null 2>&1 && echo "normal_va_installed" || true
-    rpm -q mesa-va-drivers-freeworld >/dev/null 2>&1 && echo "freeworld_va_installed" || true
-    rpm -q mesa-vdpau-drivers >/dev/null 2>&1 && echo "normal_vdpau_installed" || true
-    rpm -q mesa-vdpau-drivers-freeworld >/dev/null 2>&1 && echo "freeworld_vdpau_installed" || true
-  register: hwaccel_check
-  changed_when: false
+- name: Заменить на пакеты из rpm fusion
+  command: dnf swap {{ item.from }} {{ item.to }} --allowerasing -y
+  register: swap_freeworld
+  changed_when: '"Complete!" in swap_freeworld.stdout'
   failed_when: false
-  become: yes
-
-- name: Установить основные пакеты из списка dnf_packages
-  dnf:
-    name: "{{ dnf_packages }}"
-    state: present
-    skip_broken: yes
+  loop: "{{ swap_packages }}"
+  loop_control:
+    label: "{{ item.from }} -> {{ item.to }}"
+  environment:
+    LC_ALL: C
   become: yes
 
 - name: Установить Flatpak-приложения
-  command: flatpak install -y flathub {{ item }}
-  loop: "{{ flatpak_packages }}"
-  become: yes
-  register: flatpak_install
-  changed_when: "'already installed' not in flatpak_install.stdout"
-  failed_when: flatpak_install.rc != 0 and 'already installed' not in flatpak_install.stderr
+  flatpak:
+    name: "{{ flatpak_packages }}"
+    state: present
+    method: user
   when: flatpak_packages | length > 0
 
 - name: Добавить репозиторий Brave
@@ -241,7 +192,7 @@
     gpgkey: https://packages.microsoft.com/keys/microsoft.asc
   become: yes
 
-- name: Установить code
+- name: Установить VSCode
   dnf:
     name: code
     state: present
@@ -280,8 +231,8 @@
   become: no
 
 - name: Обновить кеш шрифтов
-  command: fc-cache -fv
-  become: no
+  command: fc-cache -f
+  become: yes
   changed_when: false
 
 - name: Скопировать конфиг tmux

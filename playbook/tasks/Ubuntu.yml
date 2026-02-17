@@ -32,14 +32,6 @@
   command: dpkg --add-architecture i386
   become: yes
 
-- name: Обновить все пакеты
-  apt:
-    name: "*"
-    state: latest
-    update_cache: yes
-  become: yes
-  register: system_upgraded
-
 - name: Полное обновление системы
   apt:
     upgrade: dist
@@ -59,9 +51,7 @@
     state: stopped
     enabled: no
     masked: yes
-  loop:
-    - snapd.service
-    - snapd.socket
+  loop: "{{ stop_services }}"
   become: yes
   ignore_errors: yes
 
@@ -83,10 +73,7 @@
   file:
     path: "{{ item }}"
     state: absent
-  loop:
-    - /var/cache/snapd/
-    - /root/snap/
-    - "/home/{{ ansible_facts['user_id'] }}/snap/"
+  loop: "{{ snap_paths }}"
   become: yes
   ignore_errors: yes
 
@@ -100,17 +87,19 @@
     mode: '0644'
   become: yes
 
-- name: Установить flatpak
+- name: Установить пакеты из списка apt
   apt:
-    name: flatpak
+    name: "{{ apt_packages }}"
     state: present
   become: yes
 
-- name: Добавить репозиторий Flathub
-  command: flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
-  become: yes
-  register: flathub_add
-  changed_when: "'flathub' in flathub_add.stdout"
+- name: Добавить Flathub репозиторий
+  flatpak_remote:
+    name: flathub
+    state: present
+    flatpakrepo_url: https://dl.flathub.org/repo/flathub.flatpakrepo
+    method: user
+  when: flatpak_packages | length > 0
 
 - name: Замаскировать openh264
   command: flatpak mask org.freedesktop.Platform.openh264
@@ -118,50 +107,20 @@
 
 - name: Восстановить Flatpak
   command: flatpak repair
-  become: yes
   changed_when: false
 
 - name: Обновить Flatpak
   command: flatpak update -y
-  become: yes
   changed_when: false
-
-- name: Установить fwupd
-  package:
-    name: fwupd
-    state: present
-  become: yes
-
-- name: Обновить кеш fwupd
-  command: fwupdmgr refresh --force
-  changed_when: false
-
-- name: Проверить наличие обновлений прошивок
-  command: fwupdmgr get-updates
-  register: fwupd_check
-  changed_when: false
-  failed_when: false
-
-- name: Применить обновления прошивок
-  command: fwupdmgr update -y
-  when: fwupd_check.rc == 0
-
-- name: Установить пакеты из списка apt
-  apt:
-    name: "{{ apt_packages }}"
-    state: present
-  become: yes
 
 - name: Установить Flatpak-приложения
-  shell: flatpak install -y flathub {{ item }}
-  loop: "{{ flatpak_packages }}"
-  become: yes
-  register: flatpak_install
-  changed_when: "'already installed' not in flatpak_install.stdout"
-  failed_when: flatpak_install.rc != 0 and 'already installed' not in flatpak_install.stderr
+  flatpak:
+    name: "{{ flatpak_packages }}"
+    state: present
+    method: user
   when: flatpak_packages | length > 0
 
-- name: Установка Brave через официальный скрипт
+- name: Установка Brave
   shell: curl -fsS https://dl.brave.com/install.sh | sh
   become: yes
   register: brave_install
@@ -179,32 +138,9 @@
     deb: /tmp/code.deb
   become: yes
 
-- name: Создать директорию для шрифтов Adobe
-  file:
-    path: "{{ ansible_facts['env']['HOME'] }}/.local/share/fonts/adobe-fonts"
-    state: directory
-    mode: '0755'
-  become: no
-
-- name: Клонировать source-serif
-  git:
-    repo: https://github.com/adobe-fonts/source-serif.git
-    dest: "{{ ansible_facts['env']['HOME'] }}/.local/share/fonts/adobe-fonts/source-serif"
-    depth: 1
-    update: yes
-  become: no
-
-- name: Клонировать source-code-pro
-  git:
-    repo: https://github.com/adobe-fonts/source-code-pro.git
-    dest: "{{ ansible_facts['env']['HOME'] }}/.local/share/fonts/adobe-fonts/source-code-pro"
-    depth: 1
-    update: yes
-  become: no
-
 - name: Обновить кеш шрифтов
-  command: fc-cache -fv
-  become: no
+  command: fc-cache -f
+  become: yes
   changed_when: false
 
 - name: Скопировать конфиг tmux
