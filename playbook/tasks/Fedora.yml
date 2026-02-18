@@ -55,7 +55,6 @@
     - rpmfusion-nonfree-nvidia-driver
   become: yes
   register: disable_repos
-  changed_when: "'enabled' in disable_repos.stderr"
   failed_when: disable_repos.rc != 0 and 'No such' not in disable_repos.stderr
 
 - name: Установить основные пакеты из списка dnf_packages
