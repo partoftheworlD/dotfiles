@@ -25,9 +25,6 @@ dnf_packages:
   - seahorse
   - fish
   - dnf-plugins-core
-  - adobe-source-sans-pro-fonts
-  - adobe-source-code-pro-fonts
-  - adobe-source-serif-pro-fonts
   - openssh-server
   - fwupd
   - flatpak
