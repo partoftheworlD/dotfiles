@@ -204,7 +204,7 @@
     owner: "{{ regular_user }}"
     group: "{{ regular_user }}"
     mode: '0755'
-  become: yes
+  become: no
 
 - name: Скачать шрифты Ubuntu
   get_url:
