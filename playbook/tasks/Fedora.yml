@@ -96,7 +96,6 @@
 - name: Замаскировать openh264
   command: flatpak mask org.freedesktop.Platform.openh264
   become: yes
-  changed_when: false
 
 - name: Восстановить Flatpak
   command: flatpak repair
