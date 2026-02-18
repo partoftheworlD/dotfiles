@@ -7,9 +7,11 @@ pacman_packages:
   - git
   - base-devel
   - ffmpeg
+  - gst-plugins-base
   - gst-plugins-good
   - gst-plugins-bad
   - gst-plugins-ugly
+  - libva-mesa-driver
   - gst-libav
   - aom
   - dav1d
