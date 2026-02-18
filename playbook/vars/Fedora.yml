@@ -32,6 +32,7 @@ dnf_packages:
   - ffmpeg-free
   - mesa-va-drivers
   - mesa-vdpau-drivers
+  - libva-mesa-driver
 
 flatpak_packages:
   - com.heroicgameslauncher.hgl

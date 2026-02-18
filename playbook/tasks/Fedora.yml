@@ -57,6 +57,20 @@
   register: disable_repos
   failed_when: disable_repos.rc != 0 and 'No such' not in disable_repos.stderr
 
+- name: Установить RPM Fusion free репозиторий
+  dnf:
+    name: "https://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-{{ fedora_version.stdout }}.noarch.rpm"
+    state: present
+    disable_gpg_check: yes
+  become: yes
+
+- name: Установить RPM Fusion nonfree репозиторий
+  dnf:
+    name: "https://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-{{ fedora_version.stdout }}.noarch.rpm"
+    state: present
+    disable_gpg_check: yes
+  become: yes
+
 - name: Установить основные пакеты из списка dnf_packages
   command: >
     dnf install -y --refresh --skip-broken --skip-unavailable
@@ -107,20 +121,6 @@
     name: sshd
     enabled: yes
     state: started
-  become: yes
-
-- name: Установить RPM Fusion free репозиторий
-  dnf:
-    name: "https://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-{{ fedora_version.stdout }}.noarch.rpm"
-    state: present
-    disable_gpg_check: yes
-  become: yes
-
-- name: Установить RPM Fusion nonfree репозиторий
-  dnf:
-    name: "https://download1.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-{{ fedora_version.stdout }}.noarch.rpm"
-    state: present
-    disable_gpg_check: yes
   become: yes
 
 - name: Обновить группу core
