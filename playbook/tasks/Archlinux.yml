@@ -38,16 +38,11 @@
   become: no
   when: desktop_is_kde
 
-- name: "KDE: Установить переменную с командой KDE Config"
-  set_fact:
-    kde_config_cmd: "{{ 'kwriteconfig6' if kde_version_check.rc == 0 and '6.' in kde_version_check.stdout else 'kwriteconfig5' }}"
-  when: desktop_is_kde
-
 - name: "KDE: Настроить язык интерфейса в ~/.config/plasma-localerc"
   become_user: "{{ regular_user }}"
   become: no
   command: >
-    {{ kde_config_cmd }} --file plasmalocalerc --group Language --key Language 'ru:en'
+    kwriteconfig6 --file plasmalocalerc --group Language --key Language 'ru:en'
   when: desktop_is_kde
 
 - name: "KDE: Настроить язык для новых пользователей"
