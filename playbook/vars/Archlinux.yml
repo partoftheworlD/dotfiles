@@ -31,6 +31,7 @@ pacman_packages:
   - gamescope
   - lutris
   - steam
+  - steam-devices 
   - gamemode
   - less
   - spotify-launcher
@@ -40,6 +41,7 @@ pacman_packages:
   - cups
   - splix
   - obs-studio
+  - obs-vkcapture 
   - obsidian
   - pacman-contrib
   - tldr
@@ -68,6 +70,7 @@ pacman_packages:
   - inter-font
   - ttf-liberation
   - ttf-dejavu
+  - mangohud
 
 # Пакеты для установки через AUR (с помощью yay)
 aur_packages:
