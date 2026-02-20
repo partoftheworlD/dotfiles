@@ -35,7 +35,6 @@ pacman_packages:
   - gamemode
   - less
   - spotify-launcher
-  - gufw
   - tuned
   - tuned-ppd
   - cups
@@ -70,6 +69,8 @@ pacman_packages:
   - ttf-liberation
   - ttf-dejavu
   - mangohud
+  - nftable
+  - firewalld
 
 # Пакеты для установки через AUR (с помощью yay)
 aur_packages:
@@ -108,6 +109,6 @@ enable_services:
   - tuned
   - tuned-ppd
   - paccache.timer
-  - ufw
+  - firewalld
   - apparmor
   - grub-btrfsd

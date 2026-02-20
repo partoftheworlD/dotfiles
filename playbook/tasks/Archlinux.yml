@@ -67,8 +67,8 @@
   become: yes
   loop:
     - { param: "ParallelDownloads", line: "ParallelDownloads = 10" }
-    - { param: "Color", line: "Color" }
-    - { param: "VerbosePkgLists", line: "VerbosePkgLists" }
+    - { param: "#Color", line: "Color" }
+    - { param: "#VerbosePkgLists", line: "VerbosePkgLists" }
 
 - name: Установить reflector
   package:
