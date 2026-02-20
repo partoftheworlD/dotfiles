@@ -86,7 +86,7 @@
 
 - name: Обновить систему и установить основные пакеты из списка dnf_packages
   shell: >
-    dnf up --refresh &&
+    dnf up --refresh -y &&
     dnf install -y --skip-broken --skip-unavailable {{ dnf_packages | join(' ') }}
   environment:
     LC_ALL: C
