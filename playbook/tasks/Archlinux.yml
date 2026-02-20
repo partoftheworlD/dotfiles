@@ -31,7 +31,7 @@
     desktop_is_kde: "{{ 'plasmashell' in running_processes.stdout }}"
 
 - name: "KDE: Определить версию KDE и команду для kwriteconfig"
-  command: kreadconfig5 --version
+  command: kreadconfig6 --version
   register: kde_version_check
   changed_when: false
   failed_when: false
@@ -41,8 +41,9 @@
 - name: "KDE: Настроить язык интерфейса в ~/.config/plasma-localerc"
   become_user: "{{ regular_user }}"
   become: no
-  command: >
-    kwriteconfig6 --file plasmalocalerc --group Language --key Language 'ru:en'
+  shell: >
+    kwriteconfig6 --file plasma-localerc --group Language --key Language 'ru:en' &&
+    kwriteconfig6 --file plasma-localerc --group Formats --key LANG 'ru_RU.UTF-8'
   when: desktop_is_kde
 
 - name: "KDE: Настроить язык для новых пользователей"

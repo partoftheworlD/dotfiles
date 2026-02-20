@@ -16,16 +16,19 @@
     desktop_is_kde: "{{ 'plasmashell' in running_processes.stdout }}"
 
 - name: "KDE: Определить версию KDE и команду для kwriteconfig"
-  command: kreadconfig5 --version
+  command: kreadconfig6 --version
   register: kde_version_check
   changed_when: false
   failed_when: false
   become: no
   when: desktop_is_kde
 
-- name: "KDE: Установить переменную с командой KDE Config"
-  set_fact:
-    kde_config_cmd: "{{ 'kwriteconfig6' if kde_version_check.rc == 0 and '6.' in kde_version_check.stdout else 'kwriteconfig5' }}"
+- name: "KDE: Настроить язык интерфейса в ~/.config/plasma-localerc"
+  become_user: "{{ regular_user }}"
+  become: no
+  shell: >
+    kwriteconfig6 --file plasma-localerc --group Language --key Language 'ru:en' &&
+    kwriteconfig6 --file plasma-localerc --group Formats --key LANG 'ru_RU.UTF-8'
   when: desktop_is_kde
 
 - name: Добавить архитектуру i386
