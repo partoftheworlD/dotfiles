@@ -55,7 +55,7 @@
     state: present
     create: yes
   loop:
-    - "max_parallel_downloads=5"
+    - "max_parallel_downloads=10"
     - "minrate=1M"
     - "fastestmirror=True"
   become: yes
