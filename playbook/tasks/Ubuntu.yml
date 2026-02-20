@@ -170,8 +170,8 @@
     - spotx_install.rc != 0
     - "'already been installed' not in spotx_install.stderr"
 
-- name: Установка stable toolchains Rust
-  command: rustup toolchains install stable
+- name: Установка stable toolchain Rust
+  command: rustup toolchain install stable
   become: no
 
 - name: Удалить ненужные пакеты

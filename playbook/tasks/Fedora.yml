@@ -297,8 +297,8 @@
     backup: yes
   become: no
 
-- name: Установка stable toolchains Rust
-  command: rustup toolchains install stable
+- name: Установка stable toolchain Rust
+  command: rustup toolchain install stable
   become: no
 
 - name: Автоудаление ненужных зависимостей
