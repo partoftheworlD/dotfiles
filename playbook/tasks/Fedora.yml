@@ -84,10 +84,10 @@
     disable_gpg_check: yes
   become: yes
 
-- name: Установить основные пакеты из списка dnf_packages
-  command: >
-    dnf install -y --refresh --skip-broken --skip-unavailable
-    {{ dnf_packages | join(' ') }}
+- name: Обновить систему и установить основные пакеты из списка dnf_packages
+  shell: >
+    dnf up --refresh &&
+    dnf install -y --skip-broken --skip-unavailable {{ dnf_packages | join(' ') }}
   environment:
     LC_ALL: C
   become: yes
