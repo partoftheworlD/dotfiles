@@ -191,6 +191,10 @@
     mode: '0644'
   become: no
 
+- name: Установка stable toolchains Rust
+  command: rustup toolchains install stable
+  become: no
+
 - name: Удалить ненужные пакеты
   package:
     name: "{{ remove_packages }}"

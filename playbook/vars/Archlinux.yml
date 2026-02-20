@@ -71,6 +71,7 @@ pacman_packages:
   - mangohud
   - nftables
   - firewalld
+  - rustup
 
 # Пакеты для установки через AUR (с помощью yay)
 aur_packages:

@@ -297,6 +297,10 @@
     backup: yes
   become: no
 
+- name: Установка stable toolchains Rust
+  command: rustup toolchains install stable
+  become: no
+
 - name: Автоудаление ненужных зависимостей
   command: dnf autoremove -y
   become: yes

@@ -39,6 +39,7 @@ apt_packages:
   - gnome-shell-extensions
   - unzip
   - ripgrep
+  - rustup
 
 flatpak_packages:
   - com.heroicgameslauncher.hgl
