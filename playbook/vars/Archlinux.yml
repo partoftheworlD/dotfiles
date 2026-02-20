@@ -69,7 +69,7 @@ pacman_packages:
   - ttf-liberation
   - ttf-dejavu
   - mangohud
-  - nftable
+  - nftables
   - firewalld
 
 # Пакеты для установки через AUR (с помощью yay)
