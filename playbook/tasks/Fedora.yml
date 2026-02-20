@@ -84,10 +84,14 @@
     disable_gpg_check: yes
   become: yes
 
-- name: Обновить систему и установить основные пакеты из списка dnf_packages
-  shell: >
-    dnf up --refresh -y &&
-    dnf install -y --skip-broken --skip-unavailable {{ dnf_packages | join(' ') }}
+- name: Обновить Fedora
+  shell: dnf up --refresh -y --skip-unavailable
+  environment:
+    LC_ALL: C
+  become: yes
+
+- name: Установить пакеты из списка dnf_packages
+  shell: dnf install -y --skip-broken --skip-unavailable {{ dnf_packages | join(' ') }}
   environment:
     LC_ALL: C
   become: yes
