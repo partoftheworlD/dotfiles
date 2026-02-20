@@ -157,7 +157,7 @@
 - name: Установить группу sound-and-video
   dnf:
     name: "@sound-and-video"
-    state: present
+    state: latest
   become: yes
 
 - name: Заменить на пакеты из rpm fusion
@@ -178,24 +178,18 @@
     state: present
     method: user
   when: flatpak_packages | length > 0
-
-- name: Добавить репозиторий Brave
-  dnf:
-    name: dnf-plugins-core
-    state: present
-  become: yes
-
+  
 - name: Установка Brave через официальный скрипт
   shell: curl -fsS https://dl.brave.com/install.sh | sh
   environment:
     LC_ALL: C
   become: yes
 
-- name: Импортировать ключ Microsoft
-  rpm_key:
-    state: present
-    key: https://packages.microsoft.com/keys/microsoft.asc
-  become: yes
+# - name: Импортировать ключ Microsoft
+#   rpm_key:
+#     state: present
+#     key: https://packages.microsoft.com/keys/microsoft.asc
+#   become: yes
 
 - name: Добавить репозиторий VSCode
   yum_repository:
