@@ -43,14 +43,7 @@
   become: no
   shell: >
     kwriteconfig6 --file {{ item.file }} --group {{ item.group }} --key {{ item.key }} {{ item.value }}
-  loop:
-  - { file: plasma-localerc, group: Language, key: Language, value: 'ru:en' }
-  - { file: plasma-localerc, group: Formats, key: LANG, value: 'ru_RU.UTF-8'}
-  - { file: kxkbrc, group: Layout, key: LayoutList, value: 'us,ru' }
-  - { file: kxkbrc, group: Layout, key: Use, value: true }
-  - { file: kxkbrc, group: Layout, key: VariantList, value: ','}
-  - { file: kxkbrc, group: Layout, key: ResetOldOptions, value: true }
-  - { file: kxkbrc, group: Layout, key: Options, value: 'kpdl:dotoss,grp:alt_shift_toggle,grp:win_space_toggle' }
+  loop: "{{ kde_lang }}"
   when: desktop_is_kde
 
 - name: "KDE: Настроить язык для новых пользователей"

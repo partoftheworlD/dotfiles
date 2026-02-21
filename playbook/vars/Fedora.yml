@@ -73,3 +73,12 @@ swap_packages:
   - { from: "mesa-vdpau-drivers", to: "mesa-vdpau-drivers-freeworld" }
   - { from: "mesa-vdpau-drivers.i686", to: "mesa-vdpau-drivers-freeworld.i686" }
   - { from: "ffmpeg-free", to: "ffmpeg" }
+
+kde_lang:
+  - { file: plasma-localerc, group: Language, key: Language, value: 'ru:en' }
+  - { file: plasma-localerc, group: Formats, key: LANG, value: 'ru_RU.UTF-8'}
+  - { file: kxkbrc, group: Layout, key: LayoutList, value: 'us,ru' }
+  - { file: kxkbrc, group: Layout, key: Use, value: true }
+  - { file: kxkbrc, group: Layout, key: VariantList, value: ','}
+  - { file: kxkbrc, group: Layout, key: ResetOldOptions, value: true }
+  - { file: kxkbrc, group: Layout, key: Options, value: 'kpdl:dotoss,grp:alt_shift_toggle,grp:win_space_toggle' }
