@@ -198,7 +198,7 @@
   become: yes
 
 - name: Удалить debug пакеты
-  shell: pacman -Rsn $(pacman -Qq | rg "\-debug")
+  shell: pacman -Rsn $(pacman -Qq | rg "\-debug") --noconfirm
   become: yes
 
 - name: Перезагрузить конфигурацию systemd
