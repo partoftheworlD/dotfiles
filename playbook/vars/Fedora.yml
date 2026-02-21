@@ -64,6 +64,8 @@ remove_packages:
 
 enable_services:
   - sshd
+  - snapper-timeline.timer
+  - snapper-cleanup.timer
 
 swap_packages:
   - { from: "mesa-va-drivers", to: "mesa-va-drivers-freeworld" }
