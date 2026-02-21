@@ -72,6 +72,7 @@ pacman_packages:
   - nftables
   - firewalld
   - rustup
+  - ripgrep
 
 # Пакеты для установки через AUR (с помощью yay)
 aur_packages:

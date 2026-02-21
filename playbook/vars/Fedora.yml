@@ -34,6 +34,7 @@ dnf_packages:
   - mesa-vdpau-drivers
   - libva-mesa-driver
   - rustup
+  - ripgrep
 
 flatpak_packages:
   - com.heroicgameslauncher.hgl

@@ -80,7 +80,7 @@
   become: yes
 
 - name: Обновление системы и установка пакетов из списка dnf_packages
-  shell: dnf up --refresh -y && dnf install -y --skip-broken --skip-unavailable {{ dnf_packages | join(' ') }}
+  shell: dnf up --refresh -y && dnf install --refresh -y --skip-broken --skip-unavailable {{ dnf_packages | join(' ') }}
   environment:
     LC_ALL: C
   become: yes
