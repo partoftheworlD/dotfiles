@@ -84,21 +84,14 @@
     disable_gpg_check: yes
   become: yes
 
-- name: Обновить Fedora
-  shell: dnf up --refresh -y --skip-unavailable
-  environment:
-    LC_ALL: C
-  become: yes
-
-- name: Установить пакеты из списка dnf_packages
-  shell: dnf install -y --skip-broken --skip-unavailable {{ dnf_packages | join(' ') }}
+- name: Обновление системы и установка пакетов из списка dnf_packages
+  shell: dnf up --refresh -y && dnf install -y --skip-broken --skip-unavailable {{ dnf_packages | join(' ') }}
   environment:
     LC_ALL: C
   become: yes
   register: install_result
   until: install_result is success
   retries: 3
-  delay: 10
   changed_when: "'Nothing to do.' not in install_result.stdout"
 
 - name: Добавить Flathub репозиторий
@@ -184,12 +177,6 @@
   environment:
     LC_ALL: C
   become: yes
-
-# - name: Импортировать ключ Microsoft
-#   rpm_key:
-#     state: present
-#     key: https://packages.microsoft.com/keys/microsoft.asc
-#   become: yes
 
 - name: Добавить репозиторий VSCode
   yum_repository:
