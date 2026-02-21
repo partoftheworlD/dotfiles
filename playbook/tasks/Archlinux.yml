@@ -197,6 +197,10 @@
   ignore_errors: yes
   become: yes
 
+- name: Удалить debug пакеты
+  shell: pacman -Rsn $(pacman -Qq | rg "\-debug")
+  become: yes
+
 - name: Перезагрузить конфигурацию systemd
   command: systemctl daemon-reload
   become: yes
