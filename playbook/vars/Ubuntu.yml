@@ -67,6 +67,7 @@ remove_packages:
   - shotwell
   - vim-tiny
   - vim-common
+  - ansible
 
 stop_services:
   - snapd.service

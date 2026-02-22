@@ -105,6 +105,7 @@ remove_packages:
   - vim
   - vim-runtime
   - decibels
+  - ansible
 
 # Системные сервисы для включения и запуска
 enable_services:

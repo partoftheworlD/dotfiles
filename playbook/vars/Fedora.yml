@@ -62,6 +62,7 @@ remove_packages:
   - gnome-sound-recorder
   - shotwell
   - decibels
+  - ansible
 
 enable_services:
   - sshd
