@@ -53,6 +53,7 @@
     - "max_parallel_downloads=10"
     - "minrate=1M"
     - "fastestmirror=True"
+    - "timeout=5"
   become: yes
 
 - name: Отключить ненужные репозитории
