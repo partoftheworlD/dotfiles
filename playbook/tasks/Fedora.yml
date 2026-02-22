@@ -161,6 +161,12 @@
     LC_ALL: C
   become: yes
 
+- name: Обновление системы после замены пакетов из rpm fusion
+  shell: dnf up --refresh -y
+  environment:
+    LC_ALL: C
+  become: yes
+
 - name: Установить Flatpak-приложения
   flatpak:
     name: "{{ flatpak_packages }}"
