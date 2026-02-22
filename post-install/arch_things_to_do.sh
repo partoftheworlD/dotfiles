@@ -122,7 +122,7 @@ pacman -S --needed ffmpeg gst-plugins-good gst-plugins-bad gst-plugins-ugly gst-
 # App Installation
 # Install essential applications
 color_echo "yellow" "Installing essential applications..."
-pacman -S --needed tmux btop git vlc wget curl duperemove neovim gamescope lutris steam gamemode less spotify-launcher gufw tuned tuned-ppd cups splix obs-studio obsidian pacman-contrib tldr gnome-firmware bash-completion seahorse snapper blanket ptyxis extension-manager apparmor grub-btrfs inotify-tools libva-mesa-driver lib32-libva-mesa-driver fish dnsutils iputils whois --noconfirm
+pacman -S --needed tmux btop git vlc wget curl duperemove neovim gamescope lutris steam gamemode less spotify-launcher gufw tuned tuned-ppd cups splix obs-studio obsidian pacman-contrib tldr gnome-firmware bash-completion seahorse snapper blanket ptyxis extension-manager apparmor grub-btrfs inotify-tools libva-mesa-driver lib32-libva-mesa-driver fish dnsutils iputils whois rustup ripgrep firewalld --noconfirm
 sudo -u $ACTUAL_USER yay -S --needed btrfs-assistant brave-bin xdg-terminal-exec visual-studio-code-bin --noconfirm
 sudo -u $ACTUAL_USER flatpak install heroic protonplus -y
 color_echo "green" "Essential applications installed successfully."
@@ -139,12 +139,17 @@ color_echo "green" "Tmux config installed successfully."
 
 # Remove Unwanted applications
 color_echo "yellow" "Removing unwanted applications..."
-pacman -Rsn $(pacman -Qq | grep -E '^(firefox|htop|epiphany|totem|gnome-tour|snapshot|gnome-maps|rhytmbox|gnome-music|showtime|gnome-boxes|gnome-console|evolution|vim|vim-runtime|decibels)$') --noconfirm 
+pacman -Rsn $(pacman -Qq | rg '^(firefox|htop|epiphany|totem|gnome-tour|snapshot|gnome-maps|rhytmbox|gnome-music|showtime|gnome-boxes|gnome-console|evolution|vim|vim-runtime|decibels|\-debug)$') --noconfirm 
 color_echo "green" "Unwanted applications removed"
 
 # Install SpotX
 color_echo "yellow" "Installing SpotX..."
 sudo -u $ACTUAL_USER yay -S --needed spotx-git --noconfirm
+color_echo "green" "SpotX installed successfully."
+
+# Install Rust toolchain
+color_echo "yellow" "Installing SpotX..."
+sudo -u $ACTUAL_USER rustup toolchain install stable
 color_echo "green" "SpotX installed successfully."
 
 # Custom user-defined commands
@@ -155,7 +160,7 @@ systemctl enable --now tuned
 systemctl enable --now tuned-ppd
 
 systemctl enable --now paccache.timer
-systemctl enable --now ufw
+systemctl enable --now firewalld
 systemctl enable --now apparmor
 
 systemctl enable --now grub-btrfsd
@@ -165,10 +170,9 @@ pacman -Rsn $(pacman -Qtdq) --noconfirm
 sudo -u $ACTUAL_USER yay -Sc --noconfirm
 
 #Remove icons
-rm $(grep -rE "Name=(Avahi|Electron|Qt)" /usr/share/applications/ | awk -F":" '{print $1}')
+rm $(rg -l "^Name=(Avahi|Electron|Qt)" /usr/share/applications/)
 
 # Change bash to fish
-
 sudo -u $ACTUAL_USER chsh -s /usr/bin/fish
 sudo -u $ACTUAL_USER mkdir -p $ACTUAL_HOME/.config/fish
 echo 'set -g fish_greeting ""' | sudo -u $ACTUAL_USER tee "$ACTUAL_HOME/.config/fish/config.fish" > /dev/null
