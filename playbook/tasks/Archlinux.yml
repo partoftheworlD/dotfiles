@@ -98,27 +98,6 @@
   register: system_upgraded
   become: yes
 
-- name: Добавить Flathub репозиторий для пользователя
-  flatpak_remote:
-    name: flathub
-    state: present
-    flatpakrepo_url: https://dl.flathub.org/repo/flathub.flatpakrepo
-    method: user
-  when: flatpak_packages | length > 0
-
-- name: Замаскировать openh264
-  command: flatpak mask org.freedesktop.Platform.openh264
-  changed_when: false
-  become: yes
-
-- name: Восстановить Flatpak
-  command: flatpak repair
-  changed_when: false
-
-- name: Обновить Flatpak
-  command: flatpak update -y
-  changed_when: false
-
 - name: Установить base-devel и git
   package:
     name:
@@ -166,6 +145,27 @@
   when: aur_packages | length > 0
   register: aur_install
   changed_when: "'nothing to do' not in aur_install.stdout"
+
+- name: Добавить Flathub репозиторий для пользователя
+  flatpak_remote:
+    name: flathub
+    state: present
+    flatpakrepo_url: https://dl.flathub.org/repo/flathub.flatpakrepo
+    method: user
+  when: flatpak_packages | length > 0
+
+- name: Замаскировать openh264
+  command: flatpak mask org.freedesktop.Platform.openh264
+  changed_when: false
+  become: yes
+
+- name: Восстановить Flatpak
+  command: flatpak repair
+  changed_when: false
+
+- name: Обновить Flatpak
+  command: flatpak update -y
+  changed_when: false
 
 - name: Установить Flatpak-приложения
   flatpak:
