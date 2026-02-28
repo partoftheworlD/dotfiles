@@ -73,6 +73,7 @@ pacman_packages:
   - firewalld
   - rustup
   - ripgrep
+  - firewall-config
 
 # Пакеты для установки через AUR (с помощью yay)
 aur_packages:
