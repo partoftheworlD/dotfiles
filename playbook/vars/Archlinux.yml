@@ -82,6 +82,7 @@ aur_packages:
   - xdg-terminal-exec
   - visual-studio-code-bin
   - spotx-git
+  - nautilus-open-in-ptyxis
 
 # Пакеты для установки через Flatpak
 flatpak_packages:
