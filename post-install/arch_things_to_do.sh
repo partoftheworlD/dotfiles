@@ -122,7 +122,7 @@ pacman -S --needed ffmpeg gst-plugins-good gst-plugins-bad gst-plugins-ugly gst-
 # App Installation
 # Install essential applications
 color_echo "yellow" "Installing essential applications..."
-pacman -S --needed tmux btop git vlc wget curl duperemove neovim gamescope lutris steam gamemode less spotify-launcher gufw tuned tuned-ppd cups splix obs-studio obsidian pacman-contrib tldr gnome-firmware bash-completion seahorse snapper blanket ptyxis extension-manager apparmor grub-btrfs inotify-tools libva-mesa-driver lib32-libva-mesa-driver fish dnsutils iputils whois rustup ripgrep firewalld --noconfirm
+pacman -S --needed tmux btop git vlc wget curl duperemove neovim gamescope lutris steam gamemode less spotify-launcher gufw tuned tuned-ppd cups splix obs-studio obsidian pacman-contrib tldr gnome-firmware bash-completion seahorse snapper blanket ptyxis extension-manager apparmor grub-btrfs inotify-tools libva-mesa-driver lib32-libva-mesa-driver fish dnsutils iputils whois rustup ripgrep firewalld firewall-config --noconfirm
 sudo -u $ACTUAL_USER yay -S --needed btrfs-assistant brave-bin xdg-terminal-exec visual-studio-code-bin --noconfirm
 sudo -u $ACTUAL_USER flatpak install heroic protonplus -y
 color_echo "green" "Essential applications installed successfully."
@@ -139,7 +139,7 @@ color_echo "green" "Tmux config installed successfully."
 
 # Remove Unwanted applications
 color_echo "yellow" "Removing unwanted applications..."
-pacman -Rsn $(pacman -Qq | rg '^(firefox|htop|epiphany|totem|gnome-tour|snapshot|gnome-maps|rhytmbox|gnome-music|showtime|gnome-boxes|gnome-console|evolution|vim|vim-runtime|decibels|\-debug)$') --noconfirm 
+pacman -Rsn $(pacman -Qq | rg '^(firefox|htop|epiphany|totem|gnome-tour|snapshot|gnome-maps|rhytmbox|gnome-music|showtime|gnome-boxes|gnome-console|evolution|vim|vim-runtime|decibels|\-debug|gnome-software)$') --noconfirm 
 color_echo "green" "Unwanted applications removed"
 
 # Install SpotX
