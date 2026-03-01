@@ -198,6 +198,24 @@
     backup: yes
   become: no
 
+- name: Создать директорию конфигурации neovim
+  file:
+    path: "{{ ansible_facts['env']['HOME'] }}/.config/nvim"
+    state: directory
+    mode: '0755'
+  become: no
+
+- name: Скопировать конфиг neovim
+  copy:
+    src: ./files/neovim/init.lua
+    dest: "{{ ansible_facts['env']['HOME'] }}/.config/nvim/init.lua"
+    mode: '0644'
+  become: no
+
+- name: Установить Rust lsp
+  command: rustup component add rust-analyzer
+  become: no
+
 - name: Автоудаление ненужных зависимостей
   command: apt autoremove -y
   become: yes

@@ -64,7 +64,6 @@ pacman_packages:
   - adobe-source-code-pro-fonts
   - noto-fonts-emoji
   - ttf-ubuntu-font-family
-  - ttf-jetbrains-mono
   - inter-font
   - ttf-liberation
   - ttf-dejavu
@@ -74,6 +73,8 @@ pacman_packages:
   - rustup
   - ripgrep
   - firewall-config
+  - ttf-jetbrains-mono-nerd
+  - npm
 
 # Пакеты для установки через AUR (с помощью yay)
 aur_packages:
