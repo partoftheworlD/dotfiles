@@ -74,7 +74,9 @@ pacman_packages:
   - ripgrep
   - firewall-config
   - ttf-jetbrains-mono-nerd
-  - npm
+  - adobe-source-han-sans-jp-fonts
+  - adobe-source-han-serif-jp-fonts
+  - noto-fonts-cjk
 
 # Пакеты для установки через AUR (с помощью yay)
 aur_packages:
