@@ -43,13 +43,8 @@ pacman_packages:
   - obsidian
   - pacman-contrib
   - tldr
-  - gnome-firmware
-  - bash-completion
-  - seahorse
   - snapper
   - blanket
-  - ptyxis
-  - extension-manager
   - apparmor
   - grub-btrfs
   - inotify-tools
@@ -82,10 +77,8 @@ pacman_packages:
 aur_packages:
   - btrfs-assistant
   - brave-bin
-  - xdg-terminal-exec
   - visual-studio-code-bin
   - spotx-git
-  - nautilus-open-in-ptyxis
 
 # Пакеты для установки через Flatpak
 flatpak_packages:
@@ -129,3 +122,18 @@ kde_lang:
   - { file: kxkbrc, group: Layout, key: VariantList, value: ','}
   - { file: kxkbrc, group: Layout, key: ResetOldOptions, value: true }
   - { file: kxkbrc, group: Layout, key: Options, value: 'kpdl:dotoss,grp:alt_shift_toggle,grp:win_space_toggle' }
+
+gnome_packages:
+  - ptyxis
+  - extension-manager
+  - gnome-firmware
+  - seahorse
+
+gnome_aur_packages:
+  - xdg-terminal-exec
+  - nautilus-open-in-ptyxis
+
+kde_packages:
+  - sddm-kcm
+
+kde_aur_packages:

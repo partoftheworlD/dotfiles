@@ -138,6 +138,20 @@
     state: present
   become: yes
 
+- name: Установить пакеты для Gnome
+  package:
+    name: "{{ gnome_packages }}"
+    state: present
+  become: yes
+  when: desktop_is_gnome
+
+- name: Установить пакеты для KDE
+  package:
+    name: "{{ kde_packages }}"
+    state: present
+  become: yes
+  when: desktop_is_kde
+
 - name: Установить пакеты из AUR
   shell: yay -S --noconfirm {{ aur_packages | join(' ') }}
   become_user: "{{ regular_user }}"
@@ -145,6 +159,22 @@
   when: aur_packages | length > 0
   register: aur_install
   changed_when: "'nothing to do' not in aur_install.stdout"
+
+- name: Установить Gnome пакеты из AUR
+  shell: yay -S --noconfirm {{ gnome_aur_packages | join(' ') }}
+  become_user: "{{ regular_user }}"
+  become: no
+  when: desktop_is_gnome
+  register: aur_install
+  changed_when: "'nothing to do' not in aur_install.stdout" 
+
+- name: Установить KDE пакеты из AUR
+  shell: yay -S --noconfirm {{ kde_aur_packages | join(' ') }}
+  become_user: "{{ regular_user }}"
+  become: no
+  when: desktop_is_kde
+  register: aur_install
+  changed_when: "'nothing to do' not in aur_install.stdout" 
 
 - name: Добавить Flathub репозиторий для пользователя
   flatpak_remote:
