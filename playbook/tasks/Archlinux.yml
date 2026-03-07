@@ -38,12 +38,12 @@
   become: no
   when: desktop_is_kde
 
-- name: "KDE: Настроить язык интерфейса в ~/.config/plasma-localerc"
+- name: "KDE: Настроить интерфейс"
   become_user: "{{ regular_user }}"
   become: no
   shell: >
     kwriteconfig6 --file {{ item.file }} --group {{ item.group }} --key {{ item.key }} {{ item.value }}
-  loop: "{{ kde_lang }}"
+  loop: "{{ kde_settings }}"
   when: desktop_is_kde
 
 - name: "KDE: Настроить язык для новых пользователей"
@@ -54,6 +54,14 @@
     mode: '0644'
   become: yes
   when: desktop_is_kde
+
+- name: "GNOME: Настроить интерфейс"
+  become_user: "{{ regular_user }}"
+  become: no
+  shell: >
+    gsettings set {{ item.group }} {{ item.key }} {{ item.value | quote }} 
+  loop: "{{ gnome_settings }}"
+  when: desktop_is_gnome
 
 - name: Установить язык интерфейса
   command: localectl set-locale LANG=ru_RU.UTF-8
@@ -156,7 +164,7 @@
   shell: yay -S --noconfirm {{ aur_packages | join(' ') }}
   become_user: "{{ regular_user }}"
   become: no
-  when: aur_packages | length > 0
+  when: (aur_packages | default([], true)) | length > 0
   register: aur_install
   changed_when: "'nothing to do' not in aur_install.stdout"
 
@@ -164,17 +172,17 @@
   shell: yay -S --noconfirm {{ gnome_aur_packages | join(' ') }}
   become_user: "{{ regular_user }}"
   become: no
-  when: desktop_is_gnome
-  register: aur_install
-  changed_when: "'nothing to do' not in aur_install.stdout" 
+  when: 
+    - desktop_is_gnome
+    - (gnome_aur_packages | default([], true)) | length > 0
 
 - name: Установить KDE пакеты из AUR
   shell: yay -S --noconfirm {{ kde_aur_packages | join(' ') }}
   become_user: "{{ regular_user }}"
   become: no
-  when: desktop_is_kde
-  register: aur_install
-  changed_when: "'nothing to do' not in aur_install.stdout" 
+  when:
+    - desktop_is_kde
+    - (kde_aur_packages | default([], true)) | length > 0
 
 - name: Добавить Flathub репозиторий для пользователя
   flatpak_remote:
@@ -182,7 +190,6 @@
     state: present
     flatpakrepo_url: https://dl.flathub.org/repo/flathub.flatpakrepo
     method: user
-  when: flatpak_packages | length > 0
 
 - name: Замаскировать openh264
   command: flatpak mask org.freedesktop.Platform.openh264
@@ -202,7 +209,7 @@
     name: "{{ flatpak_packages }}"
     state: present
     method: user
-  when: flatpak_packages | length > 0
+  when: (flatpak_packages | default([], true)) | length > 0
 
 - name: Обновить кеш шрифтов
   command: fc-cache -f
@@ -231,7 +238,7 @@
   become: no
 
 - name: Установить Rust lsp
-  command: rustup component add rust-analyzer
+  shell: rustup default stable && rustup component add rust-analyzer
   become: no
 
 - name: Удалить ненужные пакеты
@@ -291,7 +298,6 @@
     path: /etc/sudoers.d/10-ansible-pacman
     state: absent
   become: yes
-  when: aur_packages | length > 0
 
 - name: Удалить иконки нежелательных приложений
   shell: |
@@ -322,15 +328,7 @@
     dest: "{{ ansible_facts['env']['HOME'] }}/.config/fish/config.fish"
     mode: '0644'
   become: no
-
-- name: Применить настройки GNOME
-  script:
-    cmd: files/gnome/gnome_settings.sh
-    executable: /bin/bash
-  become_user: "{{ regular_user }}"
-  become: no
-  when: desktop_is_gnome
-
+  
 - name: Сообщить о необходимости перезагрузки
   debug:
     msg: "Система была обновлена. Рекомендуется перезагрузить компьютер."

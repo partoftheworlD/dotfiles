@@ -256,7 +256,7 @@
   become: no
 
 - name: Установить Rust lsp
-  command: rustup component add rust-analyzer
+  command: rustup default stable && rustup component add rust-analyzer
   become: no
 
 - name: Удалить ненужные пакеты
