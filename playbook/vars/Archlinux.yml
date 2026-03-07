@@ -131,14 +131,14 @@ kde_settings:
   - { file: klaunchrc, group: FeedbackStyle, key: BusyCursor, value: false }
   - { file: kwinrc, group: Plugins, key: shakecursorEnabled, value: false }
   - { file: plasmarc, group: OSD, key: kbdLayoutChangedEnabled, value: false }
-  - { file: kdeglobals, group: General, key: font, value: 'Ubuntu,10.5,-1,5,50,0,0,0,0,0' }
+  - { file: kdeglobals, group: General, key: font, value: 'Ubuntu,10,-1,5,50,0,0,0,0,0' }
   - { file: kdeglobals, group: General, key: menuFont, value: 'Ubuntu,10,-1,5,50,0,0,0,0,0' }
   - { file: kdeglobals, group: General, key: smallFont, value: 'Ubuntu,8,-1,5,50,0,0,0,0,0' }
-  - { file: kdeglobals, group: General, key: toolbarFont, value: 'Ubuntu,9,-1,5,50,0,0,0,0,0' }
+  - { file: kdeglobals, group: General, key: toolbarFont, value: 'Ubuntu,10,-1,5,50,0,0,0,0,0' }
   - { file: kdeglobals, group: General, key: activeFont, value: 'Ubuntu,10,-1,5,50,0,0,0,0,0' }
   - { file: kdeglobals, group: General, key: taskbarFont, value: 'Ubuntu,10,-1,5,50,0,0,0,0,0' }
   - { file: kdeglobals, group: General, key: desktopFont, value: 'Ubuntu,10,-1,5,50,0,0,0,0,0' }
-  - { file: kdeglobals, group: General, key: fixed, value: 'JetBrainsMono Nerd Font,9,-1,5,50,0,0,0,0,0' }
+  - { file: kdeglobals, group: General, key: fixed, value: 'JetBrainsMono Nerd Font,10,-1,5,50,0,0,0,0,0' }
   - { file: kdeglobals, group: General, key: XftAntialias, value: 'true' }
   - { file: kdeglobals, group: General, key: XftHinting, value: 'true' }
   - { file: kdeglobals, group: General, key: XftHintStyle, value: 'hintfull' }
