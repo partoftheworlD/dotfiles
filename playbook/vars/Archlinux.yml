@@ -143,6 +143,7 @@ kde_settings:
   - { file: kdeglobals, group: General, key: XftHinting, value: 'true' }
   - { file: kdeglobals, group: General, key: XftHintStyle, value: 'hintfull' }
   - { file: kdeglobals, group: General, key: XftRGBA, value: 'rgb' }
+  - { file: kwalletrc, group: Wallet, key: Enabled, value: false }
 
 gnome_settings:
   - { group: "org.gnome.desktop.peripherals.mouse", key: "accel-profile", value: "'flat'" }
@@ -181,5 +182,6 @@ kde_packages:
   - breeze-cursors
   - breeze-gtk
   - breeze-icons
+  - kwalletmanager
 
 kde_aur_packages:
