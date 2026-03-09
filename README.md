@@ -1,2 +1,2 @@
 # Demo:
-![](konsave/demo.png)
+![](playbook/files/konsave/demo.png)

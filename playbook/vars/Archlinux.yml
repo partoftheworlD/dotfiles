@@ -71,6 +71,7 @@ pacman_packages:
   - adobe-source-han-sans-jp-fonts
   - adobe-source-han-serif-jp-fonts
   - noto-fonts-cjk
+  - 7zip
 
 # Пакеты для установки через AUR (с помощью yay)
 aur_packages:
@@ -142,7 +143,7 @@ kde_settings:
   - { file: kdeglobals, group: General, key: XftAntialias, value: 'true' }
   - { file: kdeglobals, group: General, key: XftHinting, value: 'true' }
   - { file: kdeglobals, group: General, key: XftHintStyle, value: 'hintfull' }
-  - { file: kdeglobals, group: General, key: XftRGBA, value: 'rgb' }
+  - { file: kdeglobals, group: General, key: XftSubPixel, value: 'rgb' }
   - { file: kwalletrc, group: Wallet, key: Enabled, value: false }
 
 gnome_settings:
@@ -185,3 +186,4 @@ kde_packages:
   - kwalletmanager
 
 kde_aur_packages:
+  - konsave

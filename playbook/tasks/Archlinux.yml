@@ -41,8 +41,7 @@
 - name: "KDE: Настроить интерфейс"
   become_user: "{{ regular_user }}"
   become: no
-  shell: >
-    kwriteconfig6 --file {{ item.file }} --group {{ item.group }} --key {{ item.key }} {{ item.value }}
+  shell: kwriteconfig6 --file {{ item.file }} --group {{ item.group }} --key {{ item.key }} {{ item.value }}
   loop: "{{ kde_settings }}"
   when: desktop_is_kde
 
@@ -58,8 +57,7 @@
 - name: "GNOME: Настроить интерфейс"
   become_user: "{{ regular_user }}"
   become: no
-  shell: >
-    gsettings set {{ item.group }} {{ item.key }} {{ item.value | quote }} 
+  shell: gsettings set {{ item.group }} {{ item.key }} {{ item.value | quote }} 
   loop: "{{ gnome_settings }}"
   when: desktop_is_gnome
 
@@ -72,7 +70,6 @@
     path: /etc/pacman.conf
     regexp: "^{{ item.param }}"
     line: "{{ item.line }}"
-    state: present
   become: yes
   loop:
     - { param: "ParallelDownloads", line: "ParallelDownloads = 10" }
@@ -216,6 +213,14 @@
   changed_when: false
   become: yes
 
+- name: Настройка KDE desktop
+  shell: |
+    7z x files/konsave/konsave.7z.001
+    konsave -i konsave.knsv
+    konsave -a konsave
+  become: no
+  when: desktop_is_kde
+
 - name: Скопировать конфиг tmux
   copy:
     src: ./files/tmux/.tmux.conf
@@ -328,7 +333,7 @@
     dest: "{{ ansible_facts['env']['HOME'] }}/.config/fish/config.fish"
     mode: '0644'
   become: no
-  
+
 - name: Сообщить о необходимости перезагрузки
   debug:
     msg: "Система была обновлена. Рекомендуется перезагрузить компьютер."
