@@ -334,6 +334,21 @@
     mode: '0644'
   become: no
 
+- name: Создать конфигурационную директорию fontconfig
+  file:
+    path: "{{ ansible_facts['env']['HOME'] }}/.config/fontconfig"
+    state: directory
+    owner: "{{ regular_user }}"
+    group: "{{ regular_user }}"
+    mode: '0755'
+
+- name: Скопировать конфиг fontconfig из локального файла
+  copy:
+    src: files/fontconfig/fonts.conf
+    dest: "{{ ansible_facts['env']['HOME'] }}/.config/fontconfig/fonts.conf"
+    mode: '0644'
+  become: no
+
 - name: Сообщить о необходимости перезагрузки
   debug:
     msg: "Система была обновлена. Рекомендуется перезагрузить компьютер."
