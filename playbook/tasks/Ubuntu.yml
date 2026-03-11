@@ -28,7 +28,7 @@
   become: no
   shell: >
     kwriteconfig6 --file {{ item.file }} --group {{ item.group }} --key {{ item.key }} {{ item.value }}
-  loop: "{{ kde_lang }}"
+  loop: "{{ kde_settings }}"
   when: desktop_is_kde
 
 - name: Добавить архитектуру i386
@@ -213,7 +213,7 @@
   become: no
 
 - name: Установить Rust lsp
-  command: rustup default stable && rustup component add rust-analyzer
+  shell: rustup default stable && rustup component add rust-analyzer
   become: no
 
 - name: Автоудаление ненужных зависимостей

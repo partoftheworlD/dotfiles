@@ -78,7 +78,7 @@ snap_paths:
   - /root/snap/
   - "/home/{{ ansible_facts['user_id'] }}/snap/"
 
-kde_lang:
+kde_settings:
   - { file: plasma-localerc, group: Language, key: Language, value: 'ru:en' }
   - { file: plasma-localerc, group: Formats, key: LANG, value: 'ru_RU.UTF-8'}
   - { file: kxkbrc, group: Layout, key: LayoutList, value: 'us,ru' }
