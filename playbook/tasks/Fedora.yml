@@ -385,10 +385,6 @@
   shell: ssh-keygen -N "" -a 32 -f "{{ ansible_facts['env']['HOME'] }}/.ssh/id_ed25519"
   become: no
 
-- name: Обновить grub для замены ядра на linux-zen
-  shell: grub-mkconfig -o /boot/grub/grub.cfg
-  become: yes
-
 - name: Сообщить о необходимости перезагрузки
   debug:
     msg: "Система была обновлена. Рекомендуется перезагрузить компьютер."
