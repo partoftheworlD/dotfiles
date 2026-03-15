@@ -122,12 +122,16 @@
   become: yes
   changed_when: false
 
-- name: Включить и запустить sshd
-  systemd:
-    name: sshd
-    enabled: yes
-    state: started
+- name: Включить и запустить системные службы
+  command: systemctl enable --now {{ item }}
+  loop: "{{ enable_services }}"
   become: yes
+  register: service_result
+  changed_when: "'Created symlink' in service_result.stdout or 'enabled' in service_result.stdout"
+  failed_when:
+    - service_result.rc != 0
+    - "'Access denied' not in service_result.stderr"
+    - "'Failed to enable unit: Access denied' not in service_result.stderr"
 
 - name: Обновить группу core
   dnf:
@@ -255,10 +259,6 @@
     mode: '0644'
   become: no
 
-- name: Установить Rust lsp
-  command: rustup default stable && rustup component add rust-analyzer
-  become: no
-
 - name: Удалить ненужные пакеты
   command: >
     dnf remove -y {{ remove_packages | join(' ') }}
@@ -303,7 +303,7 @@
   become: no
 
 - name: Установка stable toolchain Rust
-  shell: rustup-init -y
+  shell: rustup-init -y && rustup default stable && rustup component add rust-analyzer
   become: no
 
 - name: Создать btrfs конфиги
@@ -323,12 +323,42 @@
   become: yes
   changed_when: false
 
-- name: Применить настройки GNOME
-  script:
-    cmd: files/gnome/gnome_settings.sh
-    executable: /bin/bash
+- name: Создать конфигурационную директорию fontconfig
+  file:
+    path: "{{ ansible_facts['env']['HOME'] }}/.config/fontconfig"
+    state: directory
+    owner: "{{ regular_user }}"
+    group: "{{ regular_user }}"
+    mode: '0755'
+
+- name: Скопировать конфиг fontconfig из локального файла
+  copy:
+    src: files/fontconfig/fonts.conf
+    dest: "{{ ansible_facts['env']['HOME'] }}/.config/fontconfig/fonts.conf"
+    mode: '0644'
+  become: no
+
+- name: "KDE: Настроить интерфейс"
   become_user: "{{ regular_user }}"
   become: no
+  shell: kwriteconfig6 --file {{ item.file }} --group {{ item.group }} --key {{ item.key }} {{ item.value }}
+  loop: "{{ kde_settings }}"
+  when: desktop_is_kde
+
+- name: "KDE: Настроить язык для новых пользователей"
+  lineinfile:
+    path: /etc/skel/.config/plasma-localerc
+    line: "[Language]\nLanguage=ru:en"
+    create: yes
+    mode: '0644'
+  become: yes
+  when: desktop_is_kde
+
+- name: "GNOME: Настроить интерфейс"
+  become_user: "{{ regular_user }}"
+  become: no
+  shell: gsettings set {{ item.group }} {{ item.key }} {{ item.value | quote }} 
+  loop: "{{ gnome_settings }}"
   when: desktop_is_gnome
 
 - name: Сообщить о необходимости перезагрузки
