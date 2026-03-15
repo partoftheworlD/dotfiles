@@ -38,6 +38,8 @@ dnf_packages:
   - pipx
   - poetry
   - kernel-zen
+  - p7zip 
+  - p7zip-plugins
 
 flatpak_packages:
   - com.heroicgameslauncher.hgl

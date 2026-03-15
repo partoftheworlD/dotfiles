@@ -277,6 +277,20 @@
     - spotx_install.rc not in [0, 124]
     - "'already been installed' not in spotx_install.stderr"
 
+- name: Установить konsave
+  shell: pipx install konsave
+  register: konsave_installed
+  become: no
+  when: desktop_is_kde
+
+- name: Настройка KDE desktop
+  shell: |
+    7z x files/konsave/konsave.7z.001
+    konsave -i konsave.knsv
+    konsave -a konsave
+  become: no
+  when: desktop_is_kde and konsave_installed
+
 - name: Сменить shell на fish
   user:
     name: "{{ regular_user }}"
