@@ -317,7 +317,10 @@
   become: no
 
 - name: Установка stable toolchain Rust
-  shell: rustup-init -y && rustup default stable && rustup component add rust-analyzer
+  shell: |
+  - rustup-init -y 
+  - rustup default stable 
+  - rustup component add rust-analyzer
   become: no
 
 - name: Создать btrfs конфиги
