@@ -45,7 +45,6 @@
   hostname:
     name: ubuntu
   become: yes
-  when: false 
 
 - name: Остановить и отключить snapd сервисы
   systemd:
