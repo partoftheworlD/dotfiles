@@ -372,15 +372,6 @@
   become: yes
   when: desktop_is_kde
 
-- name: Скачать и установить mirrors speedtest
-  shell: |
-      cd "{{ ansible_facts['env']['HOME'] }}"
-      git clone https://github.com/mbachry/fedora-best-mirror
-      cd fedora-best-mirror
-      poetry install
-      poetry run fedora-best-mirror
-  become: no
-
 - name: Генерация ssh ключа
   shell: ssh-keygen -N "" -a 32 -f "{{ ansible_facts['env']['HOME'] }}/.ssh/id_ed25519"
   become: no

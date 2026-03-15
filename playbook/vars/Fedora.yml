@@ -36,7 +36,6 @@ dnf_packages:
   - rustup
   - ripgrep
   - pipx
-  - poetry
   - p7zip 
   - p7zip-plugins
 
