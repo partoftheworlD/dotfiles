@@ -13,14 +13,6 @@
   set_fact:
     desktop_is_kde: "{{ 'plasmashell' in running_processes.stdout }}"
 
-- name: "KDE: Определить версию KDE и команду для kwriteconfig"
-  command: kreadconfig6 --version
-  register: kde_version_check
-  changed_when: false
-  failed_when: false
-  become: no
-  when: desktop_is_kde
-
 - name: "KDE: Настроить интерфейса"
   become_user: "{{ regular_user }}"
   become: no
