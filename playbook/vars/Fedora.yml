@@ -35,6 +35,8 @@ dnf_packages:
   - libva-mesa-driver
   - rustup
   - ripgrep
+  - pipx
+  - poetry
 
 flatpak_packages:
   - com.heroicgameslauncher.hgl
