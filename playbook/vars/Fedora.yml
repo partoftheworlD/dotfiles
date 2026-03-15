@@ -37,6 +37,7 @@ dnf_packages:
   - ripgrep
   - pipx
   - poetry
+  - kernel-zen
 
 flatpak_packages:
   - com.heroicgameslauncher.hgl
