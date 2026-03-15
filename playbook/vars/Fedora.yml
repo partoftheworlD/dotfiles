@@ -75,11 +75,54 @@ swap_packages:
   - { from: "mesa-vdpau-drivers.i686", to: "mesa-vdpau-drivers-freeworld.i686" }
   - { from: "ffmpeg-free", to: "ffmpeg" }
 
-kde_lang:
+kde_settings:
   - { file: plasma-localerc, group: Language, key: Language, value: 'ru:en' }
   - { file: plasma-localerc, group: Formats, key: LANG, value: 'ru_RU.UTF-8'}
   - { file: kxkbrc, group: Layout, key: LayoutList, value: 'us,ru' }
   - { file: kxkbrc, group: Layout, key: Use, value: true }
   - { file: kxkbrc, group: Layout, key: VariantList, value: ','}
   - { file: kxkbrc, group: Layout, key: ResetOldOptions, value: true }
+  - { file: kxkbrc, group: Layout, key: ShowLayoutIndicator, type: bool, value: false }
   - { file: kxkbrc, group: Layout, key: Options, value: 'kpdl:dotoss,grp:alt_shift_toggle,grp:win_space_toggle' }
+  - { file: kscreenlockerrc, group: Daemon, key: Autolock, value: false}
+  - { file: powermanagementprofilesrc, group: AC, key: TurnOffDisplayIdleTimeoutSec, value: 0}
+  - { file: powermanagementprofilesrc, group: Display, key: TurnOffDisplayIdleTimeoutSec, value: 0}
+  - { file: kcminputrc, group: Keyboard, key: NumLock, value: 0}
+  - { file: sddm.conf, group: General, key: Numlock, value: 'on'}
+  - { file: klaunchrc, group: BusyCursorSettings, key: Bouncing, value: false }
+  - { file: klaunchrc, group: FeedbackStyle, key: BusyCursor, value: false }
+  - { file: kwinrc, group: Plugins, key: shakecursorEnabled, value: false }
+  - { file: plasmarc, group: OSD, key: kbdLayoutChangedEnabled, value: false }
+  - { file: kdeglobals, group: General, key: font, value: 'Ubuntu,10,-1,5,50,0,0,0,0,0' }
+  - { file: kdeglobals, group: General, key: menuFont, value: 'Ubuntu,10,-1,5,50,0,0,0,0,0' }
+  - { file: kdeglobals, group: General, key: smallFont, value: 'Ubuntu,8,-1,5,50,0,0,0,0,0' }
+  - { file: kdeglobals, group: General, key: toolbarFont, value: 'Ubuntu,10,-1,5,50,0,0,0,0,0' }
+  - { file: kdeglobals, group: General, key: activeFont, value: 'Ubuntu,10,-1,5,50,0,0,0,0,0' }
+  - { file: kdeglobals, group: General, key: taskbarFont, value: 'Ubuntu,10,-1,5,50,0,0,0,0,0' }
+  - { file: kdeglobals, group: General, key: desktopFont, value: 'Ubuntu,10,-1,5,50,0,0,0,0,0' }
+  - { file: kdeglobals, group: General, key: fixed, value: 'JetBrainsMono Nerd Font,10,-1,5,50,0,0,0,0,0' }
+  - { file: kdeglobals, group: General, key: XftAntialias, value: 'true' }
+  - { file: kdeglobals, group: General, key: XftHinting, value: 'true' }
+  - { file: kdeglobals, group: General, key: XftHintStyle, value: 'hintfull' }
+  - { file: kdeglobals, group: General, key: XftSubPixel, value: 'rgb' }
+  - { file: kwalletrc, group: Wallet, key: Enabled, value: false }
+
+gnome_settings:
+  - { group: "org.gnome.desktop.peripherals.mouse", key: "accel-profile", value: "'flat'" }
+  - { group: "org.gnome.desktop.interface", key: "document-font-name", value: "'Ubuntu 11'" }
+  - { group: "org.gnome.desktop.interface", key: "font-antialiasing", value: "'rgba'" }
+  - { group: "org.gnome.desktop.interface", key: "font-hinting", value: "'full'" }
+  - { group: "org.gnome.desktop.interface", key: "font-name", value: "'Ubuntu 11'" }
+  - { group: "org.gnome.desktop.interface", key: "monospace-font-name", value: "'JetBrains Mono 11'" }
+  - { group: "org.gnome.desktop.interface", key: "toolkit-accessibility", value: "false" }
+  - { group: "org.gnome.desktop.peripherals.keyboard", key: "numlock-state", value: "true" }
+  - { group: "org.gnome.desktop.peripherals.keyboard", key: "remember-numlock-state", value: "true" }
+  - { group: "org.gnome.desktop.screensaver", key: "lock-enabled", value: "false" }
+  - { group: "org.gnome.settings-daemon.plugins.housekeeping", key: "donation-reminder-enabled", value: "false" }
+  - { group: "org.gnome.desktop.wm.preferences", key: "button-layout", value: "'appmenu:minimize,maximize,close'" }
+  - { group: "org.gnome.shell", key: "enabled-extensions", value: "['background-logo@fedorahosted.org', 'dash-to-dock@micxgx.gmail.com', 'clipboard-indicator@tudmotu.com', 'ding@rastersoft.com']" }
+  - { group: "org.gnome.desktop.input-sources", key: "mru-sources", value: "[('xkb', 'ru'), ('xkb', 'us')]" }
+  - { group: "org.gnome.desktop.input-sources", key: "sources", value: "[('xkb', 'ru'), ('xkb', 'us')]" }
+  - { group: "org.gnome.desktop.input-sources", key: "xkb-options", value: "['kpdl:dotoss', 'grp:alt_shift_toggle']" }
+  - { group: "org.gnome.shell", key: "favorite-apps", value: "['brave-browser.desktop', 'obsidian.desktop', 'md.obsidian.Obsidian.desktop', 'spotify-launcher.desktop', 'com.spotify.Client.desktop', 'steam.desktop', 'code.desktop', 'com.obsproject.Studio.desktop', 'org.gnome.Nautilus.desktop', 'org.gnome.Software.desktop', 'org.gnome.TextEditor.desktop', 'org.gnome.Calculator.desktop']" }
+  - { group: "org.gnome.system.locale", key: "region", value: "'ru_RU.UTF-8'" }

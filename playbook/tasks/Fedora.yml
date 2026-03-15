@@ -21,13 +21,20 @@
   become: no
   when: desktop_is_kde
 
-- name: "KDE: Настроить язык интерфейса в ~/.config/plasma-localerc"
+- name: "KDE: Настроить интерфейса"
   become_user: "{{ regular_user }}"
   become: no
   shell: >
     kwriteconfig6 --file {{ item.file }} --group {{ item.group }} --key {{ item.key }} {{ item.value }}
-  loop: "{{ kde_lang }}"
+  loop: "{{ kde_settings }}"
   when: desktop_is_kde
+
+- name: "GNOME: Настроить интерфейс"
+  become_user: "{{ regular_user }}"
+  become: no
+  shell: gsettings set {{ item.group }} {{ item.key }} {{ item.value | quote }} 
+  loop: "{{ gnome_settings }}"
+  when: desktop_is_gnome
 
 - name: Определить версию Fedora
   command: rpm -E %fedora
@@ -354,13 +361,6 @@
     mode: '0644'
   become: yes
   when: desktop_is_kde
-
-- name: "GNOME: Настроить интерфейс"
-  become_user: "{{ regular_user }}"
-  become: no
-  shell: gsettings set {{ item.group }} {{ item.key }} {{ item.value | quote }} 
-  loop: "{{ gnome_settings }}"
-  when: desktop_is_gnome
 
 - name: Сообщить о необходимости перезагрузки
   debug:
