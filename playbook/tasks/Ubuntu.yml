@@ -232,6 +232,10 @@
   become: no
   when: desktop_is_gnome
 
+- name: Генерация ssh ключа
+  shell: ssh-keygen -N "" -a 32 -f "{{ ansible_facts['env']['HOME'] }}/.ssh/id_ed25519"
+  become: no
+
 - name: Сообщить о необходимости перезагрузки
   debug:
     msg: "Система была обновлена. Рекомендуется перезагрузить компьютер."
