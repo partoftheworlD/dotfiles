@@ -75,6 +75,24 @@ remove_packages:
   - gnome-sound-recorder
   - shotwell
   - decibels
+  - plasma-welcome
+  - kmail
+  - neochat
+  - kmahjong
+  - kmines
+  - dragon
+  - elisa
+  - kamoso
+  - kaddressbook
+  - korganizer
+  - ktnef
+  - contactthemeeditor
+  - contactprintthemeeditor
+  - headerthemeeditor
+  - sieveditor
+  - rygel-preferences
+  - kmouth
+  
 
 enable_services:
   - sshd

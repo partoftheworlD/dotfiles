@@ -267,7 +267,7 @@
   become: yes
 
 - name: Установить SpotX
-  shell: timeout 60 bash <(curl -sSL https://spotx-official.github.io/run.sh) -f
+  shell: bash <(curl -sSL https://spotx-official.github.io/run.sh | psub) -s -- -f
   become: yes
   register: spotx_install
   changed_when:
