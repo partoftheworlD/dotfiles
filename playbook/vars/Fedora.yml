@@ -14,21 +14,17 @@ dnf_packages:
   - lutris
   - steam
   - gamemode
-  - gnome-tweaks
   - splix
   - tldr
   - vlc
   - libavcodec-freeworld
   - ffmpeg-libs
   - yaru-theme
-  - xdg-terminal-exec
-  - seahorse
   - fish
   - dnf-plugins-core
   - openssh-server
   - fwupd
   - flatpak
-  - python3-pip
   - ffmpeg-free
   - mesa-va-drivers
   - mesa-vdpau-drivers
@@ -48,6 +44,14 @@ dnf_packages:
   - adobe-source-serif-pro-fonts
   - adobe-source-code-pro-fonts
   - google-noto-emoji-fonts
+
+gnome_packages:
+  - gnome-tweaks
+  - seahorse
+  - xdg-terminal-exec
+
+kde_packages:
+
 
 flatpak_packages:
   - com.heroicgameslauncher.hgl
@@ -92,7 +96,6 @@ remove_packages:
   - sieveditor
   - rygel-preferences
   - kmouth
-  
 
 enable_services:
   - sshd

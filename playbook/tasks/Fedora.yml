@@ -90,6 +90,20 @@
   retries: 3
   changed_when: "'Nothing to do.' not in install_result.stdout"
 
+- name: Установить пакеты для Gnome
+  package:
+    name: "{{ gnome_packages }}"
+    state: present
+  become: yes
+  when: desktop_is_gnome
+
+- name: Установить пакеты для KDE
+  package:
+    name: "{{ kde_packages }}"
+    state: present
+  become: yes
+  when: desktop_is_kde
+
 - name: Добавить Flathub репозиторий
   flatpak_remote:
     name: flathub
