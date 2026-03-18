@@ -39,6 +39,15 @@ dnf_packages:
   - p7zip 
   - p7zip-plugins
   - qbittorrent
+  - flac
+  - libvpx
+  - mangohud
+  - libwebp
+  - opus
+  - adobe-source-sans-pro-fonts
+  - adobe-source-serif-pro-fonts
+  - adobe-source-code-pro-fonts
+  - google-noto-emoji-fonts
 
 flatpak_packages:
   - com.heroicgameslauncher.hgl

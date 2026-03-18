@@ -18,8 +18,6 @@ pacman_packages:
   - libwebp
   - flac
   - opus
-  - libavif
-  - libheif
   - libvpx
   - tmux
   - btop
@@ -30,8 +28,7 @@ pacman_packages:
   - neovim
   - gamescope
   - lutris
-  - steam
-  - steam-devices 
+  - steam 
   - gamemode
   - less
   - spotify-launcher
@@ -74,6 +71,7 @@ pacman_packages:
   - noto-fonts-cjk
   - 7zip
   - openssh
+  - dig
 
 # Пакеты для установки через AUR (с помощью yay)
 aur_packages:
