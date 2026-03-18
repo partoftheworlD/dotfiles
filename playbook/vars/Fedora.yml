@@ -38,6 +38,7 @@ dnf_packages:
   - pipx
   - p7zip 
   - p7zip-plugins
+  - qbittorrent
 
 flatpak_packages:
   - com.heroicgameslauncher.hgl
