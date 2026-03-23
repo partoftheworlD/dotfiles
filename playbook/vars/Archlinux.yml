@@ -105,6 +105,7 @@ remove_packages:
   - vim-runtime
   - decibels
   - gnome-software
+  - gnome-user-share
 
 # Системные сервисы для включения и запуска
 enable_services:

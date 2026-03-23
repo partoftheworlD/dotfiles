@@ -47,7 +47,6 @@ flatpak_packages:
   - com.vysp3r.ProtonPlus
   - md.obsidian.Obsidian
 #  - com.spotify.Client
-  - com.github.tchx84.Flatseal
   - com.mattjakeman.ExtensionManager
 
 remove_packages:
