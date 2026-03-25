@@ -49,9 +49,11 @@
     state: present
     create: yes
   loop:
-    - "max_parallel_downloads=10"
+    - "max_parallel_downloads=8"
     - "clean_requirements_on_remove=True"
     - "skip_if_unavailable=True"
+    - "timeout=5"
+    - "minrate=512k"
   become: yes
 
 - name: Отключить ненужные репозитории
