@@ -2,6 +2,7 @@
 # Пакеты для установки через pacman
 pacman_packages:
   - linux-zen
+  - linux-lts
   - flatpak
   - fwupd
   - git
