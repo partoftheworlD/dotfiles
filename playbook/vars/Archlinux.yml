@@ -72,7 +72,7 @@ pacman_packages:
   - noto-fonts-cjk
   - 7zip
   - openssh
-  - dig
+  - bind
 
 # Пакеты для установки через AUR (с помощью yay)
 aur_packages:
