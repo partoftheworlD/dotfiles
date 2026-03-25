@@ -1,0 +1,222 @@
+---
+- name: Получить список процессов для определения DE
+  command: ps -e
+  register: running_processes
+  changed_when: false
+  become: no
+
+- name: Определить, используется ли GNOME
+  set_fact:
+    desktop_is_gnome: "{{ 'gnome-shell' in running_processes.stdout }}"
+
+- name: Определить, используется ли KDE Plasma
+  set_fact:
+    desktop_is_kde: "{{ 'plasmashell' in running_processes.stdout }}"
+
+- name: "KDE: Настроить язык интерфейса"
+  become_user: "{{ regular_user }}"
+  become: no
+  shell: >
+    kwriteconfig6 --file {{ item.file }} --group {{ item.group }} --key {{ item.key }} {{ item.value }}
+  loop: "{{ kde_settings }}"
+  when: desktop_is_kde
+
+- name: "GNOME: Настроить интерфейс"
+  become_user: "{{ regular_user }}"
+  become: no
+  shell: gsettings set {{ item.group }} {{ item.key }} {{ item.value | quote }} 
+  loop: "{{ gnome_settings }}"
+  when: desktop_is_gnome
+
+- name: Добавить архитектуру i386
+  command: dpkg --add-architecture i386
+  become: yes
+
+- name: Переключить Debian на testing (main, contrib, non-free, non-free-firmware)
+  copy:
+    dest: /etc/apt/sources.list
+    content: |
+      deb http://deb.debian.org/debian/ testing main contrib non-free non-free-firmware
+      deb-src http://deb.debian.org/debian/ testing main contrib non-free non-free-firmware
+      deb http://security.debian.org/debian-security testing-security main contrib non-free non-free-firmware
+      deb-src http://security.debian.org/debian-security testing-security main contrib non-free non-free-firmware
+  become: yes
+
+- name: Полное обновление системы
+  apt:
+    upgrade: dist
+    update_cache: yes
+  become: yes
+  register: system_upgraded
+
+- name: Установить hostname
+  hostname:
+    name: debian
+  become: yes
+
+- name: Установить пакеты из списка apt
+  apt:
+    name: "{{ apt_packages }}"
+    state: present
+  become: yes
+  ignore_errors: yes
+  
+- name: Установить пакеты для Gnome
+  package:
+    name: "{{ gnome_packages }}"
+    state: present
+  become: yes
+  when: desktop_is_gnome
+
+- name: Установить пакеты для KDE
+  package:
+    name: "{{ kde_packages }}"
+    state: present
+  become: yes
+  when: desktop_is_kde
+
+- name: Добавить Flathub репозиторий
+  flatpak_remote:
+    name: flathub
+    state: present
+    flatpakrepo_url: https://dl.flathub.org/repo/flathub.flatpakrepo
+    method: user
+  when: flatpak_packages | length > 0
+
+- name: Замаскировать openh264
+  command: flatpak mask org.freedesktop.Platform.openh264
+  become: yes
+
+- name: Восстановить Flatpak
+  command: flatpak repair
+  changed_when: false
+
+- name: Обновить Flatpak
+  command: flatpak update -y
+  changed_when: false
+
+- name: Установить Flatpak-приложения
+  flatpak:
+    name: "{{ flatpak_packages }}"
+    state: present
+    method: user
+  when: flatpak_packages | length > 0
+
+- name: Установка Brave
+  shell: curl -fsS https://dl.brave.com/install.sh | sh
+  become: yes
+  register: brave_install
+  changed_when: "'already installed' not in brave_install.stdout"
+
+- name: Скачать deb-пакет VSCode
+  get_url:
+    url: https://update.code.visualstudio.com/latest/linux-deb-x64/stable
+    dest: /tmp/code.deb
+    timeout: 30
+  become: no
+
+- name: Установить VSCode из deb
+  apt:
+    deb: /tmp/code.deb
+  become: yes
+
+- name: Обновить кеш шрифтов
+  command: fc-cache -f
+  become: yes
+  changed_when: false
+
+- name: Скопировать конфиг tmux
+  copy:
+    src: files/tmux/.tmux.conf
+    dest: "{{ ansible_facts['env']['HOME'] }}/.tmux.conf"
+    backup: yes
+    mode: '0644'
+  become: no
+
+- name: Установить SpotX
+  shell: bash <(curl -sSL https://spotx-official.github.io/run.sh) -f --installdeb
+  become: yes
+  args:
+    executable: /bin/bash
+  register: spotx_install
+  changed_when: "'already been installed' not in spotx_install.stderr"
+  failed_when:
+    - spotx_install.rc != 0
+    - "'already been installed' not in spotx_install.stderr"
+
+- name: Установка stable toolchain Rust
+  command: rustup toolchain install stable
+  become: no
+
+- name: Удалить ненужные пакеты
+  apt:
+    name: "{{ remove_packages }}"
+    state: absent
+    purge: yes
+  become: yes
+  ignore_errors: yes
+
+- name: Сменить shell на fish
+  user:
+    name: "{{ regular_user }}"
+    shell: /usr/bin/fish
+  become: yes
+
+- name: Создать директорию конфигурации fish
+  file:
+    path: "{{ ansible_facts['env']['HOME'] }}/.config/fish"
+    state: directory
+    mode: '0755'
+  become: no
+
+- name: Скопировать конфиг fish
+  copy:
+    src: files/fish/config.fish
+    dest: "{{ ansible_facts['env']['HOME'] }}/.config/fish/config.fish"
+    mode: '0644'
+    backup: yes
+  become: no
+
+- name: Создать директорию конфигурации neovim
+  file:
+    path: "{{ ansible_facts['env']['HOME'] }}/.config/nvim"
+    state: directory
+    mode: '0755'
+  become: no
+
+- name: Скопировать конфиг neovim
+  copy:
+    src: ./files/neovim/init.lua
+    dest: "{{ ansible_facts['env']['HOME'] }}/.config/nvim/init.lua"
+    mode: '0644'
+  become: no
+
+- name: Установить Rust lsp
+  shell: rustup default stable && rustup component add rust-analyzer
+  become: no
+
+- name: Автоудаление ненужных зависимостей
+  command: apt autoremove -y
+  become: yes
+  changed_when: false
+
+- name: Очистить кеш apt
+  command: apt clean all
+  become: yes
+  changed_when: false
+
+- name: Применить настройки GNOME
+  script:
+    cmd: files/gnome/gnome_settings.sh
+    executable: /bin/bash
+  become_user: "{{ regular_user }}"
+  become: no
+  when: desktop_is_gnome
+
+- name: Генерация ssh ключа
+  shell: ssh-keygen -N "" -a 32 -f "{{ ansible_facts['env']['HOME'] }}/.ssh/id_ed25519"
+  become: no
+
+- name: Сообщить о необходимости перезагрузки
+  debug:
+    msg: "Система была обновлена. Рекомендуется перезагрузить компьютер."
