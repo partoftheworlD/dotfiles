@@ -154,8 +154,9 @@
   become_user: "{{ regular_user }}"
   become: no
   when: (aur_packages | default([], true)) | length > 0
+  async: 600
+  poll: 0
   register: aur_install
-  changed_when: "'nothing to do' not in aur_install.stdout"
 
 - name: Установить Gnome пакеты из AUR
   shell: yay -S --noconfirm {{ gnome_aur_packages | join(' ') }}
@@ -164,6 +165,9 @@
   when: 
     - desktop_is_gnome
     - (gnome_aur_packages | default([], true)) | length > 0
+  async: 600
+  poll: 0
+  register: gnome_aur_install
 
 - name: Установить KDE пакеты из AUR
   shell: yay -S --noconfirm {{ kde_aur_packages | join(' ') }}
@@ -172,6 +176,9 @@
   when:
     - desktop_is_kde
     - (kde_aur_packages | default([], true)) | length > 0
+  async: 600
+  poll: 0
+  register: kde_aur_install
 
 - name: Добавить Flathub репозиторий для пользователя
   flatpak_remote:
@@ -199,6 +206,9 @@
     state: present
     method: user
   when: (flatpak_packages | default([], true)) | length > 0
+  register: flatpak_install
+  async: 600
+  poll: 0
 
 - name: Обновить кеш шрифтов
   command: fc-cache -f
@@ -233,6 +243,22 @@
     dest: "{{ ansible_facts['env']['HOME'] }}/.config/nvim/init.lua"
     mode: '0644'
   become: no
+
+- name: Ждем завершения фоновых задач
+  become: no
+  async_status:
+    jid: "{{ item.ansible_job_id }}"
+  register: job_results
+  until: job_results.finished
+  retries: 120
+  delay: 5
+  loop:
+    - "{{ aur_install | default({}) }}"
+    - "{{ kde_pacman_install | default({}) }}"
+    - "{{ gnome_pacman_install | default({}) }}"
+    - "{{ kde_aur_install | default({}) }}"
+    - "{{ gnome_aur_install | default({}) }}"
+  when: item.ansible_job_id is defined
 
 - name: Установить Rust lsp
   shell: rustup default stable && rustup component add rust-analyzer
