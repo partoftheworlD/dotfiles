@@ -124,8 +124,6 @@
 - name: Установка Brave
   shell: curl -fsS https://dl.brave.com/install.sh | sh
   become: yes
-  register: brave_install
-  changed_when: "'already installed' not in brave_install.stdout"
 
 - name: Скачать deb-пакет VSCode
   get_url:
@@ -162,10 +160,6 @@
   failed_when:
     - spotx_install.rc != 0
     - "'already been installed' not in spotx_install.stderr"
-
-- name: Установка stable toolchain Rust
-  command: rustup toolchain install stable
-  become: no
 
 - name: Удалить ненужные пакеты
   apt:
@@ -210,6 +204,10 @@
     mode: '0644'
   become: no
 
+- name: Установка stable toolchain Rust
+  command: rustup toolchain install stable
+  become: no
+
 - name: Установить Rust lsp
   shell: rustup default stable && rustup component add rust-analyzer
   become: no
@@ -223,14 +221,6 @@
   command: apt clean all
   become: yes
   changed_when: false
-
-- name: Применить настройки GNOME
-  script:
-    cmd: files/gnome/gnome_settings.sh
-    executable: /bin/bash
-  become_user: "{{ regular_user }}"
-  become: no
-  when: desktop_is_gnome
 
 - name: Генерация ssh ключа
   shell: ssh-keygen -N "" -a 32 -f "{{ ansible_facts['env']['HOME'] }}/.ssh/id_ed25519"
