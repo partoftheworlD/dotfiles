@@ -102,8 +102,6 @@ remove_packages:
   - gnome-boxes
   - gnome-console
   - evolution
-  - vim
-  - vim-runtime
   - decibels
   - gnome-software
   - gnome-user-share
