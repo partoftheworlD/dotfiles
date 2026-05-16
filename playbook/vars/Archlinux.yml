@@ -36,7 +36,6 @@ pacman_packages:
   - tuned
   - tuned-ppd
   - cups
-  - splix
   - obs-studio
   - obsidian
   - pacman-contrib
@@ -81,6 +80,7 @@ aur_packages:
   - visual-studio-code-bin
   - spotx-git
   - arch-update
+  - splix
 
 # Пакеты для установки через Flatpak
 flatpak_packages:
