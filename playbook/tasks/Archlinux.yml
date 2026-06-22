@@ -76,7 +76,7 @@
 
 - name: Сгенерировать список зеркал
   command: >
-    reflector --verbose --protocol https,http --latest 50 -n 5
+    reflector --verbose --protocol https,http --latest 30 -n 5
     --sort rate --save /etc/pacman.d/mirrorlist
   become: yes
 
@@ -158,7 +158,7 @@
   poll: 0
   register: aur_install
 
-- name: Установить Gnome пакеты из AUR
+- name: Установить пакеты для Gnome из AUR
   shell: yay -S --noconfirm {{ gnome_aur_packages | join(' ') }}
   become_user: "{{ regular_user }}"
   become: no
@@ -169,7 +169,7 @@
   poll: 0
   register: gnome_aur_install
 
-- name: Установить KDE пакеты из AUR
+- name: Установить пакеты для KDE из AUR
   shell: yay -S --noconfirm {{ kde_aur_packages | join(' ') }}
   become_user: "{{ regular_user }}"
   become: no
@@ -180,7 +180,7 @@
   poll: 0
   register: kde_aur_install
 
-- name: Добавить Flathub репозиторий для пользователя
+- name: Добавить Flathub репозиторий
   flatpak_remote:
     name: flathub
     state: present
@@ -316,13 +316,13 @@
   become: no
   changed_when: false
 
-- name: Удалить временный файл sudoers
+- name: Удалить временное расширение прав для Ansible
   file:
     path: /etc/sudoers.d/10-ansible-pacman
     state: absent
   become: yes
 
-- name: Удалить иконки нежелательных приложений
+- name: Удалить иконки ненужных приложений
   shell: |
     files=$(grep -rE "Name=(Avahi|Electron|Qt)" /usr/share/applications/ | awk -F":" '{print $1}')
     if [ -n "$files" ]; then

@@ -10,16 +10,7 @@ pacman_packages:
   - ffmpeg
   - gst-plugins-base
   - gst-plugins-good
-  - gst-plugins-bad
-  - gst-plugins-ugly
   - libva-mesa-driver
-  - gst-libav
-  - aom
-  - dav1d
-  - libwebp
-  - flac
-  - opus
-  - libvpx
   - tmux
   - btop
   - vlc
@@ -72,6 +63,9 @@ pacman_packages:
   - 7zip
   - openssh
   - bind
+  - wireshark-qt
+  - mtr
+  - zenmap
 
 # Пакеты для установки через AUR (с помощью yay)
 aur_packages:
