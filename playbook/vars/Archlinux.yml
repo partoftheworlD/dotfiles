@@ -32,7 +32,6 @@ pacman_packages:
   - tldr
   - snapper
   - blanket
-  - apparmor
   - grub-btrfs
   - inotify-tools
   - libva-mesa-driver
@@ -105,7 +104,6 @@ enable_services:
   - tuned-ppd
   - paccache.timer
   - firewalld
-  - apparmor
   - grub-btrfsd
   - sshd
 
