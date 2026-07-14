@@ -71,7 +71,6 @@ aur_packages:
   - brave-bin
   - visual-studio-code-bin
   - spotx-git
-  - arch-update
   - splix
 
 # Пакеты для установки через Flatpak
