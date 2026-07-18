@@ -51,7 +51,6 @@ pacman_packages:
   - mangohud
   - nftables
   - firewalld
-  - rustup
   - ripgrep
   - firewall-config
   - ttf-jetbrains-mono-nerd
@@ -64,6 +63,7 @@ pacman_packages:
   - wireshark-qt
   - mtr
   - zenmap
+  - amd-ucode
 
 # Пакеты для установки через AUR (с помощью yay)
 aur_packages:
