@@ -60,12 +60,10 @@ pacman_packages:
   - 7zip
   - openssh
   - bind
-  - wireshark-qt
   - mtr
-  - zenmap
   - amd-ucode
 
-# Пакеты для установки через AUR (с помощью yay)
+# Пакеты для установки через AUR
 aur_packages:
   - btrfs-assistant
   - brave-bin
