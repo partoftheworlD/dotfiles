@@ -76,8 +76,7 @@
 
 - name: Сгенерировать список зеркал
   command: >
-    reflector --verbose --protocol https,http --latest 30 -n 5
-    --sort rate --save /etc/pacman.d/mirrorlist
+    reflector --protocol https,http --latest 35 -n 5 --sort rate --save /etc/pacman.d/mirrorlist
   become: yes
 
 - name: Настроить reflector
@@ -91,16 +90,8 @@
   become: yes
 
 - name: Полное обновление системы
-  command: pacman -Syu --noconfirm
+  command: pacman -Syu base-devel git --noconfirm
   register: system_upgraded
-  become: yes
-
-- name: Установить base-devel и git
-  package:
-    name:
-      - base-devel
-      - git
-    state: present
   become: yes
 
 - name: Клонировать репозиторий yay-bin
@@ -150,7 +141,7 @@
   when: desktop_is_kde
 
 - name: Установить пакеты из AUR
-  shell: yay -S --noconfirm {{ aur_packages | join(' ') }}
+  shell: yay -Syu --noconfirm {{ aur_packages | join(' ') }}
   become_user: "{{ regular_user }}"
   become: no
   when: (aur_packages | default([], true)) | length > 0
@@ -159,7 +150,7 @@
   register: aur_install
 
 - name: Установить пакеты для Gnome из AUR
-  shell: yay -S --noconfirm {{ gnome_aur_packages | join(' ') }}
+  shell: yay -Syu --noconfirm {{ gnome_aur_packages | join(' ') }}
   become_user: "{{ regular_user }}"
   become: no
   when: 
@@ -170,7 +161,7 @@
   register: gnome_aur_install
 
 - name: Установить пакеты для KDE из AUR
-  shell: yay -S --noconfirm {{ kde_aur_packages | join(' ') }}
+  shell: yay -Syu --noconfirm {{ kde_aur_packages | join(' ') }}
   become_user: "{{ regular_user }}"
   become: no
   when:
@@ -210,7 +201,7 @@
   async: 600
   poll: 0
 
-- name: Обновить кеш шрифтов
+- name: Обновить кэш шрифтов
   command: fc-cache -f
   changed_when: false
   become: yes
@@ -310,7 +301,7 @@
   changed_when: false
   become: yes
 
-- name: Очистить кеш yay
+- name: Очистить кэш yay
   command: yay -Sc --noconfirm
   become_user: "{{ regular_user }}"
   become: no
@@ -367,7 +358,7 @@
     mode: '0644'
   become: no
 
-- name: Обновить grub для замены ядра на linux-zen
+- name: Обновить grub для замены ядра
   shell: grub-mkconfig -o /boot/grub/grub.cfg
   become: yes
 

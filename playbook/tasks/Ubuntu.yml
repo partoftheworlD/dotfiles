@@ -137,7 +137,7 @@
     deb: /tmp/code.deb
   become: yes
 
-- name: Обновить кеш шрифтов
+- name: Обновить кэш шрифтов
   command: fc-cache -f
   become: yes
   changed_when: false
@@ -217,7 +217,7 @@
   become: yes
   changed_when: false
 
-- name: Очистить кеш apt
+- name: Очистить кэш apt
   command: apt clean all
   become: yes
   changed_when: false
