@@ -29,8 +29,6 @@ apt_packages:
   - fwupd
   - fonts-adobe-sourcesans3
   - wget
-  - cabextract
-  - fontconfig
   - python3-pip
   - apt-transport-https
   - ca-certificates
@@ -41,6 +39,8 @@ apt_packages:
   - ripgrep
   - rustup
   - apt-file
+  - mtr
+  - mangohud
 
 flatpak_packages:
   - com.heroicgameslauncher.hgl
