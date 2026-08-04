@@ -49,6 +49,7 @@ pacman_packages:
   - plasma-workspace-wallpapers
   - gnome-backgrounds
   - cups
+  - anki
 
 # Пакеты для установки через AUR
 aur_packages:
