@@ -24,7 +24,7 @@
 
 - name: Определить используемое окружение
   set_fact:
-    desktop_is_gnome: "{{ 'gnome-shell' in running_processes.stdout }}"
+    # desktop_is_gnome: "{{ 'gnome-shell' in running_processes.stdout }}"
     desktop_is_kde: "{{ 'plasmashell' in running_processes.stdout }}"
 
 - name: "KDE: Настроить интерфейс"
@@ -42,13 +42,6 @@
     mode: '0644'
   become: yes
   when: desktop_is_kde
-
-- name: "GNOME: Настроить интерфейс"
-  become_user: "{{ regular_user }}"
-  become: yes
-  shell: gsettings set {{ item.group }} {{ item.key }} {{ item.value | quote }}
-  loop: "{{ gnome_settings }}"
-  when: desktop_is_gnome
 
 - name: Установить язык интерфейса
   command: localectl set-locale LANG=ru_RU.UTF-8
@@ -125,13 +118,6 @@
     extra_args: --needed --noconfirm
   become: yes
 
-- name: Установить пакеты для Gnome
-  community.general.pacman:
-    name: "{{ gnome_packages }}"
-    extra_args: --needed --noconfirm
-  become: yes
-  when: desktop_is_gnome
-
 - name: Установить пакеты для KDE
   community.general.pacman:
     name: "{{ kde_packages }}"
@@ -147,17 +133,6 @@
   async: 600
   poll: 0
   register: aur_install
-
-- name: Установить пакеты из AUR для Gnome
-  shell: yay -Syu {{ gnome_aur_packages | join(' ') }} --noconfirm
-  become_user: "{{ regular_user }}"
-  become: no
-  when:
-    - desktop_is_gnome
-    - (gnome_aur_packages | default([], true)) | length > 0
-  async: 600
-  poll: 0
-  register: gnome_aur_install
 
 - name: Установить пакеты из AUR для KDE
   shell: yay -Syu {{ kde_aur_packages | join(' ') }} --noconfirm
@@ -210,8 +185,6 @@
     - "{{ aur_install | default({}) }}"
     - "{{ kde_pacman_install | default({}) }}"
     - "{{ kde_aur_install | default({}) }}"
-    - "{{ gnome_pacman_install | default({}) }}"
-    - "{{ gnome_aur_install | default({}) }}"
   when: item.ansible_job_id is defined
   become: no
 
@@ -261,23 +234,14 @@
   become: no
   when: desktop_is_kde
 
-- name: Удалить ненужеые пакеты
+- name: Удалить ненужеые и осиротевшие пакеты
   shell: |
     for pkg in {{ remove_packages | join(' ') }}; do
       if pacman -Qi "$pkg" &>/dev/null; then
         pacman -Rsn "$pkg" --noconfirm
       fi
     done
-  changed_when: false
-  become: yes
-
-- name: Удалить debug пакеты
-  shell: pacman -Rsn $(pacman -Qq | rg "\-debug") --noconfirm
-  changed_when: false
-  become: yes
-
-- name: Очистить осиротевшие пакеты
-  shell: |
+    pacman -Rsn $(pacman -Qq | rg "\-debug") --noconfirm
     orphans=$(pacman -Qtdq)
     if [ -n "$orphans" ]; then
       pacman -Rsn $orphans --noconfirm
@@ -295,7 +259,7 @@
   become: yes
 
 - name: Очистить кэш yay
-  command: yay -Sc --noconfirm
+  command: yay -Scc --noconfirm
   become_user: "{{ regular_user }}"
   become: no
   changed_when: false
