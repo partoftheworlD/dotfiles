@@ -66,7 +66,7 @@ ipv4_servers = true
 ipv6_servers = false
 
 # Use servers implementing the DNSCrypt and PQDNSCrypt protocols
-dnscrypt_servers = true
+dnscrypt_servers = false
 
 # Use servers implementing the DNS-over-HTTPS protocol
 doh_servers = true
@@ -416,7 +416,7 @@ netprobe_address = '9.9.9.9:53'
 ## This makes things faster when there is no IPv6 connectivity, but can
 ## also cause reliability issues with some stub resolvers.
 
-block_ipv6 = false
+block_ipv6 = true
 
 
 ## Immediately respond to A and AAAA queries for host names without a domain name
