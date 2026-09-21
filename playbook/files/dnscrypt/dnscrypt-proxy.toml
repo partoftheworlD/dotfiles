@@ -88,12 +88,42 @@ require_nofilter = false
 
 # Server names to avoid even if they match all criteria
 disabled_server_names = [
+  'adguard-dns-family',
+  'adguard-dns-unfiltered-doh',
+  'adguard-dns-unfiltered',
+  'adguard-dns',
+  'alidns-doh',
+  'circl-doh', 'cloudflare', 'la-contre-voie', 'qihoo360-doh',
   'cisco-doh',
   'cisco-familyshield',
   'cisco-sandbox',
   'cisco',
+  'cleanbrowsing-adult',
+  'cleanbrowsing-family',
+  'cleanbrowsing-security',
+  'controld-block-malware-ad-social',
+  'cs-austria',
+  'cs-ore',
+  'dnscry.pt-bengaluru-ipv4',
+  'dnscry.pt-doh-bengaluru-ipv4',
+  'dnscry.pt-doh-kyiv-ipv4',
   'dnscry.pt-doh-kyiv02-ipv4',
-  'dnscry.pt-kyiv02-ipv4'
+  'dnscry.pt-doh-singapore-ipv4',
+  'dnscry.pt-kyiv-ipv4',
+  'dnscry.pt-kyiv02-ipv4',
+  'dnscrypt.ca-ipv4-doh',
+  'dnshome-de',
+  'doh.ibksturm',
+  'doh.tiarap.org',
+  'ibksturm',
+  'mullvad-adblock-doh',
+  'mullvad-all-doh',
+  'mullvad-base-doh',
+  'mullvad-doh',
+  'mullvad-extend-doh',
+  'mullvad-family-doh',
+  'plan9dns-mx-doh',
+  'searx-se-ipv4',
 ]
 
 
