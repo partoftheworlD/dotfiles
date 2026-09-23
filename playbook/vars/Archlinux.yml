@@ -55,14 +55,14 @@ pacman_packages:
 aur_packages:
   - btrfs-assistant
   - brave-bin
-  # - visual-studio-code-bin
-  -  vscodium-bin
-  -  vscodium-bin-marketplace
+  - visual-studio-code-bin
+  # -  vscodium-bin
+  # -  vscodium-bin-marketplace
   - spotx-git
   - splix
   # - ttf-ms-fonts
   - heroic-games-launcher-bin
-  - protonplus
+  # - protonplus
 
 # Пакеты, которые нужно удалить
 remove_packages:
