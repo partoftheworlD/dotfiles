@@ -58,7 +58,7 @@
     - { param: "#VerbosePkgLists", line: "VerbosePkgLists" }
   become: yes
 
-- name: Установить и настроить reflector
+- name: Установить reflector и настроить зеркала
   block:
     - name: Установить reflector
       package:
@@ -67,16 +67,8 @@
 
     - name: Сгенерировать список зеркал
       command: >
-        reflector --protocol https,http --latest 50 -n 5 --sort rate --save /etc/pacman.d/mirrorlist
+        reflector --protocol https,http --latest 35 -n 5 --sort rate --save /etc/pacman.d/mirrorlist
 
-    - name: Настроить reflector
-      lineinfile:
-        path: /etc/xdg/reflector/reflector.conf
-        regexp: "{{ item.regexp }}"
-        line: "{{ item.line }}"
-      loop:
-        - { regexp: '^--protocol', line: '--protocol https,http' }
-        - { regexp: '^--sort', line: '--sort rate' }
   become: yes
 
 - name: Установить базовые пакеты
