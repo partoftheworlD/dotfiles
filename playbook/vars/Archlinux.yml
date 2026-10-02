@@ -50,6 +50,7 @@ pacman_packages:
   - gnome-backgrounds
   - cups
   - anki
+  - dnscrypt-proxy
 
 # Пакеты для установки через AUR
 aur_packages:
