@@ -117,6 +117,9 @@ kde_packages:
   - kdf
   - plasma-pa
   - plasma-nm
+  - ffmpegthumbs
+  - kdegraphics-thumbnailers
+  - bluedevil
 
 kde_aur_packages:
   - konsave
