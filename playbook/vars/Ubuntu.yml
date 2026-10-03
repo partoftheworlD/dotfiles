@@ -42,6 +42,7 @@ apt_packages:
   - dnscrypt-proxy
   - btrfs-assistant
   - snapper
+  - 7zip
 
 flatpak_packages:
   - com.heroicgameslauncher.hgl
