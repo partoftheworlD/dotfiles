@@ -115,6 +115,8 @@ kde_packages:
   - qbittorrent
   - kio-admin
   - kdf
+  - plasma-pa
+  - plasma-nm
 
 kde_aur_packages:
   - konsave
