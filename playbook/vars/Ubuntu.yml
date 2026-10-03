@@ -39,6 +39,7 @@ apt_packages:
   - ripgrep
   - apt-file
   - mtr
+  - dnscrypt-proxy
 
 flatpak_packages:
   - com.heroicgameslauncher.hgl

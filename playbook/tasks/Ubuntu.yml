@@ -164,8 +164,11 @@
   loop:
     - { src: files/tmux/.tmux.conf, dest: "{{ ansible_facts['env']['HOME'] }}/.tmux.conf" }
     - { src: files/fish/config.fish, dest: "{{ ansible_facts['env']['HOME'] }}/.config/fish/config.fish" }
-    - { src: ./files/neovim/init.lua, dest: "{{ ansible_facts['env']['HOME'] }}/.config/nvim/init.lua" }
-  become: no
+    - { src: files/neovim/init.lua, dest: "{{ ansible_facts['env']['HOME'] }}/.config/nvim/init.lua" }
+    - { src: files/dnscrypt/dnscrypt-proxy.toml, dest: "/etc/dnscrypt-proxy/dnscrypt-proxy.toml" }
+    - { src: files/dnscrypt/cloaking-rules.txt, dest: "/etc/dnscrypt-proxy/cloaking-rules.txt" }
+    - { src: files/dnscrypt/blocked-names.txt, dest: "/etc/dnscrypt-proxy/blocked-names.txt" }
+  become: yes
 
 - name: Сменить shell на fish
   user:
