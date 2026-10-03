@@ -1,6 +1,8 @@
 ---
 # Для Ubuntu надо переключить sudo-rs на sudo
 # sudo update-alternatives --set sudo /usr/bin/sudo.ws
+# вернуть как было после релиза ansible-core v2.22:
+# sudo update-alternatives --auto sudo
 
 - name: Получить список процессов и определить GNOME
   command: ps -e
