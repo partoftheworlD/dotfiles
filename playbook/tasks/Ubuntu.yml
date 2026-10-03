@@ -33,7 +33,7 @@
 
 - name: Установить hostname
   hostname:
-    name: ubuntu
+    name: megabuntu
   become: yes
 
 - name: Удалить snapd и его компоненты
@@ -129,7 +129,7 @@
       apt:
         deb: /tmp/code.deb
 
-    - name: Установить SpotX
+    - name: Установить SpotX и Spotify
       shell: bash <(curl -sSL https://spotx-official.github.io/run.sh) -f --installdeb
       args:
         executable: /bin/bash

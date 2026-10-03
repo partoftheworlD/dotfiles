@@ -40,6 +40,8 @@ apt_packages:
   - apt-file
   - mtr
   - dnscrypt-proxy
+  - btrfs-assistant
+  - snapper
 
 flatpak_packages:
   - com.heroicgameslauncher.hgl
@@ -47,6 +49,7 @@ flatpak_packages:
   - md.obsidian.Obsidian
 #  - com.spotify.Client
   - com.mattjakeman.ExtensionManager
+  - net.ankiweb.Anki
 
 remove_packages:
   - firefox*
