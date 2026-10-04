@@ -209,5 +209,5 @@
     creates: "{{ ansible_facts['env']['HOME'] }}/.ssh/id_ed25519"
 
 - name: Перезагрузка
-  shell: sleep 2 && reboot
+  shell: sleep 2 && systemctl reboot -i
   become: yes
