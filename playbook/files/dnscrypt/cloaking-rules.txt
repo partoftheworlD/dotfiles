@@ -39,4 +39,5 @@ localhost                ::1
 # example.com           192.168.100.1
 # my.example.com        192.168.100.1
 
-www.instagram.com	157.240.17.174
+instagram.com      157.240.17.174
+www.instagram.com  157.240.17.174
