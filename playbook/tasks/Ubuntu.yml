@@ -120,16 +120,11 @@
       args:
         executable: /bin/bash
 
-    - name: Скачать deb-пакет VSCode
-      get_url:
-        url: https://update.code.visualstudio.com/latest/linux-deb-x64/stable
-        dest: /tmp/code.deb
-        timeout: 30
-      become: no
-
-    - name: Установить VSCode из deb
-      apt:
-        deb: /tmp/code.deb
+    - name: Установить VSCode
+      shell: |
+        wcurl https://update.code.visualstudio.com/latest/linux-deb-x64/stable -o /tmp/code.deb
+        apt install /tmp/code.deb
+      become: yes
 
     - name: Установить SpotX и Spotify
       shell: bash <(curl -sSL https://spotx-official.github.io/run.sh) -f --installdeb
@@ -167,6 +162,15 @@
     - { src: files/tmux/.tmux.conf, dest: "{{ ansible_facts['env']['HOME'] }}/.tmux.conf" }
     - { src: files/fish/config.fish, dest: "{{ ansible_facts['env']['HOME'] }}/.config/fish/config.fish" }
     - { src: files/neovim/init.lua, dest: "{{ ansible_facts['env']['HOME'] }}/.config/nvim/init.lua" }
+  become: no
+
+- name: Скопировать конфигурационные файлы
+  copy:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    backup: yes
+    mode: '0644'
+  loop:
     - { src: files/dnscrypt/dnscrypt-proxy.toml, dest: "/etc/dnscrypt-proxy/dnscrypt-proxy.toml" }
     - { src: files/dnscrypt/cloaking-rules.txt, dest: "/etc/dnscrypt-proxy/cloaking-rules.txt" }
     - { src: files/dnscrypt/blocked-names.txt, dest: "/etc/dnscrypt-proxy/blocked-names.txt" }
