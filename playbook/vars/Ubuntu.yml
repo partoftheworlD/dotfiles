@@ -48,7 +48,6 @@ flatpak_packages:
   - com.heroicgameslauncher.hgl
   - com.vysp3r.ProtonPlus
   - md.obsidian.Obsidian
-#  - com.spotify.Client
   - com.mattjakeman.ExtensionManager
   - net.ankiweb.Anki
 
