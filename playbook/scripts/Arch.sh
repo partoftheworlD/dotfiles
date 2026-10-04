@@ -1,6 +1,5 @@
 #!/bin/bash
-
-set -e
+set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 ROOT_DIR="$(dirname "$SCRIPT_DIR")"
@@ -12,13 +11,12 @@ if [ ! -d "$FILES" ]; then
 fi
 
 if [ "$EUID" -eq 0 ]; then
-  echo "Не запускай от root. Запусти от обычного пользователя."
+  echo "Не запускай от root"
   exit 1
 fi
 
 sudo -v
 
-# Определяем DE
 IS_KDE=false
 pgrep -x plasmashell >/dev/null && IS_KDE=true
 
