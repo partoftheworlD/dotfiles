@@ -80,6 +80,7 @@ remove_packages:
   - gnome-software
   - gnome-user-share
   - gnome-contacts
+  - kdf
 
 # Системные сервисы для включения и запуска
 enable_services:

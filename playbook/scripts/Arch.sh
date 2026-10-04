@@ -39,7 +39,7 @@ aur_packages=(
 remove_packages=(
   firefox htop epiphany totem gnome-tour snapshot gnome-maps rhythmbox
   gnome-music showtime gnome-boxes gnome-console evolution decibels
-  gnome-software gnome-user-share gnome-contacts
+  gnome-software gnome-user-share gnome-contacts kdf
 )
 
 enable_services=(
