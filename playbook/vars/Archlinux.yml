@@ -1,98 +1,99 @@
 ---
 # Пакеты для установки через pacman
 pacman_packages:
-  - fwupd
-  - git
-  - base-devel
-  - tmux
-  - btop
-  - vlc
-  - vlc-plugins-all
-  - gst-plugin-pipewire
-  - duperemove
-  - neovim
-  - wl-clipboard
-  - gamescope
-  - lutris
-  - lib32-gnutls
-  - umu-launcher
-  - steam
-  - less
-  - spotify-launcher
-  - tuned
-  - tuned-ppd
-  - obsidian
-  - pacman-contrib
-  - tldr
-  - snapper
-  - inotify-tools
-  - blanket
-  - grub-btrfs
-  - fish
-  - whois
-  - adobe-source-serif-fonts
-  - adobe-source-code-pro-fonts
-  - noto-fonts-emoji
-  - noto-fonts-cjk
-  - ttf-ubuntu-font-family
-  - ttf-jetbrains-mono-nerd
-  - inter-font
-  - ripgrep
-  - firewall-config
   - 7zip
-  - openssh
-  - ldns
-  - mtr
+  - adobe-source-code-pro-fonts
+  - adobe-source-serif-fonts
+  - anki
+  - base-devel
+  - blanket
   - bluez
-  - wireplumber
+  - btop
+  - cups
+  - dnscrypt-proxy
+  - duperemove
+  - ffmpeg
+  - firewall-config
+  - fish
+  - fwupd
+  - gamescope
+  - git
+  - gnome-backgrounds
+  - grub-btrfs
+  - gst-plugin-pipewire
+  - inotify-tools
+  - inter-font
+  - ldns
+  - less
+  - lib32-gnutls
+  - lutris
+  - mtr
+  - neovim
+  - noto-fonts-cjk
+  - noto-fonts-emoji
+  - obsidian
+  - openssh
+  - pacman-contrib
   - pipewire-pulse
   - plasma-workspace-wallpapers
-  - gnome-backgrounds
-  - cups
-  - anki
-  - dnscrypt-proxy
-  - ffmpeg
+  - qbittorrent
+  - ripgrep
+  - snapper
+  - spotify-launcher
+  - steam
+  - tldr
+  - tmux
+  - ttf-jetbrains-mono-nerd
+  - ttf-ubuntu-font-family
+  - tuned
+  - tuned-ppd
+  - umu-launcher
+  - vlc
+  - vlc-plugins-all
+  - whois
+  - wireplumber
+  - wl-clipboard
 
 # Пакеты для установки через AUR
 aur_packages:
-  - btrfs-assistant
   - brave-bin
-  - spotx-git
-  - splix
+  - btrfs-assistant
   - heroic-games-launcher-bin
+  - splix
+  - spotx-git
   # - protonplus
 
 # Пакеты, которые нужно удалить
 remove_packages:
-  - firefox
-  - htop
+  - decibels
   - epiphany
-  - totem
-  - gnome-tour
-  - snapshot
-  - gnome-maps
-  - rhythmbox
-  - gnome-music
-  - showtime
+  - evolution
+  - firefox
   - gnome-boxes
   - gnome-console
-  - evolution
-  - decibels
-  - gnome-software
-  - gnome-user-share
   - gnome-contacts
+  - gnome-maps
+  - gnome-music
+  - gnome-software
+  - gnome-tour
+  - gnome-user-share
+  - htop
   - kdf
+  - rhythmbox
+  - showtime
+  - snapshot
+  - totem
 
 # Системные сервисы для включения и запуска
 enable_services:
-  - tuned
-  - tuned-ppd
-  - paccache.timer
-  - firewalld
-  - grub-btrfsd
-  - sshd
   - bluetooth
   - cups
+  - firewalld
+  - grub-btrfsd
+  - paccache.timer
+  - sshd
+  - tuned
+  - tuned-ppd
 
 enable_user_services:
   - pipewire
@@ -100,28 +101,27 @@ enable_user_services:
   - wireplumber
 
 kde_packages:
+  - ark
+  - bluedevil
   - breeze
   - breeze-cursors
   - breeze-gtk
   - breeze-icons
-  - kwalletmanager
-  - filelight
   - dolphin
   - dolphin-plugins
-  - kdeplasma-addons
-  - plasma-activities
-  - ark
+  - ffmpegthumbs
+  - filelight
   - gwenview
+  - kdegraphics-thumbnailers
+  - kdeplasma-addons
+  - kdf
+  - kio-admin
+  - kwalletmanager
+  - plasma-activities
+  - plasma-nm
+  - plasma-pa
   - plasma-vault
   - print-manager
-  - qbittorrent
-  - kio-admin
-  - kdf
-  - plasma-pa
-  - plasma-nm
-  - ffmpegthumbs
-  - kdegraphics-thumbnailers
-  - bluedevil
 
 kde_aur_packages:
   - konsave
@@ -157,3 +157,23 @@ kde_settings:
   - { file: kdeglobals, group: General, key: XftHintStyle, value: 'hintfull' }
   - { file: kdeglobals, group: General, key: XftSubPixel, value: 'rgb' }
   - { file: kwalletrc, group: Wallet, key: Enabled, value: false }
+
+gnome_settings:
+  - { group: "org.gnome.desktop.peripherals.mouse", key: "accel-profile", value: "'flat'" }
+  - { group: "org.gnome.desktop.interface", key: "document-font-name", value: "'Ubuntu 11'" }
+  - { group: "org.gnome.desktop.interface", key: "font-antialiasing", value: "'rgba'" }
+  - { group: "org.gnome.desktop.interface", key: "font-hinting", value: "'full'" }
+  - { group: "org.gnome.desktop.interface", key: "font-name", value: "'Ubuntu 11'" }
+  - { group: "org.gnome.desktop.interface", key: "monospace-font-name", value: "'JetBrains Mono 11'" }
+  - { group: "org.gnome.desktop.interface", key: "toolkit-accessibility", value: "false" }
+  - { group: "org.gnome.desktop.peripherals.keyboard", key: "numlock-state", value: "true" }
+  - { group: "org.gnome.desktop.peripherals.keyboard", key: "remember-numlock-state", value: "true" }
+  - { group: "org.gnome.desktop.screensaver", key: "lock-enabled", value: "false" }
+  - { group: "org.gnome.settings-daemon.plugins.housekeeping", key: "donation-reminder-enabled", value: "false" }
+  - { group: "org.gnome.desktop.wm.preferences", key: "button-layout", value: "'appmenu:minimize,maximize,close'" }
+  - { group: "org.gnome.shell", key: "enabled-extensions", value: "['background-logo@fedorahosted.org', 'dash-to-dock@micxgx.gmail.com', 'clipboard-indicator@tudmotu.com', 'ding@rastersoft.com']" }
+  - { group: "org.gnome.desktop.input-sources", key: "mru-sources", value: "[('xkb', 'ru'), ('xkb', 'us')]" }
+  - { group: "org.gnome.desktop.input-sources", key: "sources", value: "[('xkb', 'ru'), ('xkb', 'us')]" }
+  - { group: "org.gnome.desktop.input-sources", key: "xkb-options", value: "['kpdl:dotoss', 'grp:alt_shift_toggle']" }
+  - { group: "org.gnome.shell", key: "favorite-apps", value: "['brave-browser.desktop', 'obsidian.desktop', 'md.obsidian.Obsidian.desktop', 'spotify-launcher.desktop', 'com.spotify.Client.desktop', 'steam.desktop', 'code.desktop', 'com.obsproject.Studio.desktop', 'org.gnome.Nautilus.desktop', 'org.gnome.Software.desktop', 'org.gnome.TextEditor.desktop', 'org.gnome.Calculator.desktop']" }
+  - { group: "org.gnome.system.locale", key: "region", value: "'ru_RU.UTF-8'" }

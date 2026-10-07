@@ -3,12 +3,7 @@ set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 ROOT_DIR="$(dirname "$SCRIPT_DIR")"
-FILES="$ROOT_DIR/files"
-
-if [ ! -d "$FILES" ]; then
-  echo "Не нашёл папку files/ рядом со скриптом ($FILES)"
-  exit 1
-fi
+FILES="$ROOT_DIR/playbook/files"
 
 if [ "$EUID" -eq 0 ]; then
   echo "Не запускай от root"
@@ -22,14 +17,14 @@ pgrep -x plasmashell >/dev/null && IS_KDE=true
 
 # ---------- Списки пакетов ----------
 pacman_packages=(
-  fwupd git base-devel tmux btop vlc gst-plugin-pipewire duperemove neovim
-  wl-clipboard gamescope lutris lib32-gnutls umu-launcher steam less
-  spotify-launcher tuned tuned-ppd obsidian pacman-contrib tldr
-  snapper inotify-tools blanket grub-btrfs fish whois adobe-source-serif-fonts
   adobe-source-code-pro-fonts noto-fonts-emoji noto-fonts-cjk ttf-ubuntu-font-family
-  ttf-jetbrains-mono-nerd inter-font ripgrep firewall-config 7zip openssh ldns
-  mtr bluez wireplumber pipewire-pulse plasma-workspace-wallpapers gnome-backgrounds
   cups anki dnscrypt-proxy ffmpeg vlc-plugins-all
+  fwupd git base-devel tmux btop vlc gst-plugin-pipewire duperemove neovim
+  mtr bluez wireplumber pipewire-pulse plasma-workspace-wallpapers gnome-backgrounds
+  snapper inotify-tools blanket grub-btrfs fish whois adobe-source-serif-fonts
+  spotify-launcher tuned tuned-ppd obsidian pacman-contrib tldr
+  ttf-jetbrains-mono-nerd inter-font ripgrep firewall-config 7zip openssh ldns
+  wl-clipboard gamescope lutris lib32-gnutls umu-launcher steam less
 )
 
 aur_packages=(
@@ -53,44 +48,44 @@ enable_user_services=(
 kde_packages=(
   breeze breeze-cursors breeze-gtk breeze-icons kwalletmanager filelight
   dolphin dolphin-plugins kdeplasma-addons plasma-activities ark gwenview
-  plasma-vault print-manager qbittorrent kio-admin kdf plasma-pa plasma-nm
   ffmpegthumbs kdegraphics-thumbnailers bluedevil
+  plasma-vault print-manager qbittorrent kio-admin kdf plasma-pa plasma-nm
 )
 
 kde_aur_packages=( konsave )
 
 # KDE-настройки в формате "file|group|key|value"
 kde_settings=(
-  "plasma-localerc|Language|Language|ru:en"
-  "plasma-localerc|Formats|LANG|ru_RU.UTF-8"
-  "kxkbrc|Layout|LayoutList|us,ru"
-  "kxkbrc|Layout|Use|true"
-  "kxkbrc|Layout|VariantList|,"
-  "kxkbrc|Layout|ResetOldOptions|true"
-  "kxkbrc|Layout|ShowLayoutIndicator|false"
-  "kxkbrc|Layout|Options|kpdl:dotoss,grp:alt_shift_toggle,grp:win_space_toggle"
-  "kscreenlockerrc|Daemon|Autolock|false"
-  "powermanagementprofilesrc|AC|TurnOffDisplayIdleTimeoutSec|0"
-  "powermanagementprofilesrc|Display|TurnOffDisplayIdleTimeoutSec|0"
   "kcminputrc|Keyboard|NumLock|0"
-  "sddm.conf|General|Numlock|on"
-  "klaunchrc|BusyCursorSettings|Bouncing|false"
-  "klaunchrc|FeedbackStyle|BusyCursor|false"
-  "kwinrc|Plugins|shakecursorEnabled|false"
-  "plasmarc|OSD|kbdLayoutChangedEnabled|false"
+  "kdeglobals|General|activeFont|Ubuntu,10,-1,5,50,0,0,0,0,0"
+  "kdeglobals|General|desktopFont|Ubuntu,10,-1,5,50,0,0,0,0,0"
+  "kdeglobals|General|fixed|JetBrainsMono Nerd Font,10,-1,5,50,0,0,0,0,0"
   "kdeglobals|General|font|Ubuntu,10,-1,5,50,0,0,0,0,0"
   "kdeglobals|General|menuFont|Ubuntu,10,-1,5,50,0,0,0,0,0"
   "kdeglobals|General|smallFont|Ubuntu,8,-1,5,50,0,0,0,0,0"
-  "kdeglobals|General|toolbarFont|Ubuntu,10,-1,5,50,0,0,0,0,0"
-  "kdeglobals|General|activeFont|Ubuntu,10,-1,5,50,0,0,0,0,0"
   "kdeglobals|General|taskbarFont|Ubuntu,10,-1,5,50,0,0,0,0,0"
-  "kdeglobals|General|desktopFont|Ubuntu,10,-1,5,50,0,0,0,0,0"
-  "kdeglobals|General|fixed|JetBrainsMono Nerd Font,10,-1,5,50,0,0,0,0,0"
+  "kdeglobals|General|toolbarFont|Ubuntu,10,-1,5,50,0,0,0,0,0"
   "kdeglobals|General|XftAntialias|true"
   "kdeglobals|General|XftHinting|true"
   "kdeglobals|General|XftHintStyle|hintfull"
   "kdeglobals|General|XftSubPixel|rgb"
+  "klaunchrc|BusyCursorSettings|Bouncing|false"
+  "klaunchrc|FeedbackStyle|BusyCursor|false"
+  "kscreenlockerrc|Daemon|Autolock|false"
   "kwalletrc|Wallet|Enabled|false"
+  "kwinrc|Plugins|shakecursorEnabled|false"
+  "kxkbrc|Layout|LayoutList|us,ru"
+  "kxkbrc|Layout|Options|kpdl:dotoss,grp:alt_shift_toggle,grp:win_space_toggle"
+  "kxkbrc|Layout|ResetOldOptions|true"
+  "kxkbrc|Layout|ShowLayoutIndicator|false"
+  "kxkbrc|Layout|Use|true"
+  "kxkbrc|Layout|VariantList|,"
+  "plasma-localerc|Formats|LANG|ru_RU.UTF-8"
+  "plasma-localerc|Language|Language|ru:en"
+  "plasmarc|OSD|kbdLayoutChangedEnabled|false"
+  "powermanagementprofilesrc|AC|TurnOffDisplayIdleTimeoutSec|0"
+  "powermanagementprofilesrc|Display|TurnOffDisplayIdleTimeoutSec|0"
+  "sddm.conf|General|Numlock|on"
 )
 
 # ---------- Локали ----------

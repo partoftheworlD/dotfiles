@@ -10,7 +10,6 @@ apt_packages:
   - steam-installer
   - qbittorrent
   - vlc
-  - obs-studio
   - fonts-inter-variable
   - fonts-jetbrains-mono
   - gnome-software
@@ -46,38 +45,38 @@ apt_packages:
 
 flatpak_packages:
   - com.heroicgameslauncher.hgl
+  - com.mattjakeman.ExtensionManager
   - com.vysp3r.ProtonPlus
   - md.obsidian.Obsidian
-  - com.mattjakeman.ExtensionManager
   - net.ankiweb.Anki
 
 remove_packages:
-  - firefox*
-  - libreoffice*
-  - totem-video-thumbnailer
-  - gnome-tour
-  - gnome-maps
-  - rhythmbox
-  - gnome-music
-  - showtime
-  - gnome-contacts
-  - gnome-boxes
-  - gnome-snapshot
-  - gnome-terminal
   - evolution
+  - firefox*
+  - gnome-boxes
+  - gnome-contacts
+  - gnome-maps
+  - gnome-music
+  - gnome-snapshot
   - gnome-sound-recorder
+  - gnome-terminal
+  - gnome-tour
+  - libreoffice*
+  - rhythmbox
   - shotwell
-  - vim-tiny
+  - showtime
+  - totem-video-thumbnailer
   - vim-common
+  - vim-tiny
 
 stop_services:
   - snapd.service
   - snapd.socket
 
 snap_paths:
-  - /var/cache/snapd/
-  - /root/snap/
   - "/home/{{ ansible_facts['user_id'] }}/snap/"
+  - /root/snap/
+  - /var/cache/snapd/
 
 kde_settings:
   - { file: plasma-localerc, group: Language, key: Language, value: 'ru:en' }

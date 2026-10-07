@@ -3,12 +3,7 @@ set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 ROOT_DIR="$(dirname "$SCRIPT_DIR")"
-FILES="$ROOT_DIR/files"
-
-if [ ! -d "$FILES" ]; then
-  echo "Не нашёл папку files/ рядом со скриптом ($FILES)"
-  exit 1
-fi
+FILES="$ROOT_DIR/playbook/files"
 
 if [ "$EUID" -eq 0 ]; then
   echo "Не запускай от root"
@@ -19,28 +14,28 @@ sudo -v
 
 # ---------- Пакеты ----------
 apt_packages=(
-  tmux btop git curl neovim gamescope lutris steam-installer qbittorrent vlc
-  obs-studio fonts-inter-variable fonts-jetbrains-mono gnome-software
-  gnome-software-plugin-deb gnome-software-plugin-fwupd gnome-software-plugin-flatpak
-  ubuntu-restricted-extras gnome-tweaks tldr-py blanket printer-driver-splix
-  flatseal ffmpeg fish flatpak fwupd fonts-adobe-sourcesans3 wget python3-pip
   apt-transport-https ca-certificates software-properties-common gnupg
-  gnome-shell-extensions unzip ripgrep apt-file mtr dnscrypt-proxy
   btrfs-assistant snapper 7zip
+  flatseal ffmpeg fish flatpak fwupd fonts-adobe-sourcesans3 wget python3-pip
+  fonts-inter-variable fonts-jetbrains-mono gnome-software
+  gnome-shell-extensions unzip ripgrep apt-file mtr dnscrypt-proxy
+  gnome-software-plugin-deb gnome-software-plugin-fwupd gnome-software-plugin-flatpak
+  tmux btop git curl neovim gamescope lutris steam-installer qbittorrent vlc
+  ubuntu-restricted-extras gnome-tweaks tldr-py blanket printer-driver-splix
 )
 
 flatpak_packages=(
   com.heroicgameslauncher.hgl
+  com.mattjakeman.ExtensionManager
   com.vysp3r.ProtonPlus
   md.obsidian.Obsidian
-  com.mattjakeman.ExtensionManager
   net.ankiweb.Anki
 )
 
 remove_packages=(
   'firefox*' 'libreoffice*' totem-video-thumbnailer gnome-tour gnome-maps
-  rhythmbox gnome-music showtime gnome-contacts gnome-boxes gnome-snapshot
   gnome-terminal evolution gnome-sound-recorder shotwell vim-tiny vim-common
+  rhythmbox gnome-music showtime gnome-contacts gnome-boxes gnome-snapshot
 )
 
 # ---------- Базовая подготовка ----------
