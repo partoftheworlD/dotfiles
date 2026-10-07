@@ -7,6 +7,7 @@ pacman_packages:
   - tmux
   - btop
   - vlc
+  - vlc-plugins-all
   - gst-plugin-pipewire
   - duperemove
   - neovim
@@ -51,6 +52,7 @@ pacman_packages:
   - cups
   - anki
   - dnscrypt-proxy
+  - ffmpeg
 
 # Пакеты для установки через AUR
 aur_packages:
