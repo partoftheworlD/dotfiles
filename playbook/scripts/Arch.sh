@@ -24,7 +24,7 @@ pgrep -x plasmashell >/dev/null && IS_KDE=true
 pacman_packages=(
   fwupd git base-devel tmux btop vlc gst-plugin-pipewire duperemove neovim
   wl-clipboard gamescope lutris lib32-gnutls umu-launcher steam less
-  spotify-launcher tuned tuned-ppd obs-studio obsidian pacman-contrib tldr
+  spotify-launcher tuned tuned-ppd obsidian pacman-contrib tldr
   snapper inotify-tools blanket grub-btrfs fish whois adobe-source-serif-fonts
   adobe-source-code-pro-fonts noto-fonts-emoji noto-fonts-cjk ttf-ubuntu-font-family
   ttf-jetbrains-mono-nerd inter-font ripgrep firewall-config 7zip openssh ldns
