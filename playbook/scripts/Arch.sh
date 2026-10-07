@@ -29,7 +29,7 @@ pacman_packages=(
   adobe-source-code-pro-fonts noto-fonts-emoji noto-fonts-cjk ttf-ubuntu-font-family
   ttf-jetbrains-mono-nerd inter-font ripgrep firewall-config 7zip openssh ldns
   mtr bluez wireplumber pipewire-pulse plasma-workspace-wallpapers gnome-backgrounds
-  cups anki dnscrypt-proxy
+  cups anki dnscrypt-proxy ffmpeg vlc-plugins-all
 )
 
 aur_packages=(
