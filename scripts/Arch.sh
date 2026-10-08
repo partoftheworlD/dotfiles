@@ -24,7 +24,7 @@ pacman_packages=(
   snapper inotify-tools blanket grub-btrfs fish whois adobe-source-serif-fonts
   spotify-launcher tuned tuned-ppd obsidian pacman-contrib tldr
   ttf-jetbrains-mono-nerd inter-font ripgrep firewall-config 7zip openssh ldns
-  wl-clipboard gamescope lutris lib32-gnutls umu-launcher steam less
+  wl-clipboard gamescope lutris lib32-gnutls umu-launcher steam less jq
 )
 
 aur_packages=(

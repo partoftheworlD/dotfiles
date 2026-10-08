@@ -21,7 +21,7 @@ apt_packages=(
   gnome-shell-extensions unzip ripgrep apt-file mtr dnscrypt-proxy
   gnome-software-plugin-deb gnome-software-plugin-fwupd gnome-software-plugin-flatpak
   tmux btop git curl neovim gamescope lutris steam-installer qbittorrent vlc
-  ubuntu-restricted-extras gnome-tweaks tldr-py blanket printer-driver-splix
+  ubuntu-restricted-extras gnome-tweaks tldr-py blanket printer-driver-splix jq
 )
 
 flatpak_packages=(
