@@ -28,7 +28,7 @@ pacman_packages=(
 )
 
 aur_packages=(
-  btrfs-assistant brave-bin spotx-git splix heroic-games-launcher-bin
+  btrfs-assistant spotx-git splix heroic-games-launcher-bin google-chrome 
 )
 
 remove_packages=(

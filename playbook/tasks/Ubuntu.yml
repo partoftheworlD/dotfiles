@@ -115,8 +115,10 @@
 
 - name: Установка сторонних приложений
   block:
-    - name: Установка Brave
-      shell: curl -fsS https://dl.brave.com/install.sh | sh
+    - name: Установка Google Chrome
+      shell: |
+        wcurl -O /tmp/chrome.deb https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+        apt install /tmp/chrome.deb
       args:
         executable: /bin/bash
 

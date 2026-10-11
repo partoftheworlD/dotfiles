@@ -57,7 +57,7 @@ pacman_packages:
 
 # Пакеты для установки через AUR
 aur_packages:
-  - brave-bin
+  - google-chrome
   - btrfs-assistant
   - heroic-games-launcher-bin
   - splix
@@ -176,5 +176,5 @@ gnome_settings:
   - { group: "org.gnome.desktop.wm.preferences", key: "button-layout", value: "'appmenu:minimize,maximize,close'" }
   - { group: "org.gnome.settings-daemon.plugins.housekeeping", key: "donation-reminder-enabled", value: "false" }
   - { group: "org.gnome.shell", key: "enabled-extensions", value: "['background-logo@fedorahosted.org', 'dash-to-dock@micxgx.gmail.com', 'clipboard-indicator@tudmotu.com', 'ding@rastersoft.com']" }
-  - { group: "org.gnome.shell", key: "favorite-apps", value: "['brave-browser.desktop', 'obsidian.desktop', 'md.obsidian.Obsidian.desktop', 'spotify-launcher.desktop', 'com.spotify.Client.desktop', 'steam.desktop', 'code.desktop', 'com.obsproject.Studio.desktop', 'org.gnome.Nautilus.desktop', 'org.gnome.Software.desktop', 'org.gnome.TextEditor.desktop', 'org.gnome.Calculator.desktop']" }
+  - { group: "org.gnome.shell", key: "favorite-apps", value: "['obsidian.desktop', 'md.obsidian.Obsidian.desktop', 'spotify-launcher.desktop', 'com.spotify.Client.desktop', 'steam.desktop', 'code.desktop', 'com.obsproject.Studio.desktop', 'org.gnome.Nautilus.desktop', 'org.gnome.Software.desktop', 'org.gnome.TextEditor.desktop', 'org.gnome.Calculator.desktop']" }
   - { group: "org.gnome.system.locale", key: "region", value: "'ru_RU.UTF-8'" }
