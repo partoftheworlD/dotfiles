@@ -27,7 +27,24 @@
 ##
 ## Remove the leading # first to enable this; lines starting with # are ignored.
 
-server_names = []
+server_names = [
+  'cloudflare-security',
+  'cloudflare',
+  'controld-uncensored',
+  'controld-unfiltered',
+  'dnscry.pt-doh-moscow-ipv4',
+  'dnscry.pt-doh-stockholm02-ipv4',
+  'dnscry.pt-moscow-ipv4',
+  'google',
+  'he',
+  'nextdns',
+  'quad9-dnscrypt-ip4-nofilter-ecs-pri',
+  'quad9-dnscrypt-ip4-nofilter-pri',
+  'quad9-doh-ip4-port443-nofilter-ecs-pri',
+  'quad9-doh-ip4-port443-nofilter-pri',
+  'yandex-safe',
+  'yandex'
+]
 
 
 ## List of local addresses and ports to listen to. Can be IPv4 and/or IPv6.
@@ -78,7 +95,7 @@ odoh_servers = false
 ## Require servers defined by remote sources to satisfy specific properties
 
 # Server must support DNS security extensions (DNSSEC)
-require_dnssec = false
+require_dnssec = true
 
 # Server must not log user queries (declarative)
 require_nolog = false
@@ -87,7 +104,12 @@ require_nolog = false
 require_nofilter = true
 
 # Server names to avoid even if they match all criteria
-disabled_server_names = []
+disabled_server_names = [
+  'dnscry.pt-doh-kyiv02-ipv4',
+  'a-and-a',
+  'dnscry.pt-kyiv02-ipv4',
+  'dnscry.pt-kyiv-ipv4',
+]
 
 
 ###############################################################################
@@ -556,7 +578,7 @@ cache_neg_max_ttl = 600
 ## Path to the query log file (absolute, or relative to the same directory as the config file)
 ## Can be set to /dev/stdout in order to log to the standard output.
 
-# file = 'query.log'
+file = 'query.log'
 
 
 ## Query log format (currently supported: tsv and ltsv)
