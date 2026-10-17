@@ -89,7 +89,7 @@ kde_settings=(
 )
 
 # ---------- Локали ----------
-for loc in "ru_RU.UTF-8 UTF-8" "en_US.UTF-8 UTF-8"; do
+for loc in "ru_RU.UTF-8 UTF-8"; do
   grep -qxF "$loc" /etc/locale.gen || echo "$loc" | sudo tee -a /etc/locale.gen >/dev/null
 done
 sudo locale-gen
