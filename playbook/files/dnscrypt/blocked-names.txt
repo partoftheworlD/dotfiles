@@ -1,4 +1,3 @@
-
 ###########################
 #        Blocklist        #
 ###########################
@@ -31,6 +30,7 @@ tracker.*
 eth0.me
 *.workgroup
 *analytics*
+*events.data.microsoft.com
 
 ## Prevent usage of Apple private relay, that bypasses DNS
 
@@ -44,3 +44,5 @@ eth0.me
 
 # *.youtube.*  @time-to-sleep
 # facebook.com @work
+iev02.dnscry.pt
+
