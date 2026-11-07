@@ -59,7 +59,7 @@ pacman_packages:
 aur_packages:
   - google-chrome
   - btrfs-assistant
-  - heroic-games-launcher-bin
+  # - heroic-games-launcher-bin
   - splix
   - spotx-git
   # - protonplus
