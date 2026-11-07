@@ -114,7 +114,7 @@ sudo sed -i 's/^#\?VerbosePkgLists$/VerbosePkgLists/' /etc/pacman.conf
 
 # ---------- Зеркала ----------
 sudo pacman -S --needed --noconfirm reflector
-sudo reflector --protocol https,http --latest 35 -n 5 --sort rate --save /etc/pacman.d/mirrorlist
+sudo reflector --protocol https,http --latest 50 -n 5 --sort rate --save /etc/pacman.d/mirrorlist
 
 # ---------- База ----------
 sudo pacman -Syu --needed --noconfirm base-devel git less
@@ -149,10 +149,10 @@ cp -v "$FILES/neovim/init.lua"       "$HOME/.config/nvim/init.lua"
 cp -v "$FILES/neovim/lazy-lock.json" "$HOME/.config/nvim/lazy-lock.json"
 cp -v "$FILES/fontconfig/fonts.conf" "$HOME/.config/fontconfig/fonts.conf"
 
-sudo mkdir -p /etc/dnscrypt-proxy
-sudo cp -v "$FILES/dnscrypt/dnscrypt-proxy.toml" /etc/dnscrypt-proxy/
-sudo cp -v "$FILES/dnscrypt/cloaking-rules.txt"  /etc/dnscrypt-proxy/
-sudo cp -v "$FILES/dnscrypt/blocked-names.txt"   /etc/dnscrypt-proxy/
+# sudo mkdir -p /etc/dnscrypt-proxy
+# sudo cp -v "$FILES/dnscrypt/dnscrypt-proxy.toml" /etc/dnscrypt-proxy/
+# sudo cp -v "$FILES/dnscrypt/cloaking-rules.txt"  /etc/dnscrypt-proxy/
+# sudo cp -v "$FILES/dnscrypt/blocked-names.txt"   /etc/dnscrypt-proxy/
 
 # ---------- Shell ----------
 sudo chsh -s /usr/bin/fish "$USER"

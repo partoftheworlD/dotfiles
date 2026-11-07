@@ -10,7 +10,7 @@ pacman_packages:
   - bluez
   - btop
   - cups
-  - dnscrypt-proxy
+  # - dnscrypt-proxy
   - duperemove
   - ffmpeg
   - firewall-config

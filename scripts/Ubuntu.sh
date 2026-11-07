@@ -87,10 +87,10 @@ cp -v "$FILES/neovim/lazy-lock.json" "$HOME/.config/nvim/lazy-lock.json"
 cp -v "$FILES/fontconfig/fonts.conf" "$HOME/.config/fontconfig/fonts.conf"
 
 # ---------- Конфиги dnscrypt (системные) ----------
-sudo mkdir -p /etc/dnscrypt-proxy
-sudo cp -v "$FILES/dnscrypt/dnscrypt-proxy.toml" /etc/dnscrypt-proxy/
-sudo cp -v "$FILES/dnscrypt/cloaking-rules.txt"  /etc/dnscrypt-proxy/
-sudo cp -v "$FILES/dnscrypt/blocked-names.txt"   /etc/dnscrypt-proxy/
+# sudo mkdir -p /etc/dnscrypt-proxy
+# sudo cp -v "$FILES/dnscrypt/dnscrypt-proxy.toml" /etc/dnscrypt-proxy/
+# sudo cp -v "$FILES/dnscrypt/cloaking-rules.txt"  /etc/dnscrypt-proxy/
+# sudo cp -v "$FILES/dnscrypt/blocked-names.txt"   /etc/dnscrypt-proxy/
 
 # ---------- Смена shell на fish ----------
 sudo chsh -s /usr/bin/fish "$USER"
