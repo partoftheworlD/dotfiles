@@ -207,6 +207,7 @@ fc-cache -f
 
 # ---------- SSH ----------
 [ -f "$HOME/.ssh/id_ed25519" ] || ssh-keygen -t ed25519 -N "" -a 32 -f "$HOME/.ssh/id_ed25519"
+sudo ufw allow ssh
 
 # ---------- Перезагрузка ----------
 echo "Готово. Перезагрузка через 5 секунд..."

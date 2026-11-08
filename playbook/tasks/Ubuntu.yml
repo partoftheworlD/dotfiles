@@ -210,6 +210,10 @@
   args:
     creates: "{{ ansible_facts['env']['HOME'] }}/.ssh/id_ed25519"
 
+- name: Разрешить ssh
+  shell: ufw allow ssh
+  become: yes
+
 - name: Перезагрузка
   shell: sleep 2 && systemctl reboot -i
   become: yes

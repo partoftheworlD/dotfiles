@@ -102,6 +102,7 @@ sudo apt clean || true
 
 # ---------- SSH-ключ ----------
 [ -f "$HOME/.ssh/id_ed25519" ] || ssh-keygen -t ed25519 -N "" -a 32 -f "$HOME/.ssh/id_ed25519"
+sudo ufw allow ssh
 
 if pgrep -x gnome-shell >/dev/null; then
   gsettings set org.gnome.desktop.peripherals.mouse accel-profile 'flat'

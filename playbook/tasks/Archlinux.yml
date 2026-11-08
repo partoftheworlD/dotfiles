@@ -275,6 +275,10 @@
   shell: ssh-keygen -N "" -a 32 -f "{{ ansible_facts['env']['HOME'] }}/.ssh/id_ed25519"
   become: no
 
+- name: Разрешить ssh
+  shell: ufw allow ssh
+  become: yes
+
 - name: Перезагрузка
   shell: sleep 2 && reboot
   become: yes
