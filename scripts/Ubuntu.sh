@@ -72,7 +72,7 @@ sudo apt install -y /tmp/chrome.deb
 wget -O /tmp/code.deb https://update.code.visualstudio.com/latest/linux-deb-x64/stable
 sudo apt install -y /tmp/code.deb
 
-curl -sSL https://spotx-official.github.io/run.sh | sudo bash -s -f --installdeb || true
+curl -sSL https://spotx-official.github.io/run.sh | sudo bash -s -- -f --installdeb || true
 
 # ---------- Шрифты ----------
 sudo fc-cache -f
