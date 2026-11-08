@@ -23,7 +23,7 @@ pacman_packages=(
   mtr bluez wireplumber pipewire-pulse plasma-workspace-wallpapers gnome-backgrounds
   snapper inotify-tools blanket grub-btrfs fish whois adobe-source-serif-fonts
   spotify-launcher tuned tuned-ppd obsidian pacman-contrib tldr
-  ttf-jetbrains-mono-nerd inter-font ripgrep firewall-config 7zip openssh ldns
+  ttf-jetbrains-mono-nerd inter-font ripgrep 7zip openssh ldns
   wl-clipboard gamescope lutris lib32-gnutls umu-launcher steam less jq
 )
 
@@ -38,7 +38,7 @@ remove_packages=(
 )
 
 enable_services=(
-  tuned tuned-ppd paccache.timer firewalld grub-btrfsd sshd bluetooth cups
+  tuned tuned-ppd paccache.timer ufw grub-btrfsd sshd bluetooth cups
 )
 
 enable_user_services=(

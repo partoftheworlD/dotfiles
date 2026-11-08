@@ -13,7 +13,6 @@ pacman_packages:
   # - dnscrypt-proxy
   - duperemove
   - ffmpeg
-  - firewall-config
   - fish
   - fwupd
   - gamescope
@@ -54,6 +53,7 @@ pacman_packages:
   - whois
   - wireplumber
   - wl-clipboard
+  - ufw
 
 # Пакеты для установки через AUR
 aur_packages:
@@ -89,7 +89,7 @@ remove_packages:
 enable_services:
   - bluetooth
   - cups
-  - firewalld
+  - ufw
   - grub-btrfsd
   - paccache.timer
   - sshd
