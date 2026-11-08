@@ -117,7 +117,7 @@ if pgrep -x gnome-shell >/dev/null; then
   gsettings set org.gnome.desktop.screensaver lock-enabled false
   gsettings set org.gnome.settings-daemon.plugins.housekeeping donation-reminder-enabled false
   gsettings set org.gnome.desktop.wm.preferences button-layout 'appmenu:minimize,maximize,close'
-  gsettings set org.gnome.shell enabled-extensions "['background-logo@fedorahosted.org', 'dash-to-dock@micxgx.gmail.com', 'clipboard-indicator@tudmotu.com', 'ding@rastersoft.com']"
+  gsettings set org.gnome.shell enabled-extensions "['dash-to-dock@micxgx.gmail.com', 'clipboard-indicator@tudmotu.com', 'ding@rastersoft.com']"
   gsettings set org.gnome.desktop.input-sources mru-sources "[('xkb', 'ru'), ('xkb', 'us')]"
   gsettings set org.gnome.desktop.input-sources sources "[('xkb', 'ru'), ('xkb', 'us')]"
   gsettings set org.gnome.desktop.input-sources xkb-options "['kpdl:dotoss', 'grp:alt_shift_toggle']"
