@@ -101,6 +101,17 @@ enable_user_services:
   - pipewire-pulse
   - wireplumber
 
+gnome_packages:
+  - ptyxis
+  - extension-manager
+  - gnome-firmware
+  - gnome-tweaks
+  - seahorse
+  - fragments
+
+gnome_aur_packages:
+  - nautilus-open-in-ptyxis
+
 kde_packages:
   - ark
   - bluedevil

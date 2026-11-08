@@ -13,7 +13,9 @@ fi
 sudo -v
 
 IS_KDE=false
+IS_GNOME=false
 pgrep -x plasmashell >/dev/null && IS_KDE=true
+pgrep -x gnome-shell >/dev/null && IS_GNOME=true
 
 # ---------- Списки пакетов ----------
 pacman_packages=(
@@ -53,6 +55,10 @@ kde_packages=(
 )
 
 kde_aur_packages=( konsave )
+
+gnome_packages=(ptyxis extension-manager gnome-firmware gnome-tweaks seahorse fragments)
+
+gnome_aur_packages=( nautilus-open-in-ptyxis )
 
 # KDE-настройки в формате "file|group|key|value"
 kde_settings=(
@@ -107,6 +113,28 @@ if $IS_KDE; then
   printf '[Language]\nLanguage=ru:en\n' | sudo tee /etc/skel/.config/plasma-localerc >/dev/null
 fi
 
+# ---------- GNOME: настройка интерфейса ----------
+if $IS_GNOME; then
+  gsettings set org.gnome.desktop.peripherals.mouse accel-profile 'flat'
+  gsettings set org.gnome.desktop.interface document-font-name 'Ubuntu 11'
+  gsettings set org.gnome.desktop.interface font-antialiasing 'rgba'
+  gsettings set org.gnome.desktop.interface font-hinting 'full'
+  gsettings set org.gnome.desktop.interface font-name 'Ubuntu 11'
+  gsettings set org.gnome.desktop.interface monospace-font-name 'JetBrains Mono 11'
+  gsettings set org.gnome.desktop.interface toolkit-accessibility false
+  gsettings set org.gnome.desktop.peripherals.keyboard numlock-state true
+  gsettings set org.gnome.desktop.peripherals.keyboard remember-numlock-state true
+  gsettings set org.gnome.desktop.screensaver lock-enabled false
+  gsettings set org.gnome.settings-daemon.plugins.housekeeping donation-reminder-enabled false
+  gsettings set org.gnome.desktop.wm.preferences button-layout 'appmenu:minimize,maximize,close'
+  gsettings set org.gnome.shell enabled-extensions "['dash-to-dock@micxgx.gmail.com', 'clipboard-indicator@tudmotu.com', 'ding@rastersoft.com']"
+  gsettings set org.gnome.desktop.input-sources mru-sources "[('xkb', 'ru'), ('xkb', 'us')]"
+  gsettings set org.gnome.desktop.input-sources sources "[('xkb', 'ru'), ('xkb', 'us')]"
+  gsettings set org.gnome.desktop.input-sources xkb-options "['kpdl:dotoss', 'grp:alt_shift_toggle']"
+  gsettings set org.gnome.shell favorite-apps "['obsidian.desktop', 'md.obsidian.Obsidian.desktop', 'spotify-launcher.desktop', 'com.spotify.Client.desktop', 'steam.desktop', 'code.desktop', 'com.obsproject.Studio.desktop', 'org.gnome.Nautilus.desktop', 'org.gnome.Software.desktop', 'org.gnome.TextEditor.desktop', 'org.gnome.Calculator.desktop']"
+  gsettings set org.gnome.system.locale region 'ru_RU.UTF-8'
+fi
+
 # ---------- Настройка pacman ----------
 sudo sed -i 's/^#\?ParallelDownloads.*/ParallelDownloads = 10/' /etc/pacman.conf
 sudo sed -i 's/^#\?Color$/Color/' /etc/pacman.conf
@@ -133,11 +161,19 @@ if $IS_KDE; then
   sudo pacman -S --needed --noconfirm "${kde_packages[@]}"
 fi
 
+if $IS_GNOME; then
+  sudo pacman -S --needed --noconfirm "${gnome_packages[@]}"
+fi
+
 # ---------- AUR ----------
 yay -Syu --noconfirm --needed "${aur_packages[@]}"
 
 if $IS_KDE && [ ${#kde_aur_packages[@]} -gt 0 ]; then
   yay -S --noconfirm --needed "${kde_aur_packages[@]}"
+fi
+
+if $IS_GNOME && [ ${#gnome_aur_packages[@]} -gt 0 ]; then
+  yay -S --noconfirm --needed "${gnome_aur_packages[@]}"
 fi
 
 # ---------- Конфиги ----------
