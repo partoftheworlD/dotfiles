@@ -141,7 +141,7 @@ sudo sed -i 's/^#\?Color$/Color/' /etc/pacman.conf
 sudo sed -i 's/^#\?VerbosePkgLists$/VerbosePkgLists/' /etc/pacman.conf
 
 # ---------- Зеркала ----------
-sudo pacman -S --needed --noconfirm reflector
+sudo pacman -Syu --needed --noconfirm reflector
 sudo reflector --protocol https,http --latest 50 -n 5 --sort rate --save /etc/pacman.d/mirrorlist
 
 # ---------- База ----------
@@ -155,25 +155,25 @@ if ! command -v yay >/dev/null; then
 fi
 
 # ---------- Основные пакеты ----------
-sudo pacman -S --needed --noconfirm "${pacman_packages[@]}"
+sudo pacman -Syu --needed --noconfirm "${pacman_packages[@]}"
 
 if $IS_KDE; then
-  sudo pacman -S --needed --noconfirm "${kde_packages[@]}"
+  sudo pacman -Syu --needed --noconfirm "${kde_packages[@]}"
 fi
 
 if $IS_GNOME; then
-  sudo pacman -S --needed --noconfirm "${gnome_packages[@]}"
+  sudo pacman -Syu --needed --noconfirm "${gnome_packages[@]}"
 fi
 
 # ---------- AUR ----------
 yay -Syu --noconfirm --needed "${aur_packages[@]}"
 
 if $IS_KDE && [ ${#kde_aur_packages[@]} -gt 0 ]; then
-  yay -S --noconfirm --needed "${kde_aur_packages[@]}"
+  yay -Syu --noconfirm --needed "${kde_aur_packages[@]}"
 fi
 
 if $IS_GNOME && [ ${#gnome_aur_packages[@]} -gt 0 ]; then
-  yay -S --noconfirm --needed "${gnome_aur_packages[@]}"
+  yay -Syu --noconfirm --needed "${gnome_aur_packages[@]}"
 fi
 
 # ---------- Конфиги ----------
