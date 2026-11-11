@@ -214,6 +214,10 @@
   shell: ufw allow ssh
   become: yes
 
+- name: Переход на HWE
+  shell: apt install linux-generic-hwe-26.04 --install-recommends
+  become: yes
+
 - name: Перезагрузка
   shell: sleep 2 && systemctl reboot -i
   become: yes

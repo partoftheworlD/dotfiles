@@ -125,6 +125,9 @@ if pgrep -x gnome-shell >/dev/null; then
   gsettings set org.gnome.system.locale region 'ru_RU.UTF-8'
 fi
 
+# ---------- Переход на HWE ----------
+sudo apt install linux-generic-hwe-26.04 --install-recommends
+
 echo "Готово. Перезагрузка через 5 секунд..."
 sleep 5
 sudo systemctl reboot -i
