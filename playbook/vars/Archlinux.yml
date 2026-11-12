@@ -10,7 +10,7 @@ pacman_packages:
   - bluez
   - btop
   - cups
-  # - dnscrypt-proxy
+  - dnscrypt-proxy
   - duperemove
   - ffmpeg
   - fish
@@ -95,6 +95,8 @@ enable_services:
   - sshd
   - tuned
   - tuned-ppd
+  - dnscrypt-proxy.service
+  - dnscrypt-proxy.socket
 
 enable_user_services:
   - pipewire

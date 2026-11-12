@@ -8,7 +8,7 @@ apt_packages:
   - btrfs-assistant
   - ca-certificates
   - curl
-  # - dnscrypt-proxy
+  - dnscrypt-proxy
   - ffmpeg
   - fish
   - flatpak

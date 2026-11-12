@@ -41,7 +41,8 @@ remove_packages=(
 )
 
 enable_services=(
-  tuned tuned-ppd paccache.timer ufw grub-btrfsd sshd bluetooth cups
+  tuned tuned-ppd paccache.timer ufw grub-btrfsd sshd bluetooth cups 
+  dnscrypt-proxy.socket dnscrypt-proxy.service
 )
 
 enable_user_services=(
@@ -186,10 +187,10 @@ cp -v "$FILES/neovim/init.lua"       "$HOME/.config/nvim/init.lua"
 cp -v "$FILES/neovim/lazy-lock.json" "$HOME/.config/nvim/lazy-lock.json"
 cp -v "$FILES/fontconfig/fonts.conf" "$HOME/.config/fontconfig/fonts.conf"
 
-# sudo mkdir -p /etc/dnscrypt-proxy
-# sudo cp -v "$FILES/dnscrypt/dnscrypt-proxy.toml" /etc/dnscrypt-proxy/
-# sudo cp -v "$FILES/dnscrypt/cloaking-rules.txt"  /etc/dnscrypt-proxy/
-# sudo cp -v "$FILES/dnscrypt/blocked-names.txt"   /etc/dnscrypt-proxy/
+sudo mkdir -p /etc/dnscrypt-proxy
+sudo cp -v "$FILES/dnscrypt/dnscrypt-proxy.toml" /etc/dnscrypt-proxy/
+sudo cp -v "$FILES/dnscrypt/cloaking-rules.txt"  /etc/dnscrypt-proxy/
+sudo cp -v "$FILES/dnscrypt/blocked-names.txt"   /etc/dnscrypt-proxy/
 
 # ---------- Shell ----------
 sudo chsh -s /usr/bin/fish "$USER"
