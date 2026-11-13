@@ -54,15 +54,17 @@ pacman_packages:
   - wireplumber
   - wl-clipboard
   - ufw
+  - ttf-liberation
+  - man
 
 # Пакеты для установки через AUR
 aur_packages:
   - google-chrome
   - btrfs-assistant
-  # - heroic-games-launcher-bin
+  - heroic-games-launcher-bin
   - splix
   - spotx-git
-  # - protonplus
+  - protonplus
 
 # Пакеты, которые нужно удалить
 remove_packages:
@@ -102,6 +104,16 @@ enable_user_services:
   - pipewire
   - pipewire-pulse
   - wireplumber
+  - tuned 
+  - tuned-ppd
+  - paccache.timer
+  - ufw
+  - grub-btrfsd
+  - sshd
+  - bluetooth
+  - cups 
+  - dnscrypt-proxy.socket
+  - dnscrypt-proxy.service
 
 gnome_packages:
   - ptyxis
@@ -113,6 +125,10 @@ gnome_packages:
 
 gnome_aur_packages:
   - nautilus-open-in-ptyxis
+  - gnome-shell-extension-appindicator 
+  - gnome-shell-extension-dash-to-dock 
+  - gnome-shell-extension-desktop-icons-ng
+  - gnome-shell-extension-blur-my-shell
 
 kde_packages:
   - ark

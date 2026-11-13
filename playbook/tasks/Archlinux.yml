@@ -83,12 +83,12 @@
   register: system_upgraded
   become: yes
 
-- name: Установить yay-bin из AUR
+- name: Установить paru-bin из AUR
   block:
     - name: Клонировать репозиторий
       git:
-        repo: https://aur.archlinux.org/yay-bin.git
-        dest: /tmp/yay-bin
+        repo: https://aur.archlinux.org/paru-bin.git
+        dest: /tmp/paru-bin
         version: HEAD
         update: yes
         force: yes
@@ -103,10 +103,10 @@
         validate: 'visudo -cf %s'
       become: yes
 
-    - name: Собрать и установить yay-bin
+    - name: Собрать и установить paru-bin
       shell: makepkg -si --noconfirm
       args:
-        chdir: /tmp/yay-bin
+        chdir: /tmp/paru-bin
       become: no
       environment:
         PATH: "{{ ansible_facts['env']['PATH'] }}"
@@ -132,7 +132,7 @@
   when: desktop_is_kde
 
 - name: Установить пакеты из AUR (основные)
-  shell: yay -Syu --noconfirm {{ aur_packages | join(' ') }}
+  shell: paru -Syu --noconfirm {{ aur_packages | join(' ') }}
   become_user: "{{ regular_user }}"
   become: no
   when: (aur_packages | default([], true)) | length > 0
@@ -141,7 +141,7 @@
   register: aur_install
 
 - name: Установить пакеты из AUR для Gnome
-  shell: yay -Syu {{ gnome_aur_packages | join(' ') }} --noconfirm
+  shell: paru -Syu {{ gnome_aur_packages | join(' ') }} --noconfirm
   become_user: "{{ regular_user }}"
   become: no
   when:
@@ -152,7 +152,7 @@
   register: gnome_aur_install
 
 - name: Установить пакеты из AUR для KDE
-  shell: yay -Syu {{ kde_aur_packages | join(' ') }} --noconfirm
+  shell: paru -Syu {{ kde_aur_packages | join(' ') }} --noconfirm
   become_user: "{{ regular_user }}"
   become: no
   when:
@@ -289,8 +289,8 @@
   changed_when: false
   become: yes
 
-- name: Очистить кэш yay
-  command: yay -Sc --noconfirm
+- name: Очистить кэш paru
+  command: paru -Sc --noconfirm
   become_user: "{{ regular_user }}"
   become: no
   changed_when: false

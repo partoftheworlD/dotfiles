@@ -27,7 +27,7 @@ pacman_packages=(
   spotify-launcher tuned tuned-ppd obsidian pacman-contrib tldr
   ttf-jetbrains-mono-nerd inter-font ripgrep 7zip openssh ldns
   wl-clipboard gamescope lutris lib32-gnutls umu-launcher steam less jq vulkan-radeon
-	lib32-vulkan-radeon lib32-vulkan-mesa-layers bind ttf-liberation
+	lib32-vulkan-radeon lib32-vulkan-mesa-layers bind ttf-liberation man
 )
 
 aur_packages=(
@@ -159,11 +159,11 @@ sudo reflector --protocol https,http --latest 50 -n 5 --sort rate --save /etc/pa
 # ---------- База ----------
 sudo pacman -Syu --needed --noconfirm base-devel git less
 
-# ---------- yay-bin ----------
-if ! command -v yay >/dev/null; then
-  rm -rf /tmp/yay-bin
-  git clone https://aur.archlinux.org/yay-bin.git /tmp/yay-bin
-  (cd /tmp/yay-bin && makepkg -si --noconfirm)
+# ---------- paru-bin ----------
+if ! command -v paru >/dev/null; then
+  rm -rf /tmp/paru-bin
+  git clone https://aur.archlinux.org/paru-bin.git /tmp/paru-bin
+  (cd /tmp/paru-bin && makepkg -si --noconfirm)
 fi
 
 # ---------- Основные пакеты ----------
@@ -178,14 +178,14 @@ if $IS_GNOME; then
 fi
 
 # ---------- AUR ----------
-yay -Syu --noconfirm --needed "${aur_packages[@]}"
+paru -Syu --noconfirm --needed "${aur_packages[@]}"
 
 if $IS_KDE && [ ${#kde_aur_packages[@]} -gt 0 ]; then
-  yay -Syu --noconfirm --needed "${kde_aur_packages[@]}"
+  paru -Syu --noconfirm --needed "${kde_aur_packages[@]}"
 fi
 
 if $IS_GNOME && [ ${#gnome_aur_packages[@]} -gt 0 ]; then
-  yay -Syu --noconfirm --needed "${gnome_aur_packages[@]}"
+  paru -Syu --noconfirm --needed "${gnome_aur_packages[@]}"
 fi
 
 # ---------- Конфиги ----------
@@ -252,7 +252,7 @@ if [ -n "$files" ]; then
 fi
 
 # ---------- Кэши ----------
-yay -Scc --noconfirm || true
+paru -Scc --noconfirm || true
 fc-cache -f
 
 # ---------- SSH ----------
