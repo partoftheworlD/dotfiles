@@ -27,12 +27,11 @@ pacman_packages=(
   spotify-launcher tuned tuned-ppd obsidian pacman-contrib tldr
   ttf-jetbrains-mono-nerd inter-font ripgrep 7zip openssh ldns
   wl-clipboard gamescope lutris lib32-gnutls umu-launcher steam less jq vulkan-radeon
-	lib32-vulkan-radeon lib32-vulkan-mesa-layers bind
+	lib32-vulkan-radeon lib32-vulkan-mesa-layers bind ttf-liberation
 )
 
 aur_packages=(
-  btrfs-assistant spotx-git splix brave-bin ttf-ms-aptos-core
-  heroic-games-launcher-bin protonplus
+  btrfs-assistant spotx-git splix brave-bin heroic-games-launcher-bin protonplus
 )
 
 remove_packages=(
