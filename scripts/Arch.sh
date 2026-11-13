@@ -32,6 +32,7 @@ pacman_packages=(
 
 aur_packages=(
   btrfs-assistant spotx-git splix brave-bin ttf-ms-aptos-core
+  heroic-games-launcher-bin protonplus
 )
 
 remove_packages=(
