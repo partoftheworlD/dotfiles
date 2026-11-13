@@ -27,7 +27,7 @@ pacman_packages=(
   spotify-launcher tuned tuned-ppd obsidian pacman-contrib tldr
   ttf-jetbrains-mono-nerd inter-font ripgrep 7zip openssh ldns
   wl-clipboard gamescope lutris lib32-gnutls umu-launcher steam less jq vulkan-radeon
-	lib32-vulkan-radeon lib32-vulkan-mesa-layers
+	lib32-vulkan-radeon lib32-vulkan-mesa-layers bind
 )
 
 aur_packages=(
@@ -56,11 +56,21 @@ kde_packages=(
   plasma-vault print-manager qbittorrent kio-admin kdf plasma-pa plasma-nm
 )
 
-kde_aur_packages=( konsave )
+kde_aur_packages=( 
+  konsave
+)
 
-gnome_packages=(ptyxis extension-manager gnome-firmware gnome-tweaks seahorse fragments)
+gnome_packages=(
+  ptyxis extension-manager gnome-firmware gnome-tweaks seahorse fragments
+)
 
-gnome_aur_packages=( nautilus-open-in-ptyxis )
+gnome_aur_packages=(
+  nautilus-open-in-ptyxis 
+  gnome-shell-extension-appindicator 
+  gnome-shell-extension-dash-to-dock 
+  gnome-shell-extension-desktop-icons-ng
+
+)
 
 # KDE-настройки в формате "file|group|key|value"
 kde_settings=(
@@ -191,6 +201,8 @@ sudo mkdir -p /etc/dnscrypt-proxy
 sudo cp -v "$FILES/dnscrypt/dnscrypt-proxy.toml" /etc/dnscrypt-proxy/
 sudo cp -v "$FILES/dnscrypt/cloaking-rules.txt"  /etc/dnscrypt-proxy/
 sudo cp -v "$FILES/dnscrypt/blocked-names.txt"   /etc/dnscrypt-proxy/
+
+sudo sed -i.bak -E "s|^(\s*cache_file\s*=\s*)'([^/][^']*)'|\1'/var/cache/dnscrypt-proxy/\2'|" /etc/dnscrypt-proxy/dnscrypt-proxy.toml
 
 # ---------- Shell ----------
 sudo chsh -s /usr/bin/fish "$USER"
