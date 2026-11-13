@@ -69,7 +69,7 @@ gnome_aur_packages=(
   gnome-shell-extension-appindicator 
   gnome-shell-extension-dash-to-dock 
   gnome-shell-extension-desktop-icons-ng
-
+  gnome-shell-extension-blur-my-shell
 )
 
 # KDE-настройки в формате "file|group|key|value"
