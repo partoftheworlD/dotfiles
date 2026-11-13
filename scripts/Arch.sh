@@ -31,7 +31,7 @@ pacman_packages=(
 )
 
 aur_packages=(
-  btrfs-assistant spotx-git splix google-chrome 
+  btrfs-assistant spotx-git splix brave-bin ttf-ms-aptos-core
 )
 
 remove_packages=(
