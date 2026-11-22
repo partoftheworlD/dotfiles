@@ -22,6 +22,7 @@ apt_packages=(
   gnome-software-plugin-deb gnome-software-plugin-fwupd gnome-software-plugin-flatpak
   tmux btop git curl neovim gamescope lutris steam-installer qbittorrent vlc
   ubuntu-restricted-extras gnome-tweaks tldr-py blanket printer-driver-splix jq
+  plasma-workspace-wallpapers
 )
 
 flatpak_packages=(
