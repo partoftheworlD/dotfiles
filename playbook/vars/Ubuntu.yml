@@ -28,7 +28,6 @@ apt_packages:
   - gnupg
   - jq
   - lutris
-  - mtr
   - neovim
   - printer-driver-splix
   - python3-pip

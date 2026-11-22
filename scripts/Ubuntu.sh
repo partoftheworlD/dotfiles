@@ -18,7 +18,7 @@ apt_packages=(
   btrfs-assistant snapper 7zip
   flatseal ffmpeg fish flatpak fwupd fonts-adobe-sourcesans3 wget python3-pip
   fonts-inter-variable fonts-jetbrains-mono gnome-software
-  gnome-shell-extensions unzip ripgrep apt-file mtr dnscrypt-proxy
+  gnome-shell-extensions unzip ripgrep apt-file dnscrypt-proxy
   gnome-software-plugin-deb gnome-software-plugin-fwupd gnome-software-plugin-flatpak
   tmux btop git curl neovim gamescope lutris steam-installer qbittorrent vlc
   ubuntu-restricted-extras gnome-tweaks tldr-py blanket printer-driver-splix jq
