@@ -215,7 +215,9 @@
   become: yes
 
 - name: Переход на HWE
-  shell: apt install linux-generic-hwe-26.04 --install-recommends
+  shell: |
+    . /etc/os-release
+    apt install linux-generic-hwe-${VERSION_ID} --install-recommends
   become: yes
 
 - name: Перезагрузка

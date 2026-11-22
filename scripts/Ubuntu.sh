@@ -126,7 +126,8 @@ if pgrep -x gnome-shell >/dev/null; then
 fi
 
 # ---------- Переход на HWE ----------
-sudo apt install linux-generic-hwe-26.04 --install-recommends
+. /etc/os-release
+sudo apt install linux-generic-hwe-${VERSION_ID} --install-recommends
 
 echo "Готово. Перезагрузка через 5 секунд..."
 sleep 5
