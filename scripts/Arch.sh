@@ -261,4 +261,4 @@ sudo ufw allow ssh
 # ---------- Перезагрузка ----------
 echo "Готово. Перезагрузка через 5 секунд..."
 sleep 5
-sudo reboot
+sudo systemctl reboot -i
