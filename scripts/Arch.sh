@@ -153,7 +153,7 @@ sudo sed -i 's/^#\?VerbosePkgLists$/VerbosePkgLists/' /etc/pacman.conf
 
 # ---------- Зеркала ----------
 sudo pacman -Syu --needed --noconfirm reflector
-sudo reflector --protocol https,http --latest 50 -n 5 --sort rate --save /etc/pacman.d/mirrorlist
+sudo reflector --protocol https,http --latest 35 -n 5 --sort rate --save /etc/pacman.d/mirrorlist
 
 # ---------- База ----------
 sudo pacman -Syu --needed --noconfirm base-devel git less
@@ -257,6 +257,12 @@ fc-cache -f
 # ---------- SSH ----------
 [ -f "$HOME/.ssh/id_ed25519" ] || ssh-keygen -t ed25519 -N "" -a 32 -f "$HOME/.ssh/id_ed25519"
 sudo ufw allow ssh
+
+# ---------- Aliases ----------
+ALIAS='alias mirrors="sudo reflector --protocol https,http --latest 35 -n 5 --sort rate --save /etc/pacman.d/mirrorlist --verbose 2>&1 | rg -v '\''WARNING|0\.00 s'\''"'
+
+rg -q "alias mirrors=" ~/.bashrc || echo "$ALIAS" >> ~/.bashrc
+fish -c "$ALIAS && funcsave mirrors"
 
 # ---------- Перезагрузка ----------
 echo "Готово. Перезагрузка через 5 секунд..."

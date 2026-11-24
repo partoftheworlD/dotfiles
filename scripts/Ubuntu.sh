@@ -130,6 +130,12 @@ fi
 . /etc/os-release
 sudo apt install linux-generic-hwe-${VERSION_ID} --install-recommends
 
+# ---------- Aliases ----------
+ALIAS='alias mirrors="sudo reflector --protocol https,http --latest 35 -n 5 --sort rate --save /etc/pacman.d/mirrorlist --verbose 2>&1 | rg -v '\''WARNING|0\.00 s'\''"'
+
+rg -q "alias mirrors=" ~/.bashrc || echo "$ALIAS" >> ~/.bashrc
+fish -c "$ALIAS && funcsave mirrors"
+
 echo "Готово. Перезагрузка через 5 секунд..."
 sleep 5
 sudo systemctl reboot -i
